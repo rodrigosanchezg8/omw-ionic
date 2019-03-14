@@ -1,0 +1,35 @@
+<ion-header>
+
+    <ion-toolbar color="header">
+        <ion-title>On My Way</ion-title>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content padding>
+
+    <img class="margin-end" style="margin: 5px auto; display: block" src="assets/icon/favicon.png">
+
+    <ion-list>
+
+        <ion-item>
+            <ion-label>Email</ion-label>
+            <ion-input type="text" [(ngModel)]="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+    </ion-list>
+
+    <div padding text-center>
+        <ion-button>Olvidé mi contraseña</ion-button>
+    </div>
+
+</ion-content>
+
+<ion-footer no-shadow no-margin no-padding no-border no-lines>
+    <ion-button expand="full" size="large" (click)="signIn()">Entrar</ion-button>
+</ion-footer>
