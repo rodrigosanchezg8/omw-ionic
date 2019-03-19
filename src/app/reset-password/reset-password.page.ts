@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {Loader} from "../traits/Loader";
 import {Responses} from "../traits/Responses";
 import {UserProvider} from "../../providers/user";
+import {Loading} from "../traits/loading";
 
 @Component({
     selector: 'app-reset-password',
@@ -15,18 +15,18 @@ export class ResetPasswordPage {
     constructor(
         private userProvider: UserProvider,
         private responser: Responses,
-        private loader: Loader) {
+        private loading: Loading) {
     }
 
     async sendResetPasswordLink() {
-        this.loader.present();
+        this.loading.present();
         try {
             const userRes = await this.userProvider.sendResetPasswordLink(this.email);
-            this.loader.dismiss();
+            this.loading.dismiss();
             this.responser.presentAlertResponse(userRes);
         } catch (e) {
             console.log(e);
-            this.loader.dismiss();
+            this.loading.dismiss();
         }
     }
 

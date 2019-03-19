@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {ResetPasswordPage} from "../reset-password/reset-password.page";
 import {UserProvider} from "../../providers/user";
 import {NativeStorage} from "@ionic-native/native-storage/ngx";
-import {Loader} from "../traits/Loader";
+import {Loading} from "../traits/Loading";
 import {Responses} from "../traits/Responses";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-home',
@@ -14,23 +14,27 @@ export class HomePage {
 
     email: string;
     password: string;
-    resetPasswordPage = ResetPasswordPage;
 
     constructor(
         private responses: Responses,
         private userProvider: UserProvider,
         private nativeStorage: NativeStorage,
-        private loader: Loader) {
+        private loading: Loading,
+        private router: Router) {
     }
 
-    signIn() {
-        this.loader.present();
+    async signIn() {
+        this.loading.present()
         try {
-            const userRes = this.userProvider.validateUser(this.email, this.password);
+            const userRes = await this.userProvider.validateUser(this.email, this.password);
+            if (userRes) {
+                this.loading.dismiss();
+                this.router.navigateByUrl('admin/tabs/delivery-mans')
+            }
         } catch (e) {
             console.log(e)
         } finally {
-            this.loader.dismiss();
+            this.loading.dismiss();
         }
     }
 

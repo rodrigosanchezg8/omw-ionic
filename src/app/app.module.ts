@@ -12,10 +12,12 @@ import {UserProvider} from "../providers/user";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {IonicSelectableModule} from "ionic-selectable";
+import {TabsPage} from "./admin/tabs/tabs.page";
 
 @NgModule({
     declarations: [
         AppComponent,
+        TabsPage
     ],
     entryComponents: [],
     imports: [

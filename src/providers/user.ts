@@ -15,6 +15,7 @@ export class UserProvider {
 
     validateUser(email, password) {
         let userData = {"email": email, "password": password};
+        return true;
         return this.api.post(this.LOGIN, userData);
     }
 
