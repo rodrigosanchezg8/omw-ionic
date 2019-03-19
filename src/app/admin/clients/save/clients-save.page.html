@@ -1,0 +1,74 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ isEditMode ? 'Modificar cliente' : 'Agregar cliente' }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <div *ngIf="!this.client.profileImage">
+        <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+    </div>
+    <div *ngIf="this.client.profileImage">
+        <ion-avatar
+                style="margin: 0 auto;
+                display: block;
+                min-width: 140px;
+                max-width: 140px;
+                min-height: 200px;
+                max-height: 200px">
+            <img src="{{ this.client.profileImage }}">
+        </ion-avatar>
+    </div>
+
+    <ion-button size="small" style="margin: 0 auto; display: block" (click)="pickImage()">Select a profile image
+    </ion-button>
+
+    <ion-item>
+        <ion-label position="floating">Nombre/s</ion-label>
+        <ion-input name="first_name"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Apellidos</ion-label>
+        <ion-input name="last_name"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Fecha de nacimiento</ion-label>
+        <ion-datetime display-format="YYYY-MM-DD" max="2005"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input name="email" inputmode="email"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input name="phone" type="number" inputmode="tel"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Municipio</ion-label>
+        <ion-select [interfaceOptions]="customAlertOptions" interface="alert"
+                    placeholder="Seleccionar...">
+            <ion-select-option value="bacon">Bacon</ion-select-option>
+            <ion-select-option value="olives">Black Olives</ion-select-option>
+            <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input name="password" type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">Quiero registrar mi empresa</ion-label>
+        <ion-checkbox slot="start" name="company" [(ngModel)]="hasCompany" color="light"></ion-checkbox>
+    </ion-item>
+
+</ion-content>
+
+<ion-footer>
+    <ion-button expand="full" size="large" (click)="save()">Guardar</ion-button>
+</ion-footer>

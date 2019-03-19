@@ -1,6 +1,6 @@
 <ion-header>
-    <ion-toolbar color="header">
-        <ion-title>Inici</ion-title>
+    <ion-toolbar>
+        <ion-title>Inicio</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -11,13 +11,13 @@
     <ion-list>
 
         <ion-item>
-            <ion-label>Email</ion-label>
-            <ion-input type="text" [(ngModel)]="email"></ion-input>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input name="email" [(ngModel)]="email"></ion-input>
         </ion-item>
 
         <ion-item>
-            <ion-label>Contraseña</ion-label>
-            <ion-input type="password" [(ngModel)]="password"></ion-input>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input name="password" [(ngModel)]="password"></ion-input>
         </ion-item>
 
     </ion-list>

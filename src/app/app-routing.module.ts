@@ -6,11 +6,20 @@ const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'home', loadChildren: './home/home.module#HomePageModule'},
     {path: 'reset-password', loadChildren: './reset-password/reset-password.module#ResetPasswordPageModule'},
-    {path: 'admin', redirectTo: 'admin/tabs/delivery-mans', pathMatch: 'full'},
+    {path: 'admin', redirectTo: 'admin/tabs/clients', pathMatch: 'full'},
     {
         path: 'admin/tabs', component: TabsPage,
         children: [
-            {path: 'clients', loadChildren: './admin/clients/clients.module#ClientsPageModule'},
+            {path: '', redirectTo: 'clients', pathMatch: 'full'},
+            {
+                path: 'clients', children: [
+                    {path: '', loadChildren: './admin/clients/clients.module#ClientsPageModule'},
+                    {
+                        path: 'save',
+                        loadChildren: './admin/clients/save/clients-save.module#ClientsSavePageModule'
+                    },
+                ]
+            },
             {
                 path: 'delivery-mans',
                 loadChildren: './admin/delivery-mans/delivery-mans.module#DeliveryMansPageModule'

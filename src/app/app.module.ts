@@ -32,7 +32,7 @@ import {TabsPage} from "./admin/tabs/tabs.page";
         StatusBar,
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-        UserProvider
+        UserProvider,
     ],
     bootstrap: [AppComponent]
 })
