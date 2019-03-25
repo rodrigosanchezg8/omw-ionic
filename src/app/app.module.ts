@@ -8,7 +8,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {UserProvider} from "../providers/user";
+import {AuthProvider} from "../providers/AuthProvider";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {IonicSelectableModule} from "ionic-selectable";
@@ -32,7 +32,7 @@ import {TabsPage} from "./admin/tabs/tabs.page";
         StatusBar,
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-        UserProvider,
+        AuthProvider,
     ],
     bootstrap: [AppComponent]
 })

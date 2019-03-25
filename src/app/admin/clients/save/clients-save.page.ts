@@ -1,6 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {User} from "../../../models/User";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
+import {Api} from "../../../../providers/Api";
+import {State} from "../../../models/State";
+import {Responses} from "../../../traits/Responses";
+import {StateProvider} from "../../../../providers/StateProvider";
+import {ClientProvider} from "../../../../providers/ClientProvider";
+import {Role} from "../../../models/Role";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-clients-save',
@@ -12,14 +19,26 @@ export class ClientsSavePage implements OnInit {
     client: User;
     isEditMode: boolean;
     hasCompany: boolean;
+    states: State[];
+    selectedState: State;
+    passwordConfirmation: string;
 
-    constructor(private imagePicker: ImagePicker) {
-        this.isEditMode = false;
-        if (!this.isEditMode)
-            this.client = new User();
+    constructor(private router: Router,
+                private imagePicker: ImagePicker,
+                private api: Api,
+                private responses: Responses,
+                private stateProvider: StateProvider,
+                private clientProvider: ClientProvider) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.isEditMode = false;
+        if (!this.isEditMode) {
+            this.client = new User();
+            this.client.role = new Role();
+            this.client.role.name = 'client';
+        }
+        this.states = <State[]>(await <any>this.stateProvider.getStates());
     }
 
     async pickImage() {
@@ -31,14 +50,20 @@ export class ClientsSavePage implements OnInit {
 
         try {
             const pictures = await this.imagePicker.getPictures(options)
-            this.client.profileImage = 'data:image/jpeg;base64,' + pictures[0];
+            this.client.profile_image = 'data:image/jpeg;base64,' + pictures[0];
         } catch (e) {
             console.log(e);
         }
     }
 
-    save() {
-
+    async save() {
+        const clientRes = await this.clientProvider.signUp(this.client,
+            {password_confirmation: this.passwordConfirmation});
+        this.responses.presentResponse(clientRes, () => {
+            if (clientRes.status === 200) {
+                this.router.navigateByUrl('admin/tabs/clients');
+            }
+        })
     }
 
 }

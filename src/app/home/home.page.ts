@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {UserProvider} from "../../providers/user";
+import {AuthProvider} from "../../providers/AuthProvider";
 import {NativeStorage} from "@ionic-native/native-storage/ngx";
 import {Loading} from "../traits/Loading";
 import {Responses} from "../traits/Responses";
@@ -17,25 +17,31 @@ export class HomePage {
 
     constructor(
         private responses: Responses,
-        private userProvider: UserProvider,
+        private userProvider: AuthProvider,
         private nativeStorage: NativeStorage,
         private loading: Loading,
         private router: Router) {
     }
 
     async signIn() {
-        this.loading.present()
-        try {
-            const userRes = await this.userProvider.validateUser(this.email, this.password);
-            if (userRes) {
-                this.loading.dismiss();
-                this.router.navigateByUrl('admin/tabs/delivery-mans')
+        this.loading.present();
+        const userRes = await this.userProvider.validateUser(this.email, this.password);
+        this.loading.dismiss();
+        if (!userRes.status || userRes.status !== 200)
+            this.responses.presentResponse(userRes);
+        else if (userRes.user && userRes.user.roles && userRes.user.roles.length)
+            switch (userRes.user.roles[0].name) {
+                case 'admin':
+                    this.router.navigateByUrl('admin/tabs/clients');
+                    break;
+                case 'client':
+                case 'company':
+                    break;
+                case 'delivery_man':
+                    break;
             }
-        } catch (e) {
-            console.log(e)
-        } finally {
-            this.loading.dismiss();
-        }
+        else
+            this.responses.presentGenericalErrorResponse();
     }
 
 }

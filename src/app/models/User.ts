@@ -1,10 +1,14 @@
+import {Role} from "./Role";
+
 export class User {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
     phone: number;
-    municipalityId: number;
+    city_id: number;
     password: string;
     status: boolean;
-    profileImage: string;
+    profile_image: string;
+    birth_date: string;
+    role: Role;
 }

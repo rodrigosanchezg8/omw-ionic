@@ -9,10 +9,10 @@
 
 <ion-content padding>
 
-    <div *ngIf="!this.client.profileImage">
+    <div *ngIf="!this.client.profile_image">
         <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
     </div>
-    <div *ngIf="this.client.profileImage">
+    <div *ngIf="this.client.profile_image">
         <ion-avatar
                 style="margin: 0 auto;
                 display: block;
@@ -20,7 +20,7 @@
                 max-width: 140px;
                 min-height: 200px;
                 max-height: 200px">
-            <img src="{{ this.client.profileImage }}">
+            <img src="{{ this.client.profile_image }}">
         </ion-avatar>
     </div>
 
@@ -29,37 +29,50 @@
 
     <ion-item>
         <ion-label position="floating">Nombre/s</ion-label>
-        <ion-input name="first_name"></ion-input>
+        <ion-input [(ngModel)]="client.first_name" name="first_name"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Apellidos</ion-label>
-        <ion-input name="last_name"></ion-input>
+        <ion-input [(ngModel)]="client.last_name" name="last_name"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Fecha de nacimiento</ion-label>
-        <ion-datetime display-format="YYYY-MM-DD" max="2005"></ion-datetime>
+        <ion-datetime [(ngModel)]="client.birth_date" name="birth_date" display-format="YYYY-MM-DD"
+                      max="2005"></ion-datetime>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input name="email" inputmode="email"></ion-input>
+        <ion-input [(ngModel)]="client.email" name="email" inputmode="email"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Teléfono</ion-label>
-        <ion-input name="phone" type="number" inputmode="tel"></ion-input>
+        <ion-input [(ngModel)]="client.phone" name="phone" type="number" inputmode="tel"></ion-input>
     </ion-item>
     <ion-item>
-        <ion-label position="floating">Municipio</ion-label>
-        <ion-select [interfaceOptions]="customAlertOptions" interface="alert"
-                    placeholder="Seleccionar...">
-            <ion-select-option value="bacon">Bacon</ion-select-option>
-            <ion-select-option value="olives">Black Olives</ion-select-option>
-            <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
+        <ion-label position="floating">Estado</ion-label>
+        <ion-select [(ngModel)]="selectedState" interface="alert" placeholder="Seleccionar..." name="state">
+            <ion-select-option [value]="state" *ngFor="let state of states">{{ state.state }}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Ciudad</ion-label>
+        <ion-select [(ngModel)]="client.city_id" interface="alert" placeholder="Seleccionar..." name="city"
+                    [disabled]="!selectedState">
+            <ng-container *ngIf="selectedState">
+                <ion-select-option [value]="city.id"
+                                   *ngFor="let city of selectedState.cities">{{ city.city }}</ion-select-option>
+            </ng-container>
         </ion-select>
     </ion-item>
 
     <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input name="password" type="password"></ion-input>
+        <ion-input [(ngModel)]="client.password" name="password" type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">Confirmar contraseña</ion-label>
+        <ion-input [(ngModel)]="passwordConfirmation" name="password_confirmation" type="password"></ion-input>
     </ion-item>
 
     <ion-item>
