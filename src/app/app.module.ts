@@ -17,7 +17,7 @@ import {TabsPage} from "./admin/tabs/tabs.page";
 @NgModule({
     declarations: [
         AppComponent,
-        TabsPage
+        TabsPage,
     ],
     entryComponents: [],
     imports: [
@@ -31,7 +31,6 @@ import {TabsPage} from "./admin/tabs/tabs.page";
     providers: [
         StatusBar,
         SplashScreen,
-        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         AuthProvider,
     ],
     bootstrap: [AppComponent]

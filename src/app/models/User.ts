@@ -11,4 +11,8 @@ export class User {
     profile_image: string;
     birth_date: string;
     role: Role;
+
+    constructor() {
+        this.role = new Role();
+    }
 }

@@ -3,16 +3,16 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>{{ isEditMode ? 'Modificar cliente' : 'Agregar cliente' }}</ion-title>
+        <ion-title>{{ isEditMode ? 'Modificar usuario' : 'Agregar usuario' }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
 
-    <div *ngIf="!this.client.profile_image">
+    <div *ngIf="!this.user.profile_image">
         <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
     </div>
-    <div *ngIf="this.client.profile_image">
+    <div *ngIf="this.user.profile_image">
         <ion-avatar
                 style="margin: 0 auto;
                 display: block;
@@ -20,7 +20,7 @@
                 max-width: 140px;
                 min-height: 200px;
                 max-height: 200px">
-            <img src="{{ this.client.profile_image }}">
+            <img src="{{ this.user.profile_image }}">
         </ion-avatar>
     </div>
 
@@ -29,24 +29,24 @@
 
     <ion-item>
         <ion-label position="floating">Nombre/s</ion-label>
-        <ion-input [(ngModel)]="client.first_name" name="first_name"></ion-input>
+        <ion-input [(ngModel)]="user.first_name" name="first_name"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Apellidos</ion-label>
-        <ion-input [(ngModel)]="client.last_name" name="last_name"></ion-input>
+        <ion-input [(ngModel)]="user.last_name" name="last_name"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Fecha de nacimiento</ion-label>
-        <ion-datetime [(ngModel)]="client.birth_date" name="birth_date" display-format="YYYY-MM-DD"
+        <ion-datetime [(ngModel)]="user.birth_date" name="birth_date" display-format="YYYY-MM-DD"
                       max="2005"></ion-datetime>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input [(ngModel)]="client.email" name="email" inputmode="email"></ion-input>
+        <ion-input [(ngModel)]="user.email" name="email" inputmode="email"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Teléfono</ion-label>
-        <ion-input [(ngModel)]="client.phone" name="phone" type="number" inputmode="tel"></ion-input>
+        <ion-input [(ngModel)]="user.phone" name="phone" type="number" inputmode="tel"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Estado</ion-label>
@@ -56,7 +56,7 @@
     </ion-item>
     <ion-item>
         <ion-label position="floating">Ciudad</ion-label>
-        <ion-select [(ngModel)]="client.city_id" interface="alert" placeholder="Seleccionar..." name="city"
+        <ion-select [(ngModel)]="user.city_id" interface="alert" placeholder="Seleccionar..." name="city"
                     [disabled]="!selectedState">
             <ng-container *ngIf="selectedState">
                 <ion-select-option [value]="city.id"
@@ -67,7 +67,7 @@
 
     <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input [(ngModel)]="client.password" name="password" type="password"></ion-input>
+        <ion-input [(ngModel)]="user.password" name="password" type="password"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -75,7 +75,7 @@
         <ion-input [(ngModel)]="passwordConfirmation" name="password_confirmation" type="password"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="this.user?.role?.name === 'client'">
         <ion-label position="floating">Quiero registrar mi empresa</ion-label>
         <ion-checkbox slot="start" name="company" [(ngModel)]="hasCompany" color="light"></ion-checkbox>
     </ion-item>

@@ -39,6 +39,9 @@ export class HomePage {
                     break;
                 case 'delivery_man':
                     break;
+                default:
+                    this.responses.presentResponse({'message': 'This user has no role '});
+                    break;
             }
         else
             this.responses.presentGenericalErrorResponse();

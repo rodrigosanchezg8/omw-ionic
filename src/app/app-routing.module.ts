@@ -15,14 +15,27 @@ const routes: Routes = [
                 path: 'clients', children: [
                     {path: '', loadChildren: './admin/clients/clients.module#ClientsPageModule'},
                     {
-                        path: 'save',
-                        loadChildren: './admin/clients/save/clients-save.module#ClientsSavePageModule'
+                        path: 'save-user',
+                        loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
                     },
+                    {
+                        path: 'save-company',
+                        loadChildren: './admin/clients/clients-save-company/clients-save-company.module#ClientsSaveCompanyPageModule'
+                    }
                 ]
             },
             {
-                path: 'delivery-mans',
-                loadChildren: './admin/delivery-mans/delivery-mans.module#DeliveryMansPageModule'
+                path: 'delivery-mans', children: [
+                    {path: '', loadChildren: './admin/delivery-mans/delivery-mans.module#DeliveryMansPageModule'},
+                    {
+                        path: 'save-user',
+                        loadChildren: './admin/delivery-mans/save-user/delivery-mans-save.module#DeliveryMansSavePageModule'
+                    },
+                    {
+                        path: 'save-options',
+                        loadChildren: './admin/delivery-mans/save-options/delivery-mans-save-options.module#DeliveryMansSaveOptionsPageModule'
+                    }
+                ]
             },
             {path: 'setup', loadChildren: './admin/setup/setup.module#SetupPageModule'},
             {path: 'products', loadChildren: './admin/products/products.module#ProductsPageModule'},

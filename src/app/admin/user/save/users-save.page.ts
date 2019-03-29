@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../../models/User";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
 import {Api} from "../../../../providers/Api";
@@ -7,16 +7,17 @@ import {Responses} from "../../../traits/Responses";
 import {StateProvider} from "../../../../providers/StateProvider";
 import {ClientProvider} from "../../../../providers/ClientProvider";
 import {Role} from "../../../models/Role";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {WideSharerService} from "../../../services/wide-sharer.service";
 
 @Component({
-    selector: 'app-clients-save',
-    templateUrl: './clients-save.page.html',
-    styleUrls: ['./clients-save.page.scss'],
+    selector: 'app-users-save',
+    templateUrl: './users-save-page.html',
+    styleUrls: ['./users-save.page.scss'],
 })
-export class ClientsSavePage implements OnInit {
+export class UsersSavePage implements OnInit {
 
-    client: User;
+    user: User;
     isEditMode: boolean;
     hasCompany: boolean;
     states: State[];
@@ -28,20 +29,24 @@ export class ClientsSavePage implements OnInit {
                 private api: Api,
                 private responses: Responses,
                 private stateProvider: StateProvider,
-                private clientProvider: ClientProvider) {
+                private clientProvider: ClientProvider,
+                private route: ActivatedRoute,
+                private wideSharerService: WideSharerService) {
     }
 
     async ngOnInit() {
         this.isEditMode = false;
         if (!this.isEditMode) {
-            this.client = new User();
-            this.client.role = new Role();
-            this.client.role.name = 'client';
+            this.user = new User();
+            this.route.params.subscribe(ps => {
+                this.user.role.name = ps.role;
+            });
         }
         this.states = <State[]>(await <any>this.stateProvider.getStates());
     }
 
     async pickImage() {
+
         const options = {
             quality: 70,
             outputType: 1,
@@ -50,18 +55,24 @@ export class ClientsSavePage implements OnInit {
 
         try {
             const pictures = await this.imagePicker.getPictures(options)
-            this.client.profile_image = 'data:image/jpeg;base64,' + pictures[0];
+            this.user.profile_image = 'data:image/jpeg;base64,' + pictures[0];
         } catch (e) {
             console.log(e);
         }
     }
 
     async save() {
-        const clientRes = await this.clientProvider.signUp(this.client,
+        const clientRes = await this.clientProvider.signUp(this.user,
             {password_confirmation: this.passwordConfirmation});
         this.responses.presentResponse(clientRes, () => {
             if (clientRes.status === 200) {
-                this.router.navigateByUrl('admin/tabs/clients');
+                if (this.user.role.name === 'client' && this.hasCompany) {
+                    this.router.navigate(['admin/tabs/clients/save-company', {user: clientRes.user}]);
+                } else if (this.user.role.name === 'delivery_man') {
+                    this.router.navigate(['admin/tabs/delivery-mans/save-options', {user: clientRes.user}]);
+                } else {
+                    this.router.navigateByUrl('admin/tabs');
+                }
             }
         })
     }

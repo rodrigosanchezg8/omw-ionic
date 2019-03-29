@@ -10,6 +10,7 @@ export class ClientsPage implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {}
+    ngOnInit(): void {
+    }
 
 }
