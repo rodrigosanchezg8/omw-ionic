@@ -21,6 +21,10 @@ const routes: Routes = [
                     {
                         path: 'save-company',
                         loadChildren: './admin/clients/save-company/clients-save-company.module#ClientsSaveCompanyPageModule'
+                    },
+                    {
+                        path: 'detail',
+                        loadChildren: './admin/clients/detail/client-detail.module#ClientDetailPageModule'
                     }
                 ]
             },

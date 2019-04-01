@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {User} from "../../models/User";
+import {ClientProvider} from "../../../providers/ClientProvider";
+import {environment} from "../../../environments/environment.prod";
 
 @Component({
     selector: 'app-clients',
@@ -7,10 +10,14 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ClientsPage implements OnInit {
 
-    constructor() {
+    storageUrl: string = environment.storageUrl;
+    clients: User[];
+
+    constructor(private clientProvider: ClientProvider) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit() {
+        this.clients = await this.clientProvider.getAll() as User[];
     }
 
 }

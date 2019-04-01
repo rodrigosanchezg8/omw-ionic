@@ -4,6 +4,7 @@ import {NativeStorage} from "@ionic-native/native-storage/ngx";
 import {Loading} from "../traits/Loading";
 import {Responses} from "../traits/Responses";
 import {Router} from "@angular/router";
+import {Storage} from "@ionic/storage";
 
 @Component({
     selector: 'app-home',
@@ -20,16 +21,19 @@ export class HomePage {
         private userProvider: AuthProvider,
         private nativeStorage: NativeStorage,
         private loading: Loading,
-        private router: Router) {
+        private router: Router,
+        private storage: Storage) {
     }
 
     async signIn() {
         this.loading.present();
-        const userRes = await this.userProvider.validateUser(this.email, this.password);
+        const userRes = await this.userProvider.validateUser(this.email, this.password) as any;
         this.loading.dismiss();
         if (!userRes.status || userRes.status !== 200)
             this.responses.presentResponse(userRes);
-        else if (userRes.user && userRes.user.roles && userRes.user.roles.length)
+        else if (userRes.user && userRes.user.roles && userRes.user.roles.length) {
+            this.storage.set('authorization', userRes.token_type + ' ' + userRes.access_token);
+            this.storage.set('user', userRes.user);
             switch (userRes.user.roles[0].name) {
                 case 'admin':
                     this.router.navigateByUrl('admin/tabs/clients');
@@ -43,7 +47,7 @@ export class HomePage {
                     this.responses.presentResponse({'message': 'This user has no role '});
                     break;
             }
-        else
+        } else
             this.responses.presentGenericalErrorResponse();
     }
 

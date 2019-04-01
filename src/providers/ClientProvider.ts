@@ -15,4 +15,12 @@ export class ClientProvider {
         return this.api.post('auth/signup_client', {...client, ...others})
     }
 
+    async getAll(): Promise<User[]> {
+        return await this.api.get('users' + '?role=client') as User[];
+    }
+
+    async get(userId): Promise<User> {
+        return await this.api.get('users/' + userId) as User;
+    }
+
 }

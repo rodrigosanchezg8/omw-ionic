@@ -6,6 +6,19 @@
 
 <ion-content padding>
 
+    <ion-list *ngFor="let client of clients">
+        <ion-item-sliding>
+            <ion-item>
+                <ion-avatar style="margin-right: 5px" *ngIf="client.profile_photo">
+                    <img src="{{ storageUrl + client.profile_photo }}">
+                </ion-avatar>
+                <ion-label [routerLink]="['./detail/', {clientId: client.id}]">
+                    {{ client.full_name }}
+                </ion-label>
+            </ion-item>
+        </ion-item-sliding>
+    </ion-list>
+
     <ion-fab style="margin-bottom: 60px" vertical="bottom" horizontal="end" edge slot="fixed">
         <ion-fab-button>
             <ion-icon name="add"></ion-icon>

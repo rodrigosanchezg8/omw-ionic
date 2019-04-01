@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
+            <ion-back-button style="color: white"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ isEditMode ? 'Modificar usuario' : 'Agregar usuario' }}</ion-title>
     </ion-toolbar>
@@ -56,7 +56,7 @@
     </ion-item>
     <ion-item>
         <ion-label position="floating">Ciudad</ion-label>
-        <ion-select [(ngModel)]="user.city_id" interface="alert" placeholder="Seleccionar..." name="city"
+        <ion-select [(ngModel)]="user.city_id" interface="alert" placeholder="Seleccionar..." name="city_id"
                     [disabled]="!selectedState">
             <ng-container *ngIf="selectedState">
                 <ion-select-option [value]="city.id"

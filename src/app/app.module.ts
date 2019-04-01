@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {IonicSelectableModule} from "ionic-selectable";
 import {TabsPage} from "./admin/tabs/tabs.page";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import {TabsPage} from "./admin/tabs/tabs.page";
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
+        IonicStorageModule.forRoot(),
         AppRoutingModule,
         FormsModule,
         HttpClientModule,

@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: white"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ client?.full_name }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="ion-text-center">
+
+    <ion-avatar
+            style="margin: 0 auto;
+                    width:100% !important;
+                    height : 100% !important;
+                    max-width: 100px !important;
+                    max-height: 100px !important; ">
+        <img src="{{ storageUrl + client?.profile_photo }}"
+             *ngIf="client?.profile_photo">
+    </ion-avatar>
+    <ion-list>
+        <ion-item class="ion-margin-top">
+            <ion-label style="font-weight: bold">Nombre</ion-label>
+            <ion-text>{{ client?.full_name }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Teléfono</ion-label>
+            <ion-text>{{ client?.phone }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Estado</ion-label>
+            <ion-text>{{ client?.city.state.state }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Ciudad</ion-label>
+            <ion-text>{{ client?.city.city }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Fecha de nacimiento</ion-label>
+            <ion-text>{{ client?.birth_date }}</ion-text>
+        </ion-item>
+    </ion-list>
+
+    <ion-button style="margin-top: 45px" expand="full" (click)="presentActionSheet()">
+        Acciones
+    </ion-button>
+
+</ion-content>
