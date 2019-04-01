@@ -20,7 +20,7 @@ const routes: Routes = [
                     },
                     {
                         path: 'save-company',
-                        loadChildren: './admin/clients/clients-save-company/clients-save-company.module#ClientsSaveCompanyPageModule'
+                        loadChildren: './admin/clients/save-company/clients-save-company.module#ClientsSaveCompanyPageModule'
                     }
                 ]
             },
