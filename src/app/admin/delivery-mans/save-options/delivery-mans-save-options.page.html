@@ -1,9 +1,31 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>delivery-mans-save-options</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Opciones de repartidor</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+    <ion-text>Como repartidor se te da a elegir el solamente prestar servicios a cierta
+        distancia máxima en especifico, por favor elige la adecuada para ti. No recibirás pedidos fuera del área de
+        número de kilometros que marques.
+    </ion-text>
+    <ion-item>
+        <ion-label>Rango de servicio</ion-label>
+        <ion-select style="margin-top: 60px" [(ngModel)]="selectedServiceRange" interface="alert"
+                    placeholder="Seleccionar..." name="service_range">
+            <ion-select-option [value]="serviceRange" *ngFor="let serviceRange of serviceRanges">
+                {{ serviceRange.km + ' kilometros' }}
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Disponible a partir de éste momento?</ion-label>
+        <ion-toggle color="primary" [(ngModel)]="available"></ion-toggle>
+    </ion-item>
 
 </ion-content>
+
+<ion-footer no-shadow no-margin no-padding no-border no-lines>
+    <ion-button expand="full" size="large" (click)="save()">Guardar</ion-button>
+</ion-footer>

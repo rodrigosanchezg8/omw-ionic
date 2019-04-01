@@ -67,14 +67,15 @@ export class UsersSavePage implements OnInit {
         this.responses.presentResponse(clientRes, () => {
             if (clientRes.status === 200) {
                 if (this.user.role.name === 'client' && this.hasCompany) {
-                    this.router.navigate(['admin/tabs/clients/save-company', {user: clientRes.user}]);
+                    this.router.navigate(['admin/tabs/clients/save-company', {userId: clientRes.user.id}]);
                 } else if (this.user.role.name === 'delivery_man') {
-                    this.router.navigate(['admin/tabs/delivery-mans/save-options', {user: clientRes.user}]);
+                    this.router.navigate(['admin/tabs/delivery-mans/save-options',
+                        {userId: clientRes.user.id}]);
                 } else {
                     this.router.navigateByUrl('admin/tabs');
                 }
             }
-        })
+        });
     }
 
 }
