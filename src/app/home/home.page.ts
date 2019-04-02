@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthProvider} from "../../providers/AuthProvider";
-import {NativeStorage} from "@ionic-native/native-storage/ngx";
+import {AuthService} from "../../services/auth.service";
 import {Loading} from "../traits/Loading";
 import {Responses} from "../traits/Responses";
 import {Router} from "@angular/router";
@@ -18,8 +17,7 @@ export class HomePage {
 
     constructor(
         private responses: Responses,
-        private userProvider: AuthProvider,
-        private nativeStorage: NativeStorage,
+        private userProvider: AuthService,
         private loading: Loading,
         private router: Router,
         private storage: Storage) {

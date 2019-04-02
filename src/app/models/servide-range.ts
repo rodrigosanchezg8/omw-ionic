@@ -1,4 +1,4 @@
-export class ServiceRange {
+export class ServideRange {
     id: number;
     km: number;
     description: string;

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../models/User";
-import {ClientProvider} from "../../../providers/ClientProvider";
+import {User} from "../../models/user";
+import {UserService} from "../../../services/user.service";
 import {environment} from "../../../environments/environment.prod";
 
 @Component({
@@ -13,11 +13,11 @@ export class ClientsPage implements OnInit {
     storageUrl: string = environment.storageUrl;
     clients: User[];
 
-    constructor(private clientProvider: ClientProvider) {
+    constructor(private userProvider: UserService) {
     }
 
     async ngOnInit() {
-        this.clients = await this.clientProvider.getAll() as User[];
+        this.clients = await this.userProvider.getAll('client') as User[];
     }
 
 }

@@ -1,14 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../../models/User";
+import {Component, OnInit} from '@angular/core';
+import {User} from "../../../models/user";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
-import {Api} from "../../../../providers/Api";
-import {State} from "../../../models/State";
+import {ApiService} from "../../../../services/api.service";
+import {State} from "../../../models/state";
 import {Responses} from "../../../traits/Responses";
-import {StateProvider} from "../../../../providers/StateProvider";
-import {ClientProvider} from "../../../../providers/ClientProvider";
-import {Role} from "../../../models/Role";
+import {StateService} from "../../../../services/state.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {WideSharerService} from "../../../services/wide-sharer.service";
+import {ClientService} from "../../../../services/client.service";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
     selector: 'app-users-save',
@@ -25,24 +24,31 @@ export class UsersSavePage implements OnInit {
     passwordConfirmation: string;
 
     constructor(private router: Router,
-                private imagePicker: ImagePicker,
-                private api: Api,
+                private api: ApiService,
                 private responses: Responses,
-                private stateProvider: StateProvider,
-                private clientProvider: ClientProvider,
-                private route: ActivatedRoute,
-                private wideSharerService: WideSharerService) {
+                private stateService: StateService,
+                private clientService: ClientService,
+                private userService: UserService,
+                private route: ActivatedRoute) {
     }
 
     async ngOnInit() {
-        this.isEditMode = false;
-        if (!this.isEditMode) {
-            this.user = new User();
-            this.route.params.subscribe(ps => {
-                this.user.role.name = ps.role;
+        try {
+            this.route.params.subscribe(async ps => {
+                if (ps.user) {
+                    this.isEditMode = true;
+                    this.user = await this.userService.get(ps.user) as User;
+                    this.selectedState = this.user.city.state;
+                } else {
+                    this.user = new User();
+                    this.user.role.name = ps.role;
+                }
             });
+            this.states = <State[]>(await <any>this.stateService.getStates());
+        } catch (e) {
+            this.responses.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});
         }
-        this.states = <State[]>(await <any>this.stateProvider.getStates());
+        console.log({user: this.user})
     }
 
     async pickImage() {
@@ -54,7 +60,7 @@ export class UsersSavePage implements OnInit {
         };
 
         try {
-            const pictures = await this.imagePicker.getPictures(options)
+            const pictures = await new ImagePicker().getPictures(options)
             this.user.profile_image = 'data:image/jpeg;base64,' + pictures[0];
         } catch (e) {
             console.log(e);
@@ -62,8 +68,15 @@ export class UsersSavePage implements OnInit {
     }
 
     async save() {
-        const clientRes = await this.clientProvider.signUp(this.user,
-            {password_confirmation: this.passwordConfirmation});
+
+        let clientRes;
+        if (this.isEditMode) {
+            clientRes = await this.userService.signUp(this.user,
+                {password_confirmation: this.passwordConfirmation});
+        } else {
+            clientRes = await this.userService.update(this.user,
+                {password_confirmation: this.passwordConfirmation});
+        }
         this.responses.presentResponse(clientRes, () => {
             if (clientRes.status === 200) {
                 if (this.user.role.name === 'client' && this.hasCompany) {

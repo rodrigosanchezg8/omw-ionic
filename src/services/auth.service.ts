@@ -1,13 +1,13 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Api} from "./Api";
+import {ApiService} from "./api.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthProvider {
+export class AuthService {
 
-    constructor(public http: HttpClient, public api: Api) {
+    constructor(public http: HttpClient, public api: ApiService) {
     }
 
     validateUser(email, password) {

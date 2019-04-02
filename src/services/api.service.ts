@@ -8,7 +8,7 @@ import {environment} from "../environments/environment.prod";
 @Injectable({
     providedIn: 'root'
 })
-export class Api {
+export class ApiService {
 
     headers: any;
     API: string;

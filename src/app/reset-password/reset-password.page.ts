@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Responses} from "../traits/Responses";
-import {AuthProvider} from "../../providers/AuthProvider";
+import {AuthService} from "../../services/auth.service";
 import {Loading} from "../traits/Loading";
 
 @Component({
@@ -13,7 +13,7 @@ export class ResetPasswordPage {
     email: string;
 
     constructor(
-        private userProvider: AuthProvider,
+        private userProvider: AuthService,
         private responser: Responses,
         private loading: Loading) {
     }

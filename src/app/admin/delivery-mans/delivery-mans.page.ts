@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {WideSharerService} from "../../services/wide-sharer.service";
-import {Role} from "../../models/Role";
+import {WideSharerService} from "../../../services/wide-sharer.service";
+import {Role} from "../../models/role";
 
 @Component({
     selector: 'app-delivery-mans',

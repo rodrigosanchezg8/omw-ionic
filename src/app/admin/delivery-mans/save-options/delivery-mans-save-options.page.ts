@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {DeliveryManProvider} from "../../../../providers/DeliveryManProvider";
-import {ServiceRange} from "../../../models/ServiceRange";
+import {DeliveryManService} from "../../../../services/delivery-man.service";
+import {ServideRange} from "../../../models/servide-range";
 import {Responses} from "../../../traits/Responses";
 import {ActivatedRoute, Router} from "@angular/router";
-import {User} from "../../../models/User";
+import {User} from "../../../models/user";
 
 @Component({
     selector: 'app-delivery-mans-save-options',
@@ -14,12 +14,12 @@ export class DeliveryMansSaveOptionsPage implements OnInit {
 
     userId: number;
     available: boolean = false;
-    serviceRanges: ServiceRange[];
-    selectedServiceRange: ServiceRange;
+    serviceRanges: ServideRange[];
+    selectedServiceRange: ServideRange;
 
     constructor(private responses: Responses,
                 private router: Router,
-                private deliveryManProvider: DeliveryManProvider,
+                private deliveryManProvider: DeliveryManService,
                 private activatedRoute: ActivatedRoute) {
         this.activatedRoute.params.subscribe((ps: any) => {
             this.userId = ps.userId;
@@ -27,7 +27,7 @@ export class DeliveryMansSaveOptionsPage implements OnInit {
     }
 
     async ngOnInit() {
-        this.serviceRanges = await this.deliveryManProvider.getServiceRanges() as ServiceRange[];
+        this.serviceRanges = await this.deliveryManProvider.getServiceRanges() as ServideRange[];
     }
 
     async save() {
