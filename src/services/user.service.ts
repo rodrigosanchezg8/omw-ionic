@@ -20,7 +20,7 @@ export class UserService {
     }
 
     async signUp(user: User, others: any): Promise<any> {
-        return await this.api.post('auth/signup_client', {...user, ...others})
+        return await this.api.post('users', {...user, ...others})
     }
 
     async update(user: User, others: any): Promise<any> {

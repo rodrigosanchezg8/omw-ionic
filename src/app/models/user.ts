@@ -2,7 +2,7 @@ import {Role} from "./role";
 import {City} from "./city";
 
 export class User {
-    id: number
+    id: number;
     first_name: string;
     last_name: string;
     full_name: string;
@@ -12,12 +12,12 @@ export class User {
     city_id: number;
     password: string;
     status: boolean;
-    profile_image: string;
+    profile_photo: string;
     birth_date: string;
     role: Role;
-    profile_photo: string;
 
     constructor() {
         this.role = new Role();
     }
+
 }

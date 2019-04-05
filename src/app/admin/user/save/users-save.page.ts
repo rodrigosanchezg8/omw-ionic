@@ -8,6 +8,8 @@ import {StateService} from "../../../../services/state.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientService} from "../../../../services/client.service";
 import {UserService} from "../../../../services/user.service";
+import {environment} from "../../../../environments/environment.prod";
+import {Loading} from "../../../traits/Loading";
 
 @Component({
     selector: 'app-users-save',
@@ -20,7 +22,7 @@ export class UsersSavePage implements OnInit {
     isEditMode: boolean;
     hasCompany: boolean;
     states: State[];
-    selectedState: State;
+    selectedState: number;
     passwordConfirmation: string;
 
     constructor(private router: Router,
@@ -29,7 +31,8 @@ export class UsersSavePage implements OnInit {
                 private stateService: StateService,
                 private clientService: ClientService,
                 private userService: UserService,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private loading: Loading) {
     }
 
     async ngOnInit() {
@@ -38,17 +41,21 @@ export class UsersSavePage implements OnInit {
                 if (ps.user) {
                     this.isEditMode = true;
                     this.user = await this.userService.get(ps.user) as User;
-                    this.selectedState = this.user.city.state;
-                } else {
+                    if (this.user.profile_photo !== null) {
+                        this.user.profile_photo = environment.storageUrl + this.user.profile_photo;
+                    }
+                    this.selectedState = this.user.city.state.id;
+                } else if (ps.role) {
                     this.user = new User();
                     this.user.role.name = ps.role;
+                } else {
+                    this.user = new User();
                 }
             });
             this.states = <State[]>(await <any>this.stateService.getStates());
         } catch (e) {
             this.responses.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});
         }
-        console.log({user: this.user})
     }
 
     async pickImage() {
@@ -60,21 +67,26 @@ export class UsersSavePage implements OnInit {
         };
 
         try {
+
+            this.loading.present();
             const pictures = await new ImagePicker().getPictures(options)
-            this.user.profile_image = 'data:image/jpeg;base64,' + pictures[0];
+            this.loading.dismiss();
+
+            this.user.profile_photo = 'data:image/jpeg;base64,' + pictures[0];
         } catch (e) {
-            console.log(e);
+            this.responses.presentResponse(
+                {message: 'La foto no se ha pudido abrir, intenta con otra porfavor'})
         }
     }
 
     async save() {
-
+        this.user.birth_date = this.user.birth_date.substr(0, 10);
         let clientRes;
         if (this.isEditMode) {
-            clientRes = await this.userService.signUp(this.user,
+            clientRes = await this.userService.update(this.user,
                 {password_confirmation: this.passwordConfirmation});
         } else {
-            clientRes = await this.userService.update(this.user,
+            clientRes = await this.userService.signUp(this.user,
                 {password_confirmation: this.passwordConfirmation});
         }
         this.responses.presentResponse(clientRes, () => {
@@ -89,6 +101,11 @@ export class UsersSavePage implements OnInit {
                 }
             }
         });
+    }
+
+    selectedStateCities() {
+        if (this.states)
+            return this.states.find(state => state.id === this.selectedState).cities;
     }
 
 }

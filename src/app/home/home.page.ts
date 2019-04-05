@@ -29,10 +29,10 @@ export class HomePage {
         this.loading.dismiss();
         if (!userRes.status || userRes.status !== 200)
             this.responses.presentResponse(userRes);
-        else if (userRes.user && userRes.user.roles && userRes.user.roles.length) {
+        else if (userRes.user && userRes.user.role) {
             this.storage.set('authorization', userRes.token_type + ' ' + userRes.access_token);
             this.storage.set('user', userRes.user);
-            switch (userRes.user.roles[0].name) {
+            switch (userRes.user.role.name) {
                 case 'admin':
                     this.router.navigateByUrl('admin/tabs/clients');
                     break;

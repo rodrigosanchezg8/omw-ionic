@@ -4,7 +4,12 @@
     </ion-toolbar>
 </ion-header>
 
+
 <ion-content padding>
+
+    <ion-refresher slot="fixed" (ionRefresh)="getClients($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
     <ion-list *ngFor="let client of clients">
         <ion-item-sliding>

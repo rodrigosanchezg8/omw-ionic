@@ -17,7 +17,13 @@ export class ClientsPage implements OnInit {
     }
 
     async ngOnInit() {
+        this.getClients();
+    }
+
+    async getClients(event = null) {
         this.clients = await this.userProvider.getAll('client') as User[];
+        if (event)
+            event.target.complete();
     }
 
 }
