@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";
-import {ServideRange} from "../app/models/servide-range";
+import {ServiceRange} from "../app/models/service-range";
 
 @Injectable({
     providedIn: 'root'
@@ -12,8 +12,8 @@ export class DeliveryManService {
     }
 
 
-    async getServiceRanges(): Promise<ServideRange[]> {
-        return await this.api.get('auth/delivery_man/service_ranges') as ServideRange[];
+    async getServiceRanges(): Promise<ServiceRange[]> {
+        return await this.api.get('auth/delivery_man/service_ranges') as ServiceRange[];
     }
 
     async post(data: any) {

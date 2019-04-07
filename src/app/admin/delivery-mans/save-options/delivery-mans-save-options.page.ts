@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DeliveryManService} from "../../../../services/delivery-man.service";
-import {ServideRange} from "../../../models/servide-range";
+import {ServiceRange} from "../../../models/service-range";
 import {Responses} from "../../../../traits/responses";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../models/user";
@@ -14,8 +14,8 @@ export class DeliveryMansSaveOptionsPage implements OnInit {
 
     userId: number;
     available: boolean = false;
-    serviceRanges: ServideRange[];
-    selectedServiceRange: ServideRange;
+    serviceRanges: ServiceRange[];
+    selectedServiceRange: ServiceRange;
 
     constructor(private responses: Responses,
                 private router: Router,
@@ -27,7 +27,7 @@ export class DeliveryMansSaveOptionsPage implements OnInit {
     }
 
     async ngOnInit() {
-        this.serviceRanges = await this.deliveryManProvider.getServiceRanges() as ServideRange[];
+        this.serviceRanges = await this.deliveryManProvider.getServiceRanges() as ServiceRange[];
     }
 
     async save() {
