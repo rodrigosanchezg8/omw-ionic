@@ -81,21 +81,22 @@ export class UsersSavePage implements OnInit {
 
     async save() {
         this.user.birth_date = this.user.birth_date.substr(0, 10);
-        let clientRes;
+        let userRes;
         if (this.isEditMode) {
-            clientRes = await this.userService.update(this.user,
+            userRes = await this.userService.update(this.user,
                 {password_confirmation: this.passwordConfirmation});
         } else {
-            clientRes = await this.userService.signUp(this.user,
+            userRes = await this.userService.signUp(this.user,
                 {password_confirmation: this.passwordConfirmation});
         }
-        this.responses.presentResponse(clientRes, () => {
-            if (clientRes.status === 200) {
+        this.responses.presentResponse(userRes, () => {
+            if (userRes.status === 200) {
                 if (this.user.role.name === 'client' && this.hasCompany) {
-                    this.router.navigate(['admin/tabs/clients/save-company', {userId: clientRes.user.id}]);
-                } else {
+                    this.router.navigate(['admin/tabs/clients/save-company', {userId: userRes.user.id}]);
+                } else if (this.user.role.name === 'delivery_man') {
+                    this.router.navigateByUrl('admin/tabs/delivery-men');
+                } else
                     this.router.navigateByUrl('admin/tabs');
-                }
             }
         });
     }

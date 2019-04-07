@@ -27,8 +27,8 @@ export class UserService {
         return await this.api.put('users/' + user.id, {...user, ...others});
     }
 
-    async delete(user: User): Promise<any> {
-        return await this.api.delete('users/' + user.id);
+    async delete(userId: number): Promise<any> {
+        return await this.api.delete('users/' + userId);
     }
 
 }
