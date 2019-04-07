@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Injector} from '@angular/core';
 import {Storage} from "@ionic/storage";
 import {NavController} from "ionic-angular";
-import {Responses} from "../app/traits/Responses";
+import {Responses} from "../traits/responses";
 import {environment} from "../environments/environment.prod";
 
 @Injectable({

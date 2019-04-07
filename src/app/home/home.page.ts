@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
-import {Loading} from "../traits/Loading";
-import {Responses} from "../traits/Responses";
+import {Loading} from "../../traits/loading";
+import {Responses} from "../../traits/responses";
 import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 

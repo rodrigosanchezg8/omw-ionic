@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DeliveryManService} from "../../../../services/delivery-man.service";
 import {ServideRange} from "../../../models/servide-range";
-import {Responses} from "../../../traits/Responses";
+import {Responses} from "../../../../traits/responses";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../models/user";
 

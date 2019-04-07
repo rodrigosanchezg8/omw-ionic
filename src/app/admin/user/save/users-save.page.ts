@@ -3,13 +3,13 @@ import {User} from "../../../models/user";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
 import {ApiService} from "../../../../services/api.service";
 import {State} from "../../../models/state";
-import {Responses} from "../../../traits/Responses";
+import {Responses} from "../../../../traits/responses";
 import {StateService} from "../../../../services/state.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientService} from "../../../../services/client.service";
 import {UserService} from "../../../../services/user.service";
 import {environment} from "../../../../environments/environment.prod";
-import {Loading} from "../../../traits/Loading";
+import {Loading} from "../../../../traits/loading";
 
 @Component({
     selector: 'app-users-save',
@@ -93,9 +93,6 @@ export class UsersSavePage implements OnInit {
             if (clientRes.status === 200) {
                 if (this.user.role.name === 'client' && this.hasCompany) {
                     this.router.navigate(['admin/tabs/clients/save-company', {userId: clientRes.user.id}]);
-                } else if (this.user.role.name === 'delivery_man') {
-                    this.router.navigate(['admin/tabs/delivery-mans/save-options',
-                        {userId: clientRes.user.id}]);
                 } else {
                     this.router.navigateByUrl('admin/tabs');
                 }

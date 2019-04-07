@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../../services/user.service";
 import {User} from "../../../models/user";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Responses} from "../../../traits/Responses";
+import {Responses} from "../../../../traits/responses";
 import {environment} from "../../../../environments/environment.prod";
-import {ActionSheetController} from "@ionic/angular";
+import {ActionSheetController, AlertController} from "@ionic/angular";
 
 @Component({
     selector: 'app-client-detail',
@@ -16,22 +16,23 @@ export class ClientDetailPage implements OnInit {
     storageUrl: string = environment.storageUrl;
     client: User;
 
-    constructor(private clientProvider: UserService,
+    constructor(private userService: UserService,
                 private activatedRoute: ActivatedRoute,
                 private responses: Responses,
                 private actionSheetController: ActionSheetController,
-                private router: Router) {
+                private router: Router,
+                private alertController: AlertController) {
     }
 
     async ngOnInit() {
         this.activatedRoute.params.subscribe(async ps => {
-            this.client = await this.clientProvider.get(ps.clientId) as User;
+            this.client = await this.userService.get(ps.clientId) as User;
             if (!this.client)
                 this.responses.presentResponse({message: 'El cliente no existe.'});
         });
     }
 
-    async presentActionSheet() {
+    async deleteAction() {
         const actionSheet = await this.actionSheetController.create({
             header: 'Albums',
             buttons: [{
@@ -42,11 +43,29 @@ export class ClientDetailPage implements OnInit {
                     user: this.client.id
                 }])
             }, {
-                text: 'Delete',
+                text: 'Borrar',
                 role: 'destructive',
                 icon: 'trash',
                 handler: () => {
-                    console.log('Delete clicked');
+                    this.alertController.create({
+                        header: 'Confirmar',
+                        message: '¿De  verdad quieres borrar éste cliente?',
+                        buttons: [
+                            {
+                                text: 'Cancelar',
+                                role: 'cancel',
+                                cssClass: 'secondary',
+                            }, {
+                                text: 'Sí',
+                                handler: async () => {
+                                    await this.userService.delete(this.client);
+                                    this.router.navigate(['admin/tabs/clients']);
+                                }
+                            }
+                        ]
+                    }).then((alert) => {
+                        alert.present();
+                    })
                 }
             }, {
                 text: 'Cancel',

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {Responses} from "../traits/Responses";
+import {Responses} from "../../traits/responses";
 import {AuthService} from "../../services/auth.service";
-import {Loading} from "../traits/Loading";
+import {Loading} from "../../traits/loading";
 
 @Component({
     selector: 'app-reset-password',
