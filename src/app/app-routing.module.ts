@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {TabsPage} from "./admin/tabs/tabs.page";
+import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 
 const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -29,15 +30,15 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'delivery-mans', children: [
-                    {path: '', loadChildren: './admin/delivery-mans/delivery-mans.module#DeliveryMansPageModule'},
+                path: 'delivery-men', children: [
+                    {path: '', loadChildren: './admin/delivery-men/delivery-men.module#DeliveryMenPageModule'},
                     {
                         path: 'save-user',
-                        loadChildren: './admin/delivery-mans/save-user/delivery-mans-save.module#DeliveryMansSavePageModule'
+                        loadChildren: './admin/delivery-men/save-user/delivery-men-save.module#DeliveryMenSavePageModule'
                     },
                     {
-                        path: 'save-options',
-                        loadChildren: './admin/delivery-mans/save-options/delivery-mans-save-options.module#DeliveryMansSaveOptionsPageModule'
+                        path: 'detail',
+                        loadChildren: './admin/delivery-men/detail/delivery-men-detail.module#DeliveryMenDetailPageModule'
                     }
                 ]
             },
@@ -45,6 +46,18 @@ const routes: Routes = [
             {path: 'products', loadChildren: './admin/products/products.module#ProductsPageModule'},
         ]
     },
+    {path: 'delivery-men', redirectTo: 'delivery-men/tabs/delivery-men-options', pathMatch: 'full'},
+    {
+        path: 'delivery-men/tabs', component: DeliveryMenTabsPage,
+        children: [
+            {path: '', redirectTo: 'delivery-men-options', pathMatch: 'full'},
+            {
+                path: 'delivery-men-options',
+                loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'
+            }
+        ]
+    },
+
 ];
 
 @NgModule({

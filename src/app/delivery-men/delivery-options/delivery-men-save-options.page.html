@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Opciones de repartidor</ion-title>
+        <ion-title>Preferencias de servicio</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -13,7 +13,7 @@
         <ion-label>Rango de servicio</ion-label>
         <ion-select style="margin-top: 60px" [(ngModel)]="selectedServiceRange" interface="alert"
                     placeholder="Seleccionar..." name="service_range">
-            <ion-select-option [value]="serviceRange" *ngFor="let serviceRange of serviceRanges">
+            <ion-select-option [value]="serviceRange.id" *ngFor="let serviceRange of serviceRanges">
                 {{ serviceRange.km + ' kilometros' }}
             </ion-select-option>
         </ion-select>

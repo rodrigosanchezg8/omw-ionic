@@ -13,11 +13,13 @@ import {HttpClientModule} from "@angular/common/http";
 import {IonicSelectableModule} from "ionic-selectable";
 import {TabsPage} from "./admin/tabs/tabs.page";
 import {IonicStorageModule} from "@ionic/storage";
+import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 
 @NgModule({
     declarations: [
         AppComponent,
         TabsPage,
+        DeliveryMenTabsPage
     ],
     entryComponents: [],
     imports: [
