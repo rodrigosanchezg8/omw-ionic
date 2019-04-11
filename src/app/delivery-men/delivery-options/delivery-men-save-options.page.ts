@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {DeliveryManService} from "../../../services/delivery-man.service";
-import {ServiceRange} from "../../models/service-range";
+import {ServiceRange} from "../../../models/service-range";
 import {Responses} from "../../../traits/responses";
 import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
-import {User} from "../../models/user";
-import {DeliveryManServiceOptions} from "../../models/delivery-man-service-options";
+import {User} from "../../../models/user";
+import {DeliveryManServiceOptions} from "../../../models/delivery-man-service-options";
 
 @Component({
     selector: 'app-delivery-mans-save-options',

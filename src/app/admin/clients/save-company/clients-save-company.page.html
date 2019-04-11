@@ -1,9 +1,65 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>clients-save-company</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: white"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ isEditMode ? 'Modificar compañia' : 'Agregar compañia' }}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
 
+    <div *ngIf="!this.company?.profile_photo">
+        <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+    </div>
+    <div *ngIf="this.company?.profile_photo">
+        <ion-avatar
+                style="margin: 0 auto;
+                display: block;
+                min-width: 140px;
+                max-width: 140px;
+                min-height: 200px;
+                max-height: 200px">
+            <img src="{{ this.company?.profile_photo }}">
+        </ion-avatar>
+    </div>
+
+    <ion-button size="small" style="margin: 0 auto; display: block" (click)="pickImage()">Select a profile image
+    </ion-button>
+
+    <ion-item>
+        <ion-label position="floating">Nombre/s</ion-label>
+        <ion-input (ngModelChange)="company.name=$event" [ngModel]="company?.name"
+                   name="first_name"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input (ngModelChange)="company.description=$event" [ngModel]="company?.description"
+                   name="description"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Estado</ion-label>
+        <ion-select [(ngModel)]="selectedState" interface="alert" placeholder="Seleccionar..." name="state">
+            <ion-select-option [value]="state.id" *ngFor="let state of states">
+                {{ state.state }}
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Ciudad</ion-label>
+        <ion-select (ngModelChange)="company.city_id=$event" [ngModel]="company?.city_id" interface="alert"
+                    placeholder="Seleccionar..."
+                    name="city_id" [disabled]="!selectedState">
+            <ng-container *ngIf="selectedState">
+                <ion-select-option [value]="city.id" *ngFor="let city of selectedStateCities()">
+                    {{ city.city }}
+                </ion-select-option>
+            </ng-container>
+        </ion-select>
+    </ion-item>
+
 </ion-content>
+
+<ion-footer>
+    <ion-button expand="full" size="large" (click)="save()">Guardar</ion-button>
+</ion-footer>

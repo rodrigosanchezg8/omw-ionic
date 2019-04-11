@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../../services/user.service";
-import {User} from "../../../models/user";
+import {User} from "../../../../models/user";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Responses} from "../../../../traits/responses";
 import {environment} from "../../../../environments/environment.prod";

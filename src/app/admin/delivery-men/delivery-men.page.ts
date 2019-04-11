@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../services/user.service";
-import {User} from "../../models/user";
+import {User} from "../../../models/user";
 import {environment} from "../../../environments/environment.prod";
 
 @Component({
@@ -16,7 +16,10 @@ export class DeliveryMenPage implements OnInit {
     constructor(private userService: UserService) {
     }
 
-    async ngOnInit() {
+    ngOnInit() {
+    }
+
+    async ionViewWillEnter() {
         await this.getDeliveryMen();
     }
 

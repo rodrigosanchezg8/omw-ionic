@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {TabsPage} from "./admin/tabs/tabs.page";
 import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
+import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
 
 const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -27,6 +28,15 @@ const routes: Routes = [
                         path: 'detail',
                         loadChildren: './admin/clients/detail/client-detail.module#ClientDetailPageModule'
                     }
+                ]
+            },
+            {
+                path: 'companies', children: [
+                    {path: '', loadChildren: './admin/companies/companies.module#CompaniesPageModule'},
+                    {
+                        path: 'detail',
+                        loadChildren: './admin/companies/detail/company-detail.module#CompanyDetailPageModule'
+                    },
                 ]
             },
             {
@@ -57,6 +67,23 @@ const routes: Routes = [
             }
         ]
     },
+    {path: 'clients', redirectTo: 'clients/tabs/company', pathMatch: 'full'},
+    {
+        path: 'clients/tabs', component: ClientsTabsPage,
+        children: [
+            {path: '', redirectTo: 'company', pathMatch: 'full'},
+            {
+                path: 'company', children: [
+                    {path: '', loadChildren: './clients/company/clients-company.module#ClientsCompanyPageModule'},
+                    {
+                        path: 'save',
+                        loadChildren: './clients/company/save/client-side-save-company.module#ClientSideSaveCompanyPageModule'
+                    }
+                ]
+            }
+        ]
+    },
+
 
 ];
 

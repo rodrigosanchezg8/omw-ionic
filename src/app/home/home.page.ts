@@ -35,13 +35,14 @@ export class HomePage {
             this.storage.set('user', userRes.user);
             switch (userRes.user.role.name) {
                 case 'admin':
-                    this.router.navigateByUrl('admin/tabs/clients');
+                    this.router.navigateByUrl('admin/tabs');
                     break;
                 case 'client':
+                    this.router.navigateByUrl('clients/tabs');
                 case 'company':
                     break;
                 case 'delivery_man':
-                    this.router.navigateByUrl('delivery-men/tabs/delivery-men-options');
+                    this.router.navigateByUrl('delivery-men/tabs');
                     break;
                 default:
                     this.responses.presentResponse({'message': 'This user has no role '});
