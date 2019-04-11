@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../../models/user";
+import {User} from "../../../../models/user";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
 import {ApiService} from "../../../../services/api.service";
-import {State} from "../../../models/state";
+import {State} from "../../../../models/state";
 import {Responses} from "../../../../traits/responses";
 import {StateService} from "../../../../services/state.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -44,6 +44,7 @@ export class UsersSavePage implements OnInit {
                     if (this.user.profile_photo !== null) {
                         this.user.profile_photo = environment.storageUrl + this.user.profile_photo;
                     }
+                    this.hasCompany = !!this.user.company;
                     this.selectedState = this.user.city.state.id;
                 } else if (ps.role) {
                     this.user = new User();
@@ -92,7 +93,15 @@ export class UsersSavePage implements OnInit {
         this.responses.presentResponse(userRes, () => {
             if (userRes.status === 200) {
                 if (this.user.role.name === 'client' && this.hasCompany) {
-                    this.router.navigate(['admin/tabs/clients/save-company', {userId: userRes.user.id}]);
+                    if (this.user.company && this.user.company.id) {
+                        this.router.navigate(['admin/tabs/clients/save-company',
+                            {
+                                userId: userRes.user.id,
+                                companyId: this.user.company.id
+                            }]);
+                    } else {
+                        this.router.navigate(['admin/tabs/clients/save-company', {userId: userRes.user.id}]);
+                    }
                 } else if (this.user.role.name === 'delivery_man') {
                     this.router.navigateByUrl('admin/tabs/delivery-men');
                 } else

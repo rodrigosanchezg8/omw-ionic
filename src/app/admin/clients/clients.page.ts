@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../models/user";
+import {User} from "../../../models/user";
 import {UserService} from "../../../services/user.service";
 import {environment} from "../../../environments/environment.prod";
 
@@ -16,8 +16,11 @@ export class ClientsPage implements OnInit {
     constructor(private userProvider: UserService) {
     }
 
-    async ngOnInit() {
-        this.getClients();
+    ngOnInit() {
+    }
+
+    async ionViewWillEnter() {
+        await this.getClients();
     }
 
     async getClients(event = null) {

@@ -1,4 +1,4 @@
-import {State} from "../app/models/state";
+import {State} from "../models/state";
 
 import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";

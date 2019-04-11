@@ -1,8 +1,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";
-import {ServiceRange} from "../app/models/service-range";
-import {DeliveryManServiceOptions} from "../app/models/delivery-man-service-options";
+import {ServiceRange} from "../models/service-range";
+import {DeliveryManServiceOptions} from "../models/delivery-man-service-options";
 
 @Injectable({
     providedIn: 'root'

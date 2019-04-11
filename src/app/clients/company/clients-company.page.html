@@ -1,0 +1,63 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Mi compañia</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ng-container *ngIf="!user?.company">
+        <h4 class="ion-text-center ion-padding-bottom">Aún no tienes una compañia especificada!</h4>
+        <div style="max-width: 400px; margin: 0 auto">
+            <ion-text style="display: block;" class="ion-text-center">
+                Como cliente puedes señalar que tienes una empresa para que a las personas que reciben tus paquetes
+                puedan reconocer tus entregas.
+            </ion-text>
+        </div>
+        <ion-fab style="margin-bottom: 60px" vertical="bottom" horizontal="end" edge slot="fixed">
+            <ion-fab-button>
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-list side="top">
+                <ion-fab-button [routerLink]="['./save', {userId: user?.id}]">
+                    <ion-icon name="person-add"></ion-icon>
+                </ion-fab-button>
+            </ion-fab-list>
+        </ion-fab>
+    </ng-container>
+    <ng-container *ngIf="user?.company">
+        <div *ngIf="!user?.company?.profile_photo">
+            <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+        </div>
+        <ion-avatar
+                style="margin: 0 auto;
+                    width:100% !important;
+                    height : 100% !important;
+                    max-width: 100px !important;
+                    max-height: 100px !important;" *ngIf="user.company?.profile_photo">
+            <img src="{{ storageUrl + user?.company?.profile_photo }}">
+        </ion-avatar>
+        <ion-list>
+            <ion-item class="ion-margin-top">
+                <ion-label style="font-weight: bold">Nombre</ion-label>
+                <ion-text>{{ user.company?.name }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label style="font-weight: bold">Descripción</ion-label>
+                <ion-text>{{ user.company?.description }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label style="font-weight: bold">Estado</ion-label>
+                <ion-text>{{ user.company?.city?.state?.state }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label style="font-weight: bold">Ciudad</ion-label>
+                <ion-text>{{ user.company?.city?.city }}</ion-text>
+            </ion-item>
+        </ion-list>
+
+        <ion-button style="margin-top: 45px" expand="full" (click)="sheetActions()">
+            Acciones
+        </ion-button>
+
+    </ng-container>
+</ion-content>
