@@ -24,7 +24,7 @@ export class Responses {
         return alert.present();
     }
 
-    async presentResponse(response, okCallback = null) {
+    async presentResponse(response, okCallback = undefined) {
         let alert = await this.alertCtrl.create({
             header: response['header'] ? response['header'] : 'Oooops!',
             message: response['error'] ? this.parseResponseErrors(response) : response['message'],

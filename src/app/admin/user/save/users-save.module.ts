@@ -6,6 +6,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {UsersSavePage} from "./users-save.page";
+import {MapModule} from "../../../map/map.module";
 
 const routes: Routes = [
     {
@@ -20,6 +21,7 @@ const routes: Routes = [
         FormsModule,
         IonicModule,
         RouterModule.forChild(routes),
+        MapModule
     ],
     declarations: [UsersSavePage],
     exports: [UsersSavePage]

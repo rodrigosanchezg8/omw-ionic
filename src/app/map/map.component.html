@@ -1,0 +1,21 @@
+<div *ngIf="search" class="form-group ion-margin-top ion-margin-bottom">
+    <input style="border-bottom: 1px solid #d2d2d2;
+               border-top: 0;
+               border-right: 0;
+               border-left: 0;
+               width: 100%;
+               text-align: center"
+           placeholder="Escribe una localización..." autocorrect="off" autocapitalize="off" spellcheck="off"
+           type="text"
+           class="form-control" #search [(ngModel)]="searchControl">
+</div>
+
+<ion-item>
+    <ion-label>Dirección completa</ion-label>
+    <ion-text>{{ fullAddress }}</ion-text>
+</ion-item>
+
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+</agm-map>
+

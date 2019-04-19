@@ -24,7 +24,7 @@
         </ion-avatar>
     </div>
 
-    <ion-button size="small" style="margin: 0 auto; display: block" (click)="pickImage()">Select a profile image
+    <ion-button size="small" style="margin: 0 auto; display: block" (click)="pickImage()">Seleccionar foto de perfil
     </ion-button>
 
     <ion-item>
@@ -38,24 +38,7 @@
                    name="description"></ion-input>
     </ion-item>
     <ion-item>
-        <ion-label position="floating">Estado</ion-label>
-        <ion-select [(ngModel)]="selectedState" interface="alert" placeholder="Seleccionar..." name="state">
-            <ion-select-option [value]="state.id" *ngFor="let state of states">
-                {{ state.state }}
-            </ion-select-option>
-        </ion-select>
-    </ion-item>
-    <ion-item>
-        <ion-label position="floating">Ciudad</ion-label>
-        <ion-select (ngModelChange)="company.city_id=$event" [ngModel]="company?.city_id" interface="alert"
-                    placeholder="Seleccionar..."
-                    name="city_id" [disabled]="!selectedState">
-            <ng-container *ngIf="selectedState">
-                <ion-select-option [value]="city.id" *ngFor="let city of selectedStateCities()">
-                    {{ city.city }}
-                </ion-select-option>
-            </ng-container>
-        </ion-select>
+        <ion-label position="floating">Localización</ion-label>
     </ion-item>
 
 </ion-content>
