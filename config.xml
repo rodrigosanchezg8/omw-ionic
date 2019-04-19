@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MyApp</name>
+    <name>OnMyWay</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content original-src="index.html" src="http://192.168.1.127:8101" />
@@ -83,9 +83,18 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^3.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-plugin-nativestorage" spec="^2.3.2" />
-    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.2.4" />
     <plugin name="cordova-sqlite-storage" spec="^3.2.0" />
     <allow-navigation href="http://192.168.1.127:8101" sessionid="af2f77aa" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.5.3">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyASJrC_foKYvTcXKAE66oeuky526W-X3q4" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyASJrC_foKYvTcXKAE66oeuky526W-X3q4" />
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
+    <allow-navigation href="http://192.168.1.127:8100" sessionid="da19b518" />
+    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.3.2">
+        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="Selecciona una foto" />
+    </plugin>
     <engine name="android" spec="7.1.4" />
     <engine name="browser" spec="5.0.4" />
 </widget>

@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Company} from "../../../../models/company";
-import {State} from "../../../../models/state";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
 import {Responses} from "../../../../traits/responses";
 import {Loading} from "../../../../traits/loading";
-import {StateService} from "../../../../services/state.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CompaniesService} from "../../../../services/companies.service";
 import {environment} from "../../../../environments/environment.prod";
@@ -17,14 +15,12 @@ import {environment} from "../../../../environments/environment.prod";
 export class ClientsSaveCompanyPage implements OnInit {
 
     company: Company;
-    states: State[];
     selectedState: number;
 
     isEditMode: boolean;
 
     constructor(private responsesService: Responses,
                 private loading: Loading,
-                private stateService: StateService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 private companiesService: CompaniesService) {
@@ -40,7 +36,6 @@ export class ClientsSaveCompanyPage implements OnInit {
                         this.company.profile_photo = environment.storageUrl + this.company.profile_photo;
                     }
                     this.company.user_id = Number(ps.userId);
-                    this.selectedState = this.company.city.state.id;
                 } else if (ps.userId) {
                     this.company = new Company();
                     this.company.user_id = Number(ps.userId);
@@ -48,7 +43,6 @@ export class ClientsSaveCompanyPage implements OnInit {
                     this.company = new Company()
                 }
             });
-            this.states = await <any>this.stateService.getStates() as State[];
         } catch (e) {
             this.responsesService.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});
         }
@@ -88,11 +82,6 @@ export class ClientsSaveCompanyPage implements OnInit {
                 this.responsesService.presentGenericalErrorResponse();
             }
         });
-    }
-
-    selectedStateCities() {
-        if (this.states)
-            return this.states.find(state => state.id === this.selectedState).cities;
     }
 
 }

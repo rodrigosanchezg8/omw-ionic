@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Responses} from "../../../../traits/responses";
 import {environment} from "../../../../environments/environment.prod";
 import {ActionSheetController, AlertController} from "@ionic/angular";
+import {MapService} from "../../../../services/map.service";
 
 @Component({
     selector: 'app-user-detail',
@@ -21,7 +22,8 @@ export class UserDetailPage implements OnInit {
                 private responses: Responses,
                 private actionSheetController: ActionSheetController,
                 private router: Router,
-                private alertController: AlertController) {
+                private alertController: AlertController,
+                private mapService: MapService) {
     }
 
     async ngOnInit() {
@@ -29,6 +31,10 @@ export class UserDetailPage implements OnInit {
             this.user = await this.userService.get(ps.userId) as User;
             if (!this.user)
                 this.responses.presentResponse({message: 'El usuario no existe.'});
+
+            if (this.user.location)
+                this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+
         });
     }
 

@@ -1,6 +1,6 @@
 import {Role} from "./role";
-import {City} from "./city";
 import {Company} from "./company";
+import {Location} from "./location";
 
 export class User {
     id: number;
@@ -9,17 +9,17 @@ export class User {
     full_name: string;
     email: string;
     phone: number;
-    city: City;
-    city_id: number;
     password: string;
     status: boolean;
     profile_photo: string;
     birth_date: string;
     role: Role;
     company: Company;
+    location: Location;
 
     constructor() {
         this.role = new Role();
+        this.location = new Location();
     }
 
 }

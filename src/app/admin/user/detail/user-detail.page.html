@@ -30,17 +30,10 @@
             <ion-text>{{ user?.phone }}</ion-text>
         </ion-item>
         <ion-item>
-            <ion-label style="font-weight: bold">Estado</ion-label>
-            <ion-text>{{ user?.city.state.state }}</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label style="font-weight: bold">Ciudad</ion-label>
-            <ion-text>{{ user?.city.city }}</ion-text>
-        </ion-item>
-        <ion-item>
             <ion-label style="font-weight: bold">Fecha de nacimiento</ion-label>
             <ion-text>{{ user?.birth_date }}</ion-text>
         </ion-item>
+        <app-map [search]="false"></app-map>
     </ion-list>
 
     <ion-button style="margin-top: 45px" expand="full" (click)="deleteAction()">

@@ -15,6 +15,7 @@ import {TabsPage} from "./admin/tabs/tabs.page";
 import {IonicStorageModule} from "@ionic/storage";
 import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
+import {MapModule} from "./map/map.module";
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
         FormsModule,
         HttpClientModule,
         IonicSelectableModule,
+        MapModule
     ],
     providers: [
         StatusBar,
