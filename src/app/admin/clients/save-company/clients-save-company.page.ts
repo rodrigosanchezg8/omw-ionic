@@ -6,6 +6,7 @@ import {Loading} from "../../../../traits/loading";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CompaniesService} from "../../../../services/companies.service";
 import {environment} from "../../../../environments/environment.prod";
+import {MapService} from "../../../../services/map.service";
 
 @Component({
     selector: 'app-clients-save-company',
@@ -23,7 +24,8 @@ export class ClientsSaveCompanyPage implements OnInit {
                 private loading: Loading,
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
-                private companiesService: CompaniesService) {
+                private companiesService: CompaniesService,
+                private mapService: MapService) {
     }
 
     async ngOnInit() {
@@ -42,6 +44,12 @@ export class ClientsSaveCompanyPage implements OnInit {
                 } else {
                     this.company = new Company()
                 }
+
+                this.mapService.locationChange.subscribe(location => {
+                    this.company.location.lat = location.lat;
+                    this.company.location.lng = location.lng;
+                });
+
             });
         } catch (e) {
             this.responsesService.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});

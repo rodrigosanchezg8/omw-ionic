@@ -37,9 +37,8 @@
         <ion-input (ngModelChange)="company.description=$event" [ngModel]="company?.description"
                    name="description"></ion-input>
     </ion-item>
-    <ion-item>
-        <ion-label position="floating">Localización</ion-label>
-    </ion-item>
+
+    <app-map [search]="true"></app-map>
 
 </ion-content>
 
