@@ -6,6 +6,7 @@ import {Responses} from "../../../../traits/responses";
 import {ActionSheetController, AlertController} from "@ionic/angular";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../../models/user";
+import {MapService} from "../../../../services/map.service";
 
 @Component({
     selector: 'app-company-detail',
@@ -22,7 +23,8 @@ export class CompanyDetailPage implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private actionSheetController: ActionSheetController,
                 private router: Router,
-                private alertController: AlertController) {
+                private alertController: AlertController,
+                private mapService: MapService) {
     }
 
     async ngOnInit() {
@@ -30,6 +32,10 @@ export class CompanyDetailPage implements OnInit {
             this.company = await this.companiesService.get(ps.companyId) as Company;
             if (!this.company)
                 this.responsesService.presentResponse({message: 'La compañia no existe.'});
+
+            if (this.company.location)
+                this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
+
         });
     }
 

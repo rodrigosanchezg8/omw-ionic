@@ -29,14 +29,7 @@
             <ion-label style="font-weight: bold">Descripción</ion-label>
             <ion-text>{{ company?.description }}</ion-text>
         </ion-item>
-        <ion-item>
-            <ion-label style="font-weight: bold">Estado</ion-label>
-            <ion-text>{{ company?.city?.state?.state }}</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label style="font-weight: bold">Ciudad</ion-label>
-            <ion-text>{{ company?.city?.city }}</ion-text>
-        </ion-item>
+        <app-map [search]="false"></app-map>
     </ion-list>
 
     <ion-button style="margin-top: 45px" expand="full" (click)="sheetActions()">
