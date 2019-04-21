@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";
 import {ServiceRange} from "../models/service-range";
-import {DeliveryManServiceOptions} from "../models/delivery-man-service-options";
+import {DeliveryMan} from "../models/delivery-man";
 
 @Injectable({
     providedIn: 'root'
@@ -14,15 +14,15 @@ export class DeliveryManService {
 
 
     async getServiceRanges(): Promise<ServiceRange[]> {
-        return await this.api.get('delivery_man/service_ranges') as ServiceRange[];
+        return await this.api.get('delivery_men/service_ranges') as ServiceRange[];
     }
 
     async post(data: any) {
-        return await this.api.post('delivery_man', data)
+        return await this.api.post('delivery_men', data)
     }
 
     async get(userId: number) {
-        return await this.api.get('delivery_man/' + userId) as DeliveryManServiceOptions;
+        return await this.api.get('delivery_men/' + userId + '/show') as DeliveryMan;
     }
 
 }

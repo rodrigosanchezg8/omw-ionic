@@ -63,6 +63,9 @@ export class MapComponent implements OnInit {
 
     async subscribeChange() {
         this.mapService.locationChange.subscribe(location => {
+
+            console.log({"LOCATION": location})
+
             try {
                 this.lat = location.lat;
                 this.lng = location.lng;

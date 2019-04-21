@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../../models/user";
-import {ImagePicker} from "@ionic-native/image-picker/ngx";
+import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import {ApiService} from "../../../../services/api.service";
 import {Responses} from "../../../../traits/responses";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -29,7 +29,8 @@ export class UsersSavePage implements OnInit {
                 private userService: UserService,
                 private route: ActivatedRoute,
                 private loading: Loading,
-                private mapService: MapService) {
+                private mapService: MapService,
+                private imagePicker: ImagePicker) {
     }
 
     async ngOnInit() {
@@ -68,9 +69,8 @@ export class UsersSavePage implements OnInit {
         };
 
         try {
-
             this.loading.present();
-            const pictures = await new ImagePicker().getPictures(options)
+            const pictures = await this.imagePicker.getPictures(options);
             this.loading.dismiss();
 
             this.user.profile_photo = 'data:image/jpeg;base64,' + pictures[0];
@@ -89,24 +89,24 @@ export class UsersSavePage implements OnInit {
             await this.userService.signUp(this.user,
                 {password_confirmation: this.passwordConfirmation});
 
-        this.responses.presentResponse(userRes, () => {
-            if (userRes.status === 200) {
-                if (this.user.role.name === 'client' && this.hasCompany) {
-                    if (this.user.company && this.user.company.id) {
-                        this.router.navigate(['admin/tabs/clients/save-company',
-                            {
-                                userId: userRes.user.id,
-                                companyId: this.user.company.id
-                            }]);
-                    } else {
-                        this.router.navigate(['admin/tabs/clients/save-company', {userId: userRes.user.id}]);
-                    }
-                } else if (this.user.role.name === 'delivery_man') {
-                    this.router.navigateByUrl('admin/tabs/delivery-men');
-                } else
-                    this.router.navigateByUrl('admin/tabs');
-            }
-        });
+        this.responses.presentResponse(userRes);
+
+        if (userRes.status === 200) {
+            if (this.user.role.name === 'client' && this.hasCompany) {
+                if (this.user.company && this.user.company.id) {
+                    this.router.navigate(['admin/tabs/clients/save-company',
+                        {
+                            userId: userRes.user.id,
+                            companyId: this.user.company.id
+                        }]);
+                } else {
+                    this.router.navigate(['admin/tabs/clients/save-company', {userId: userRes.user.id}]);
+                }
+            } else if (this.user.role.name === 'delivery_man') {
+                this.router.navigateByUrl('admin/tabs/delivery-men');
+            } else
+                this.router.navigateByUrl('admin/tabs');
+        }
     }
 
 }

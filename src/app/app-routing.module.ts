@@ -80,7 +80,27 @@ const routes: Routes = [
                         loadChildren: './clients/company/save/client-side-save-company.module#ClientSideSaveCompanyPageModule'
                     }
                 ]
-            }
+            },
+            {
+                path: 'deliveries', children: [
+                    {
+                        path: '',
+                        loadChildren: './clients/deliveries/client-deliveries.module#ClientDeliveriesPageModule'
+                    },
+                    {
+                        path: 'send', children: [
+                            {
+                                path: 'find-client',
+                                loadChildren: './clients/deliveries/find-client/delivery-find-client.module#DeliveryFindClientPageModule'
+                            },
+                            {
+                                path: 'save-details',
+                                loadChildren: './clients/deliveries/save/delivery-save.module#DeliverySavePageModule'
+                            }
+                        ]
+                    },
+                ]
+            },
         ]
     },
 

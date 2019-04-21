@@ -7,7 +7,8 @@ export class MapService {
 
     @Output() locationChange: EventEmitter<any> = new EventEmitter();
 
-    constructor() {}
+    constructor() {
+    }
 
     public locationChanged(lat: number, lng: number) {
         this.locationChange.emit({

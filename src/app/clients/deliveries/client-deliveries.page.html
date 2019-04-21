@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title class="ion-margin-top">Entregas</ion-title>
+        <ion-segment (ionChange)="segmentChanged($event)" value="received" color="light ">
+            <ion-segment-button value="received">
+                <ion-icon name="arrow-round-down"></ion-icon>
+                <ion-label>Recibidas</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="sent">
+                <ion-icon name="arrow-round-up"></ion-icon>
+                <ion-label>Enviadas</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-segment (ionChange)="segmentChanged($event)" value="progress">
+        <ion-segment-button value="pending">
+            <ion-icon name="hand"></ion-icon>
+            <ion-label>Pendientes</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="progress">
+            <ion-icon name="time"></ion-icon>
+            <ion-label>En progreso</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="complete">
+            <ion-icon name="checkmark"></ion-icon>
+            <ion-label>Completadas</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+
+
+    <ion-fab style="margin-bottom: 60px" vertical="bottom" horizontal="end" edge slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="basket"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+            <ion-fab-button routerLink="./send/find-client">
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
+
+</ion-content>

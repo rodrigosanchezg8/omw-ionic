@@ -11,4 +11,8 @@ export class ClientService {
     constructor(public http: HttpClient, public api: ApiService) {
     }
 
+    async fetchByEmail(email: string): Promise<User> {
+        return this.api.get('users/clients/by_email?email=' + email) as any;
+    }
+
 }

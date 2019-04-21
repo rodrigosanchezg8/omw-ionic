@@ -5,13 +5,13 @@ import {Routes, RouterModule} from '@angular/router';
 
 import {IonicModule} from '@ionic/angular';
 
-import {ClientsCompanyPage} from './clients-company.page';
-import {MapModule} from "../../map/map.module";
+import {DeliveryFindClientPage} from './delivery-find-client.page';
+import {MapModule} from "../../../map/map.module";
 
 const routes: Routes = [
     {
         path: '',
-        component: ClientsCompanyPage
+        component: DeliveryFindClientPage
     }
 ];
 
@@ -23,7 +23,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         MapModule
     ],
-    declarations: [ClientsCompanyPage]
+    declarations: [DeliveryFindClientPage]
 })
-export class ClientsCompanyPageModule {
+export class DeliveryFindClientPageModule {
 }
