@@ -8,6 +8,8 @@ import {Delivery} from "../models/delivery";
 })
 export class DeliveryService {
 
+    delivery: Delivery;
+
     constructor(public httpClient: HttpClient,
                 public api: ApiService) {
     }
@@ -23,13 +25,11 @@ export class DeliveryService {
     }
 
     async store(delivery: Delivery) {
-        const store = await this.api.post('deliveries', {...delivery}) as any;
-        return store.delivery as Delivery;
+        return await this.api.post('deliveries', delivery) as any;
     }
 
     async update(delivery: Delivery) {
-        const update = await this.api.put(`deliveries/${delivery.id}`, {...delivery}) as any;
-        return update.delivery as Delivery;
+        return await this.api.put(`deliveries/${delivery.id}`, delivery) as any;
     }
 
 }

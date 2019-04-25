@@ -94,8 +94,17 @@ const routes: Routes = [
                                 loadChildren: './clients/deliveries/find-client/delivery-find-client.module#DeliveryFindClientPageModule'
                             },
                             {
-                                path: 'save-details',
-                                loadChildren: './clients/deliveries/save/delivery-save.module#DeliverySavePageModule'
+                                path: 'products',
+                                children: [
+                                    {
+                                        path: '',
+                                        loadChildren: './clients/deliveries/products/delivery-products.module#DeliveryProductsPageModule'
+                                    },
+                                    {
+                                        path: 'save',
+                                        loadChildren: './clients/deliveries/products/save/product-save.module#ProductSavePageModule'
+                                    },
+                                ],
                             }
                         ]
                     },
@@ -103,7 +112,6 @@ const routes: Routes = [
             },
         ]
     },
-
 
 ];
 

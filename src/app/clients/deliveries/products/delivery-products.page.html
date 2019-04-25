@@ -1,0 +1,60 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Productos de mi nueva entrega</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div *ngIf="!deliveryProducts.length" style="width: max-content; margin: 0 auto">
+        <ion-text style="display: block" class="ion-text-center, ion-margin-top">
+            Aún no has agregado productos.
+        </ion-text>
+    </div>
+
+    <ion-list *ngFor="let product of deliveryProducts">
+        <ion-card>
+            <ion-item>
+                <ion-icon name="pin" slot="start"></ion-icon>
+                <ion-label>{{ product.name }}</ion-label>
+                <ion-button fill="outline" slot="end">View</ion-button>
+            </ion-item>
+
+            <ion-card-content>
+                <ion-label>Cantidad: {{ product.amount }}</ion-label>
+                <ion-label>Costo: {{ product.cost }}</ion-label>
+                <ion-label>Descripción: {{ product.description }}</ion-label>
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
+
+    <ion-fab style="margin-bottom: 60px" vertical="bottom" horizontal="end" edge slot="fixed">
+        <ion-fab-button routerLink="./save">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+</ion-content>
+
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="4">
+                <ion-button size="large"
+                            expand="full"
+                            routerLink="/clients/tabs/deliveries/send/find-client">
+                    Cliente
+                </ion-button>
+            </ion-col>
+            <ion-col size="8">
+                <ion-button
+                        size="large"
+                        expand="full"
+                        [disabled]="!deliveryProducts.length"
+                        routerLink="/clients/tabs/deliveries/send/products">
+                    Resumen
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

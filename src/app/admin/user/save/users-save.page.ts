@@ -76,7 +76,7 @@ export class UsersSavePage implements OnInit {
             this.user.profile_photo = 'data:image/jpeg;base64,' + pictures[0];
         } catch (e) {
             this.responses.presentResponse(
-                {message: 'La foto no se ha pudido abrir, intenta con otra porfavor'})
+                {message: 'La foto no se ha podido abrir, intenta con otra porfavor'})
         }
     }
 

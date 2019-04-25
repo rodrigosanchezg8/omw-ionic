@@ -1,5 +1,8 @@
 <ion-header>
     <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: white"></ion-back-button>
+        </ion-buttons>
         <ion-title>Quiero enviar a...</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -27,5 +30,8 @@
 </ion-content>
 
 <ion-footer>
-    <ion-button [disabled]="!receiverClient" expand="full" size="large">Siguiente paso</ion-button>
+    <ion-button [disabled]="!receiverClient" expand="full" size="large"
+                (click)="createDelivery()">
+        Siguiente paso
+    </ion-button>
 </ion-footer>
