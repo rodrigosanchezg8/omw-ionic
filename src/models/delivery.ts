@@ -1,5 +1,6 @@
 import {User} from "./user";
 import {Location} from "./location";
+import {DeliveryProduct} from "./delivery-product";
 
 export class Delivery {
 
@@ -10,10 +11,13 @@ export class Delivery {
     delivery_status_id: number;
     sender_id: number;
     receiver_id: number;
+    created_at: Date;
+    updated_at: Date;
 
     deliveryMan: User;
     receiver: User;
     sender: User;
+    products: DeliveryProduct;
     plannedStartDate: Date;
     plannedEndDate: Date;
     departureDate: Date;

@@ -2,6 +2,8 @@ import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/
 import {MapsAPILoader} from "@agm/core";
 import {MapService} from "../../services/map.service";
 import {Responses} from "../../traits/responses";
+import {Location} from "../../models/location";
+import {Router} from "@angular/router";
 
 declare const google;
 
@@ -13,22 +15,27 @@ declare const google;
 export class MapComponent implements OnInit {
 
     @Input() search: any;
+    @Input() deliveryManLocation: Location;
+    @Input() receiverClientLocation: Location;
+    @Input() senderClientLocation: Location;
+    @Input() lat: number;
+    @Input() lng: number;
 
-    lat: number;
-    lng: number;
     zoom: number;
     searchControl: string;
     fullAddress: string;
+
+    mapLat = 20.6739383;
+    mapLng = -103.4054539;
 
     @ViewChild('search') public searchElementRef: ElementRef;
 
     constructor(private mapsApiLoader: MapsAPILoader,
                 private ngZone: NgZone,
                 private mapService: MapService,
-                private responses: Responses) {
+                private responses: Responses,
+                private router: Router) {
         this.zoom = 10;
-        this.lat = 20.6739383;
-        this.lng = -103.4054539;
     }
 
     async ngOnInit() {
@@ -63,9 +70,6 @@ export class MapComponent implements OnInit {
 
     async subscribeChange() {
         this.mapService.locationChange.subscribe(location => {
-
-            console.log({"LOCATION": location})
-
             try {
                 this.lat = location.lat;
                 this.lng = location.lng;

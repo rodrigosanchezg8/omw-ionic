@@ -1,30 +1,71 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Productos de mi nueva entrega</ion-title>
+        <ion-title>Productos de la entrega</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-    <div *ngIf="!deliveryProducts.length" style="width: max-content; margin: 0 auto">
+    <app-map
+            [ngStyle]="{ 'display': seeLocations ? 'block' : 'none' }"
+            [search]="false"
+            [senderClientLocation]="deliveryService?.delivery?.sender?.location"
+            [receiverClientLocation]="deliveryService?.delivery?.receiver?.location"></app-map>
+
+    <div *ngIf="deliveryProducts && !deliveryProducts.length" style="width: max-content; margin: 0 auto">
         <ion-text style="display: block" class="ion-text-center, ion-margin-top">
             Aún no has agregado productos.
         </ion-text>
     </div>
 
     <ion-list *ngFor="let product of deliveryProducts">
-        <ion-card>
-            <ion-item>
-                <ion-icon name="pin" slot="start"></ion-icon>
-                <ion-label>{{ product.name }}</ion-label>
-                <ion-button fill="outline" slot="end">View</ion-button>
-            </ion-item>
-
-            <ion-card-content>
-                <ion-label>Cantidad: {{ product.amount }}</ion-label>
-                <ion-label>Costo: {{ product.cost }}</ion-label>
-                <ion-label>Descripción: {{ product.description }}</ion-label>
-            </ion-card-content>
+        <ion-card class="product-card">
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="9">
+                        <ion-card-header>
+                            <ion-card-subtitle>Producto</ion-card-subtitle>
+                            <ion-card-title>
+                                <ion-label>{{ product?.name }}</ion-label>
+                            </ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <ion-grid>
+                                <ion-row>
+                                    <img class="product-image" *ngIf="product?.product_image"
+                                         src="{{ storageUrl + product.product_image }}">
+                                    <ion-col>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">Costo:
+                                                {{ product.cost }}</ion-label>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">Cantidad: {{ product.amount }}</ion-label>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">Creado
+                                                el: {{ product.created_at }}</ion-label>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">Actualizado
+                                                el: {{ product.updated_at }}</ion-label>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-card-content>
+                    </ion-col>
+                    <ion-col size="3" style="text-align: right">
+                        <ion-button fill="outline"
+                                    [routerLink]="['./save', {deliveryProductId: product?.id}]">
+                            <ion-icon name="create"></ion-icon>
+                        </ion-button>
+                        <ion-button fill="outline" (click)="delete(product.id)">
+                            <ion-icon name="close"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </ion-card>
     </ion-list>
 
@@ -42,17 +83,26 @@
             <ion-col size="4">
                 <ion-button size="large"
                             expand="full"
-                            routerLink="/clients/tabs/deliveries/send/find-client">
+                            [routerLink]="['/clients/tabs/deliveries/send/find-client',
+                            { deliveryId: deliveryService?.delivery?.id}]">
                     Cliente
                 </ion-button>
             </ion-col>
-            <ion-col size="8">
+            <ion-col size="4">
                 <ion-button
                         size="large"
                         expand="full"
-                        [disabled]="!deliveryProducts.length"
-                        routerLink="/clients/tabs/deliveries/send/products">
-                    Resumen
+                        (click)="seeLocations = !seeLocations">
+                    Localizaciones
+                </ion-button>
+            </ion-col>
+            <ion-col size="4">
+                <ion-button
+                        size="large"
+                        expand="full"
+                        [disabled]="deliveryProducts && !deliveryProducts.length"
+                        (click)="confirmDelivery()">
+                    Confirmar
                 </ion-button>
             </ion-col>
         </ion-row>

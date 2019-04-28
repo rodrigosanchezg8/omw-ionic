@@ -45,7 +45,9 @@
                 <ion-label style="font-weight: bold">Descripción</ion-label>
                 <ion-text>{{ user.company?.description }}</ion-text>
             </ion-item>
-            <app-map [search]="false"></app-map>
+            <app-map [lat]="user?.company?.location.lat"
+                     [lng]="user?.company?.location.lng"
+                     [search]="false"></app-map>
         </ion-list>
 
         <ion-button style="margin-top: 45px" expand="full" (click)="sheetActions()">

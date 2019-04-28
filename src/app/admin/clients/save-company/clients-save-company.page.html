@@ -38,7 +38,9 @@
                    name="description"></ion-input>
     </ion-item>
 
-    <app-map [search]="true"></app-map>
+    <app-map [lat]="company?.location.lat"
+             [lat]="company?.location.lng"
+             [search]="true"></app-map>
 
 </ion-content>
 

@@ -13,15 +13,7 @@
         <ion-icon name="camera" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
     </div>
     <div *ngIf="this.deliveryProduct?.product_image">
-        <ion-avatar
-                style="margin: 0 auto;
-                display: block;
-                min-width: 140px;
-                max-width: 140px;
-                min-height: 200px;
-                max-height: 200px">
-            <img src="{{ this.deliveryProduct?.product_image }}">
-        </ion-avatar>
+        <img class="product-image" [src]="deliveryProduct.product_image">
     </div>
 
     <ion-button size="small" style="margin: 0 auto; display: block" (click)="pickImage()">Seleccionar foto de producto

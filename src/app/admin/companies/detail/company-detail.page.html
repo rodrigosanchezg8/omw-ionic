@@ -29,7 +29,9 @@
             <ion-label style="font-weight: bold">Descripción</ion-label>
             <ion-text>{{ company?.description }}</ion-text>
         </ion-item>
-        <app-map [search]="false"></app-map>
+        <app-map [lat]="company?.location.lat"
+                 [lng]="company?.location.lng"
+                 [search]="false"></app-map>
     </ion-list>
 
     <ion-button style="margin-top: 45px" expand="full" (click)="sheetActions()">

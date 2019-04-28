@@ -9,4 +9,6 @@ export class DeliveryProduct {
     amount: string;
     cost: number;
     product_image: string;
+    created_at: Date;
+    updated_at: Date;
 }

@@ -7,6 +7,8 @@ import {ImagePicker} from "@ionic-native/image-picker/ngx";
 import {Responses} from "../../../../../traits/responses";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DeliveryService} from "../../../../../services/delivery.service";
+import {environment} from "../../../../../environments/environment.prod";
+import {User} from "../../../../../models/user";
 
 @Component({
     selector: 'app-product-save',
@@ -14,6 +16,8 @@ import {DeliveryService} from "../../../../../services/delivery.service";
     styleUrls: ['./product-save.page.scss'],
 })
 export class ProductSavePage implements OnInit {
+
+    storageUrl: string = environment.storageUrl;
 
     isEditMode: boolean;
     deliveryProduct: DeliveryProduct;
@@ -25,6 +29,7 @@ export class ProductSavePage implements OnInit {
                 private responses: Responses,
                 private router: Router,
                 private activatedRoute: ActivatedRoute) {
+        this.deliveryProduct = new DeliveryProduct();
     }
 
     async ngOnInit() {
@@ -34,7 +39,11 @@ export class ProductSavePage implements OnInit {
     async instantiateDeliveryProduct() {
         this.activatedRoute.params.subscribe(async ps => {
             if (ps.deliveryProductId) {
+                this.isEditMode = true;
                 this.deliveryProduct = await this.deliveryProductService.fetchOne(ps.deliveryProductId) as DeliveryProduct;
+                if (this.deliveryProduct.product_image !== null) {
+                    this.deliveryProduct.product_image = environment.storageUrl + this.deliveryProduct.product_image;
+                }
             } else {
                 this.deliveryProduct = new DeliveryProduct();
             }

@@ -1,0 +1,26 @@
+.product-card {
+
+  .product-image {
+    display: block;
+    width: 250px;
+    height: 160px;
+    border-radius: 5px;
+  }
+
+  ion-item {
+
+    width: max-content;
+
+    ion-label {
+      overflow: visible;
+    }
+  }
+
+
+}
+
+ion-footer {
+  ion-button {
+    font-size: 11px;
+  }
+}
