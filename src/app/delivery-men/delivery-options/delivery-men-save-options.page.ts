@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DeliveryManService} from "../../../services/delivery-man.service";
 import {ServiceRange} from "../../../models/service-range";
-import {Responses} from "../../../traits/responses";
+import {ResponseService} from "../../../services/response.service";
 import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 import {User} from "../../../models/user";
@@ -20,7 +20,7 @@ export class DeliveryMenSaveOptionsPage implements OnInit {
     selectedServiceRange: number;
     deliveryMan: DeliveryMan;
 
-    constructor(private responses: Responses,
+    constructor(private responses: ResponseService,
                 private router: Router,
                 private deliveryManService: DeliveryManService,
                 private storage: Storage) {

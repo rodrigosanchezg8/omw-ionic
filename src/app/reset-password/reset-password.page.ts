@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Responses} from "../../traits/responses";
+import {ResponseService} from "../../services/response.service";
 import {AuthService} from "../../services/auth.service";
 import {Loading} from "../../traits/loading";
 
@@ -14,7 +14,7 @@ export class ResetPasswordPage {
 
     constructor(
         private userProvider: AuthService,
-        private responser: Responses,
+        private responser: ResponseService,
         private loading: Loading) {
     }
 

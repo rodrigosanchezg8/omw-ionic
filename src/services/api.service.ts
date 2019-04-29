@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Injector} from '@angular/core';
 import {Storage} from "@ionic/storage";
 import {NavController} from "ionic-angular";
-import {Responses} from "../traits/responses";
+import {ResponseService} from "./response.service";
 import {environment} from "../environments/environment.prod";
 
 @Injectable({
@@ -14,7 +14,7 @@ export class ApiService {
     API: string;
 
     constructor(
-        private responses: Responses,
+        private responses: ResponseService,
         private storage: Storage,
         public http?: HttpClient,
         protected injector?: Injector) {
@@ -58,7 +58,7 @@ export class ApiService {
         }
     }
 
-    async put(url, data): Promise<any> {
+    async put(url, data = null): Promise<any> {
         try {
             return await (this.http.put(this.API + url, data, await this.getHeaders()).toPromise());
         } catch (e) {

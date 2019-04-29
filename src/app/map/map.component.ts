@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
 import {MapsAPILoader} from "@agm/core";
 import {MapService} from "../../services/map.service";
-import {Responses} from "../../traits/responses";
+import {ResponseService} from "../../services/response.service";
 import {Location} from "../../models/location";
 import {Router} from "@angular/router";
 
@@ -14,26 +14,25 @@ declare const google;
 })
 export class MapComponent implements OnInit {
 
+    zoom: number;
+    searchControl: string;
+    fullAddress: string;
+
     @Input() search: any;
     @Input() deliveryManLocation: Location;
     @Input() receiverClientLocation: Location;
     @Input() senderClientLocation: Location;
     @Input() lat: number;
     @Input() lng: number;
-
-    zoom: number;
-    searchControl: string;
-    fullAddress: string;
-
-    mapLat = 20.6739383;
-    mapLng = -103.4054539;
+    @Input() mapLat: number;
+    @Input() mapLng: number;
 
     @ViewChild('search') public searchElementRef: ElementRef;
 
     constructor(private mapsApiLoader: MapsAPILoader,
                 private ngZone: NgZone,
                 private mapService: MapService,
-                private responses: Responses,
+                private responses: ResponseService,
                 private router: Router) {
         this.zoom = 10;
     }
@@ -71,8 +70,12 @@ export class MapComponent implements OnInit {
     async subscribeChange() {
         this.mapService.locationChange.subscribe(location => {
             try {
-                this.lat = location.lat;
-                this.lng = location.lng;
+                this.lat = Number(location.lat);
+                this.lng = Number(location.lng);
+
+                this.mapLng = Number(this.lng);
+                this.mapLat = Number(this.lat);
+
                 this.zoom = 10;
 
                 let geocoder = new google.maps.Geocoder();
@@ -88,8 +91,10 @@ export class MapComponent implements OnInit {
                             Google está indicando que estás solicitando información muy rápido, espera unos segundos y
                             vuelve a intentar`
                         });
+                        this.fullAddress = '';
                     } else {
                         this.responses.presentResponse({message: 'No una hay dirección disponible'});
+                        this.fullAddress = '';
                     }
                 });
             } catch (e) {
@@ -97,5 +102,4 @@ export class MapComponent implements OnInit {
             }
         });
     }
-
 }

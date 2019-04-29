@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Loading} from "../../traits/loading";
-import {Responses} from "../../traits/responses";
+import {ResponseService} from "../../services/response.service";
 import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 
@@ -16,7 +16,7 @@ export class HomePage {
     password: string;
 
     constructor(
-        private responses: Responses,
+        private responses: ResponseService,
         private userProvider: AuthService,
         private loading: Loading,
         private router: Router,

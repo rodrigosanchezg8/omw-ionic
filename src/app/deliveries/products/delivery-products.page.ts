@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {DeliveryProductsService} from "../../../../services/delivery-products.service";
-import {DeliveryProduct} from "../../../../models/delivery-product";
-import {DeliveryService} from "../../../../services/delivery.service";
-import {environment} from "../../../../environments/environment.prod";
+import {DeliveryProductsService} from "../../../services/delivery-products.service";
+import {DeliveryService} from "../../../services/delivery.service";
+import {environment} from "../../../environments/environment.prod";
 import {AlertController} from "@ionic/angular";
-import {Responses} from "../../../../traits/responses";
-import {Loading} from "../../../../traits/loading";
-import {Router} from "@angular/router";
+import {ResponseService} from "../../../services/response.service";
+import {Loading} from "../../../traits/loading";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Storage} from "@ionic/storage";
+import {User} from "../../../models/user";
+import {Delivery} from "../../../models/delivery";
 
 @Component({
     selector: 'app-delivery-products',
@@ -15,17 +17,21 @@ import {Router} from "@angular/router";
 })
 export class DeliveryProductsPage implements OnInit {
 
-    storageUrl: string = environment.storageUrl;
-    deliveryProducts: DeliveryProduct[];
+    currentUser: User;
 
-    seeLocations: boolean;
+    storageUrl: string = environment.storageUrl;
+
+    seeLocations = false;
+    isEditMode = false;
 
     constructor(private deliveryService: DeliveryService,
                 private deliveryProductsService: DeliveryProductsService,
                 private alertController: AlertController,
-                private responses: Responses,
+                private responses: ResponseService,
                 private loading: Loading,
-                private router: Router) {
+                private router: Router,
+                private activatedRoute: ActivatedRoute,
+                private storage: Storage) {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
 
@@ -34,10 +40,25 @@ export class DeliveryProductsPage implements OnInit {
     }
 
     async ionViewWillEnter() {
-        this.deliveryProducts = await this.deliveryProductsService.fetchAllByDelivery(this.deliveryService.delivery.id)
+
+        this.currentUser = await this.storage.get('user') as User;
+
+        this.activatedRoute.params.subscribe(async ps => {
+
+            if (ps.isEditMode) {
+                this.isEditMode = ps.isEditMode;
+            }
+
+            if (ps.deliveryId)
+                this.deliveryService.delivery = await this.deliveryService.fetchOne(ps.deliveryId)
+
+            this.deliveryProductsService.deliveryProducts =
+                await this.deliveryProductsService.fetchAllByDelivery(this.deliveryService.delivery.id)
+
+        });
     }
 
-    async delete(productId: number) {
+    async remove(productId: number) {
         const alert = await this.alertController.create({
             header: 'Confirmar',
             message: '¿Estás seguro de borrar éste producto?',
@@ -56,8 +77,8 @@ export class DeliveryProductsPage implements OnInit {
                         this.responses.presentResponse(deliveryProductRes);
 
                         if (deliveryProductRes.header) {
-                            const index = this.deliveryProducts.findIndex(delivery => delivery.id === productId);
-                            this.deliveryProducts.splice(index, 1);
+                            const index = this.deliveryProductsService.deliveryProducts.findIndex(delivery => delivery.id === productId);
+                            this.deliveryProductsService.deliveryProducts.splice(index, 1);
                         }
                     }
                 }
@@ -67,7 +88,7 @@ export class DeliveryProductsPage implements OnInit {
     }
 
     async confirmDelivery() {
-        if (!this.deliveryProducts.length)
+        if (!this.deliveryProductsService.deliveryProducts.length)
             this.responses.presentResponse({message: 'Debes añadir productos. '});
 
         const alert = await this.alertController.create({
@@ -95,11 +116,42 @@ export class DeliveryProductsPage implements OnInit {
     }
 
     async changeStatus() {
+        this.loading.present();
         const deliveryRes = await this.deliveryService
             .changeStatus(this.deliveryService.delivery.id, 'No asignado');
+        this.loading.dismiss();
+
         this.responses.presentResponse(deliveryRes);
-        if (deliveryRes.header)
+        if (deliveryRes.header) {
+            this.deliveryService.delivery = undefined;
+            this.deliveryProductsService.deliveryProducts = undefined;
             this.router.navigateByUrl('clients/tabs/deliveries');
+        }
+    }
+
+    canAddOrUpdate() {
+        return !this.deliveryService.delivery || !this.deliveryService.delivery.sender ||
+            !this.currentUser || this.deliveryService.delivery.sender.id === this.currentUser.id;
+    }
+
+    async assignDelivery() {
+        if (!this.deliveryService.delivery.delivery_man) {
+            this.loading.present();
+            const deliveryRes = await this.deliveryService.assign(this.deliveryService.delivery.id) as any;
+            this.loading.dismiss();
+
+            if (deliveryRes.message)
+                this.responses.presentResponse(deliveryRes);
+            else {
+                this.deliveryService.delivery = deliveryRes.delivery as Delivery;
+                this.router.navigateByUrl('/admin/tabs/deliveries/send/assign')
+            }
+        } else {
+            this.responses.presentResponse({
+                message: 'No se puede asignar de nuevo. ' +
+                    'Esta entrega ya tiene un repartidor asignado'
+            });
+        }
     }
 
 }

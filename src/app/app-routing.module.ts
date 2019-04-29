@@ -4,6 +4,44 @@ import {TabsPage} from "./admin/tabs/tabs.page";
 import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
 
+const deliveriesRoutes = [{
+    path: 'deliveries', children: [
+        {
+            path: '',
+            loadChildren: './deliveries/client-deliveries.module#ClientDeliveriesPageModule'
+        },
+        {
+            path: 'send', children: [
+                {
+                    path: 'choose-origin',
+                    loadChildren: './deliveries/choose-origin/client-delivery-choose-origin.module#ClientDeliveryChooseOriginPageModule'
+                },
+                {
+                    path: 'find-client',
+                    loadChildren: './deliveries/find-client/delivery-find-client.module#DeliveryFindClientPageModule'
+                },
+                {
+                    path: 'products',
+                    children: [
+                        {
+                            path: '',
+                            loadChildren: './deliveries/products/delivery-products.module#DeliveryProductsPageModule'
+                        },
+                        {
+                            path: 'save',
+                            loadChildren: './deliveries/products/save/product-save.module#ProductSavePageModule'
+                        },
+                    ],
+                },
+                {
+                    path: 'assign',
+                    loadChildren: './deliveries/assign/delivery-assign.module#DeliveryAssignPageModule'
+                },
+            ]
+        }
+    ]
+}];
+
 const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'home', loadChildren: './home/home.module#HomePageModule'},
@@ -52,8 +90,8 @@ const routes: Routes = [
                     }
                 ]
             },
-            {path: 'setup', loadChildren: './admin/setup/setup.module#SetupPageModule'},
-            {path: 'products', loadChildren: './admin/products/products.module#ProductsPageModule'},
+            ...deliveriesRoutes,
+            {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
         ]
     },
     {path: 'delivery-men', redirectTo: 'delivery-men/tabs/delivery-men-options', pathMatch: 'full'},
@@ -64,7 +102,8 @@ const routes: Routes = [
             {
                 path: 'delivery-men-options',
                 loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'
-            }
+            },
+            {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
         ]
     },
     {path: 'clients', redirectTo: 'clients/tabs/company', pathMatch: 'full'},
@@ -81,38 +120,10 @@ const routes: Routes = [
                     }
                 ]
             },
-            {
-                path: 'deliveries', children: [
-                    {
-                        path: '',
-                        loadChildren: './clients/deliveries/client-deliveries.module#ClientDeliveriesPageModule'
-                    },
-                    {
-                        path: 'send', children: [
-                            {
-                                path: 'find-client',
-                                loadChildren: './clients/deliveries/find-client/delivery-find-client.module#DeliveryFindClientPageModule'
-                            },
-                            {
-                                path: 'products',
-                                children: [
-                                    {
-                                        path: '',
-                                        loadChildren: './clients/deliveries/products/delivery-products.module#DeliveryProductsPageModule'
-                                    },
-                                    {
-                                        path: 'save',
-                                        loadChildren: './clients/deliveries/products/save/product-save.module#ProductSavePageModule'
-                                    },
-                                ],
-                            }
-                        ]
-                    },
-                ]
-            },
+            ...deliveriesRoutes,
+            {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
         ]
     },
-
 ];
 
 @NgModule({

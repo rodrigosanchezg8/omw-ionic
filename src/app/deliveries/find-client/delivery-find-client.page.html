@@ -1,15 +1,12 @@
 <ion-header>
     <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button style="color: white"></ion-back-button>
-        </ion-buttons>
-        <ion-title>Quiero enviar a...</ion-title>
+        <ion-title>{{ isEditMode ? "Mi cliente" : "Quiero enviar a" }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-    <div style="max-width: 600px; margin: 0 auto">
+    <div style="max-width: 600px; margin: 0 auto" padding>
         <ion-text style="display: block;" class="ion-text-center, ion-margin-top">
             Como cliente puedes enviar paquetes a cualquier otro cliente que esté registrado dentro de la aplicación.
             El primer paso es especificar el correo del cliente que recibirá tu paquete.
@@ -22,17 +19,17 @@
     </ion-item>
 
     <ion-button style="display: block; width: 200px; margin: 10px auto"
+                [disabled]="deliveryService.clientCanNotUpdate()"
                 (click)="fetchClient()">Buscar cliente
     </ion-button>
 
-    <app-map [ngStyle]="{ 'display': deliveryService?.delivery?.receiver_id ? 'block' : 'none' }"
+    <app-map [ngStyle]="{ 'display': fetchedClient?.id ? 'block' : 'none' }"
              [search]="false"></app-map>
 
 </ion-content>
 
 <ion-footer>
-    <ion-button [disabled]="!deliveryService?.delivery?.receiver_id" expand="full" size="large"
-                (click)="createDelivery()">
-        Siguiente paso
+    <ion-button [disabled]="!fetchedClient" expand="full" size="large" (click)="saveNavigate()">
+        {{ isEditMode ? 'Guardar' : 'Siguiente paso' }}
     </ion-button>
 </ion-footer>

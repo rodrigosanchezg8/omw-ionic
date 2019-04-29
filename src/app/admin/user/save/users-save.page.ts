@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../../../models/user";
 import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import {ApiService} from "../../../../services/api.service";
-import {Responses} from "../../../../traits/responses";
+import {ResponseService} from "../../../../services/response.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientService} from "../../../../services/client.service";
 import {UserService} from "../../../../services/user.service";
@@ -24,7 +24,7 @@ export class UsersSavePage implements OnInit {
 
     constructor(private router: Router,
                 private api: ApiService,
-                private responses: Responses,
+                private responses: ResponseService,
                 private clientService: ClientService,
                 private userService: UserService,
                 private route: ActivatedRoute,

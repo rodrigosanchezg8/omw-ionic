@@ -8,7 +8,15 @@ import {Delivery} from "../models/delivery";
 })
 export class DeliveryService {
 
-    delivery: Delivery;
+    public delivery: Delivery;
+    public statuses = {
+        making: 'Creando',
+        notAssigned: 'No Asignado',
+        notStarted: 'No Iniciado',
+        inProgress: 'En Progreso',
+        finished: 'Entregado',
+        cancelled: 'Cancelado'
+    };
 
     constructor(public httpClient: HttpClient,
                 public api: ApiService) {
@@ -24,12 +32,17 @@ export class DeliveryService {
         return fetch.list as Delivery[];
     }
 
+    async fetchAllByStatus(status: string): Promise<Delivery[]> {
+        const fetch = await this.api.get(`deliveries?status=${status}`) as any;
+        return fetch.list as Delivery[];
+    }
+
     async store(delivery: Delivery) {
         return await this.api.post('deliveries', delivery) as any;
     }
 
-    async update(delivery: Delivery) {
-        return await this.api.put(`deliveries/${delivery.id}`, delivery) as any;
+    async update(deliveryId: number, data: any) {
+        return await this.api.put(`deliveries/${deliveryId}`, data) as any;
     }
 
     async delete(deliveryId: number) {
@@ -40,6 +53,25 @@ export class DeliveryService {
         return await this.api.put(`deliveries/${deliveryId}/change_status`, {
             delivery_status: targetStatus
         })
+    }
+
+    async assign(deliveryId: number) {
+        return await this.api.put(`deliveries/${deliveryId}/set_not_started_protocol`);
+    }
+
+    clientCanNotUpdate() {
+        if (!this.delivery || !this.delivery.delivery_status)
+            return false;
+
+        return this.delivery.delivery_status.status !== this.statuses.making &&
+            this.delivery.delivery_status.status !== this.statuses.notAssigned
+    }
+
+    clientCanConfirm() {
+        if (!this.delivery)
+            return false;
+
+        return !this.delivery.delivery_status || this.delivery.delivery_status.status === this.statuses.making
     }
 
 }

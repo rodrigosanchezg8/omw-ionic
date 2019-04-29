@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {DeliveryProductsService} from "../../../../../services/delivery-products.service";
-import {DeliveryProduct} from "../../../../../models/delivery-product";
+import {DeliveryProductsService} from "../../../../services/delivery-products.service";
+import {DeliveryProduct} from "../../../../models/delivery-product";
 import {LoadingController} from "@ionic/angular";
-import {Loading} from "../../../../../traits/loading";
+import {Loading} from "../../../../traits/loading";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
-import {Responses} from "../../../../../traits/responses";
+import {ResponseService} from "../../../../services/response.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DeliveryService} from "../../../../../services/delivery.service";
-import {environment} from "../../../../../environments/environment.prod";
-import {User} from "../../../../../models/user";
+import {DeliveryService} from "../../../../services/delivery.service";
+import {environment} from "../../../../environments/environment.prod";
+import {User} from "../../../../models/user";
 
 @Component({
     selector: 'app-product-save',
@@ -26,7 +26,7 @@ export class ProductSavePage implements OnInit {
                 private deliveryService: DeliveryService,
                 private loading: Loading,
                 private imagePicker: ImagePicker,
-                private responses: Responses,
+                private responses: ResponseService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute) {
         this.deliveryProduct = new DeliveryProduct();

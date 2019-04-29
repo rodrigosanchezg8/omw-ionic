@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Company} from "../../../../models/company";
 import {ImagePicker} from "@ionic-native/image-picker/ngx";
-import {Responses} from "../../../../traits/responses";
+import {ResponseService} from "../../../../services/response.service";
 import {Loading} from "../../../../traits/loading";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CompaniesService} from "../../../../services/companies.service";
@@ -16,11 +16,10 @@ import {MapService} from "../../../../services/map.service";
 export class ClientsSaveCompanyPage implements OnInit {
 
     company: Company;
-    selectedState: number;
 
     isEditMode: boolean;
 
-    constructor(private responsesService: Responses,
+    constructor(private responsesService: ResponseService,
                 private loading: Loading,
                 private activatedRoute: ActivatedRoute,
                 private router: Router,

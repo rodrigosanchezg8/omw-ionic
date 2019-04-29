@@ -10,18 +10,33 @@
            class="form-control" #search [(ngModel)]="searchControl">
 </div>
 
-<ion-item *ngIf="lat !== initialLat && lng !== initialLat">
+<ion-item *ngIf="lat && lng">
     <ion-label>Dirección completa</ion-label>
     <ion-text>{{ fullAddress }}</ion-text>
 </ion-item>
 
 <agm-map [latitude]="mapLat" [longitude]="mapLng" [zoom]="zoom">
     <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-    <agm-marker [label]="Repartidor" [latitude]="deliveryManLocation?.lat"
+    <agm-marker [label]="{
+            color: 'black',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            text: 'Repartidor'
+        }" [latitude]="deliveryManLocation?.lat"
                 [longitude]="deliveryManLocation?.lng"></agm-marker>
-    <agm-marker [label]="Salida" [latitude]="senderClientLocation?.lat"
+    <agm-marker [label]="{
+            color: 'black',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            text: 'Salida'
+        }" [latitude]="senderClientLocation?.lat"
                 [longitude]="senderClientLocation?.lng"></agm-marker>
-    <agm-marker [label]="Entrega" [latitude]="receiverClientLocation?.lat"
+    <agm-marker [label]="{
+            color: 'black',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            text: 'Entrega'
+            }" [latitude]="receiverClientLocation?.lat"
                 [longitude]="receiverClientLocation?.lng"></agm-marker>
 </agm-map>
 

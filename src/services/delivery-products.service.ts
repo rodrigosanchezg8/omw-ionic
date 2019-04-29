@@ -8,6 +8,8 @@ import {DeliveryProduct} from "../models/delivery-product";
 })
 export class DeliveryProductsService {
 
+    deliveryProducts: DeliveryProduct[];
+
     constructor(public http: HttpClient, public api: ApiService) {
     }
 

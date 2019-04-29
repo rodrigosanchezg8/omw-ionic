@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Repartidor asignado</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="ion-margin-end">
+    <div *ngIf="!deliveryMan?.user?.profile_photo">
+        <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+    </div>
+    <ion-avatar
+            style="margin: 0 auto;
+                    width:100% !important;
+                    height : 100% !important;
+                    max-width: 100px !important;
+                    max-height: 100px !important;" *ngIf="deliveryMan?.user?.profile_photo">
+        <img src="{{ storageUrl + deliveryMan?.user?.profile_photo }}">
+    </ion-avatar>
+    <ion-list>
+        <ion-item class="ion-margin-top">
+            <ion-label style="font-weight: bold">Nombre</ion-label>
+            <ion-text>{{ deliveryMan?.user?.full_name }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Rango de servicio</ion-label>
+            <ion-text>{{ deliveryMan?.service_range?.description + ': ' + deliveryMan?.service_range?.km }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Teléfono</ion-label>
+            <ion-text>{{ deliveryMan?.user?.phone }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Fecha de nacimiento</ion-label>
+            <ion-text>{{ deliveryMan?.user?.birth_date }}</ion-text>
+        </ion-item>
+
+        <app-map
+                [lat]="deliveryMan?.user?.location?.lat"
+                [lng]="deliveryMan?.user?.location?.lng"
+                [mapLat]="deliveryMan?.user?.location?.lat"
+                [mapLng]="deliveryMan?.user?.location?.lng"
+                [search]="false"></app-map>
+    </ion-list>
+</ion-content>
