@@ -1,0 +1,54 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: white"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ isEditMode ? 'Modificar producto de entrega' : 'Agregar producto a mi entrega' }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div *ngIf="!this.deliveryProduct?.product_image">
+        <ion-icon name="camera" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+    </div>
+    <div *ngIf="this.deliveryProduct?.product_image">
+        <img class="product-image" [src]="deliveryProduct.product_image">
+    </div>
+
+    <ion-button size="small" style="margin: 0 auto; display: block" (click)="pickImage()">Seleccionar foto de producto
+    </ion-button>
+
+    <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input type="text" (ngModelChange)="deliveryProduct.name=$event" [ngModel]="deliveryProduct.name"
+                   name="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input type="text" (ngModelChange)="deliveryProduct.description=$event"
+                   [ngModel]="deliveryProduct.description"
+                   name="description"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+        <ion-label position="floating">Costo unitario</ion-label>
+        <ion-input type="number" (ngModelChange)="deliveryProduct.cost=$event" [ngModel]="deliveryProduct.cost"
+                   name="cost"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">Cantidad de productos</ion-label>
+        <ion-input type="number" (ngModelChange)="deliveryProduct.amount=$event" [ngModel]="deliveryProduct.amount"
+                   name="amount"></ion-input>
+    </ion-item>
+
+
+</ion-content>
+
+<ion-footer>
+    <ion-button expand="full" size="large" (click)="save()">Guardar</ion-button>
+</ion-footer>
+

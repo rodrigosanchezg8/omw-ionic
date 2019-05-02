@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from "../../../../environments/environment.prod";
 import {Company} from "../../../../models/company";
 import {CompaniesService} from "../../../../services/companies.service";
-import {Responses} from "../../../../traits/responses";
+import {ResponseService} from "../../../../services/response.service";
 import {ActionSheetController, AlertController} from "@ionic/angular";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../../models/user";
@@ -19,7 +19,7 @@ export class CompanyDetailPage implements OnInit {
     company: Company;
 
     constructor(private companiesService: CompaniesService,
-                private responsesService: Responses,
+                private responsesService: ResponseService,
                 private activatedRoute: ActivatedRoute,
                 private actionSheetController: ActionSheetController,
                 private router: Router,

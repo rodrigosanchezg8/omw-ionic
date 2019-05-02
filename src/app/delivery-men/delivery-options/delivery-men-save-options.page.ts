@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {DeliveryManService} from "../../../services/delivery-man.service";
 import {ServiceRange} from "../../../models/service-range";
-import {Responses} from "../../../traits/responses";
+import {ResponseService} from "../../../services/response.service";
 import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 import {User} from "../../../models/user";
-import {DeliveryManServiceOptions} from "../../../models/delivery-man-service-options";
+import {DeliveryMan} from "../../../models/delivery-man";
 
 @Component({
     selector: 'app-delivery-mans-save-options',
@@ -18,9 +18,9 @@ export class DeliveryMenSaveOptionsPage implements OnInit {
     available: boolean = false;
     serviceRanges: ServiceRange[];
     selectedServiceRange: number;
-    deliveryManServiceOptions: DeliveryManServiceOptions;
+    deliveryMan: DeliveryMan;
 
-    constructor(private responses: Responses,
+    constructor(private responses: ResponseService,
                 private router: Router,
                 private deliveryManService: DeliveryManService,
                 private storage: Storage) {
@@ -30,10 +30,13 @@ export class DeliveryMenSaveOptionsPage implements OnInit {
         const storageUser = await this.storage.get('user') as User;
         this.userId = storageUser.id;
         this.serviceRanges = await this.deliveryManService.getServiceRanges() as ServiceRange[];
-        this.deliveryManServiceOptions = await this.deliveryManService.get(this.userId) as DeliveryManServiceOptions;
-        if (this.deliveryManServiceOptions) {
-            this.selectedServiceRange = this.deliveryManServiceOptions.service_range_id;
-            this.available = this.deliveryManServiceOptions.available;
+
+        const deliveryManServiceRes = await this.deliveryManService.get(this.userId) as any;
+        this.deliveryMan = deliveryManServiceRes.delivery_man as DeliveryMan;
+
+        if (this.deliveryMan) {
+            this.selectedServiceRange = this.deliveryMan.service_range_id;
+            this.available = this.deliveryMan.available;
         }
     }
 

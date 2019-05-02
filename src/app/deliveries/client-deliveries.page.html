@@ -1,0 +1,141 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title class="ion-margin-top">Entregas</ion-title>
+        <ion-segment
+                *ngIf="currentUser?.role?.name === 'client'"
+                (ionChange)="segmentChanged($event)" value="receiver" color="light ">
+            <ion-segment-button value="receiver">
+                <ion-icon name="arrow-round-down"></ion-icon>
+                <ion-label>Recibidas</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="sender">
+                <ion-icon name="arrow-round-up"></ion-icon>
+                <ion-label>Enviadas</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="statuses">
+        <ion-button *ngIf="currentUser?.role?.name === 'client' || currentUser?.role?.name === 'admin'"
+                    [color]="status === 'Creando' ? 'medium': 'light'" (click)="fetchByOriginStatus('Creando')">
+            <ion-icon name="create"></ion-icon>
+            <ion-label>Creando</ion-label>
+        </ion-button>
+        <ion-button *ngIf="currentUser?.role?.name === 'client' || currentUser?.role?.name === 'admin'"
+                    [color]="status === 'No asignado' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('No asignado')">
+            <ion-icon name="hand"></ion-icon>
+            <ion-label>No asignadas</ion-label>
+        </ion-button>
+        <ion-button [color]="status === 'No iniciado' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('No iniciado')">
+            <ion-icon name="car"></ion-icon>
+            <ion-label>No iniciadas</ion-label>
+        </ion-button>
+        <ion-button [color]="status === 'En progreso' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('En progreso')">
+            <ion-icon name="time"></ion-icon>
+            <ion-label>En progreso</ion-label>
+        </ion-button>
+        <ion-button [color]="status === 'Entregado' ? 'medium': 'light'" (click)="fetchByOriginStatus('Entregado')">
+            <ion-icon name="checkmark"></ion-icon>
+            <ion-label>Entregadas</ion-label>
+        </ion-button>
+        <ion-button [color]="status === 'Canceladas' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('Canceladas')">
+            <ion-icon name="close"></ion-icon>
+            <ion-label>Canceladas</ion-label>
+        </ion-button>
+    </div>
+
+    <ion-list *ngFor="let delivery of deliveries"
+              *ngIf="currentUser.role.name !== 'delivery_man' && !singlePendingDelivery">
+        <ion-card class="delivery-card">
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="8">
+                        <ion-card-header>
+                            <ion-card-subtitle>
+                                <span>{{ deliverySubtitle }}</span>
+                            </ion-card-subtitle>
+                            <ion-card-title>
+                                <ion-label *ngIf="currentUser?.role?.name === 'client'">
+                                    {{ origin === 'receiver' ? delivery.sender.full_name : delivery.receiver.full_name}}
+                                </ion-label>
+                                <ion-label *ngIf="currentUser?.role?.name === 'admin'">
+                                    {{ delivery.sender.full_name }}
+                                </ion-label>
+                            </ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <ion-grid>
+                                <ion-row>
+
+                                    <img *ngIf="currentUser?.role?.name === 'admin' && delivery?.sender?.profile_photo"
+                                         class="person-image"
+                                         src="{{ storageUrl + delivery.sender.profile_photo }}">
+                                    <div *ngIf="currentUser?.role?.name === 'admin' && !delivery?.sender?.profile_photo">
+                                        <ion-icon name="contact"
+                                                  style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+                                    </div>
+
+                                    <img *ngIf="currentUser?.role?.name === 'client'"
+                                         class="person-image"
+                                         src="{{ storageUrl + (origin === 'receiver' ? delivery?.sender?.profile_photo :
+                     delivery?.receiver?.profile_photo) }}">
+                                    <ion-col>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">No. de
+                                                productos: {{ delivery.products?.length }}</ion-label>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">Creado
+                                                el: {{ delivery.created_at }}</ion-label>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label class="ion-margin-end">Actualizado
+                                                el: {{ delivery.updated_at }}</ion-label>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-card-content>
+                    </ion-col>
+                    <ion-col size="4"
+                             style="vertical-align: top; text-align: right">
+                        <ion-button fill="outline"
+                                    [routerLink]="['./send/products', {deliveryId: delivery.id, isEditMode: true}]">
+                            <ion-icon name="create"></ion-icon>
+                        </ion-button>
+                        <ion-button
+                                *ngIf="delivery.sender.id === currentUser.id || currentUser.role.name === 'admin'"
+                                fill="outline"
+                                (click)="remove(delivery.id)">
+                            <ion-icon name="close"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+        </ion-card>
+    </ion-list>
+
+    <ng-container *ngIf="currentUser.role.name === 'delivery_man' && singlePendingDelivery">
+
+
+    </ng-container>
+
+    <ion-fab *ngIf="currentUser?.role?.name === 'client'"
+             style="margin-bottom: 60px" vertical="bottom" horizontal="end"
+             edge slot="fixed">
+        <ion-fab-button [routerLink]="currentUser?.company?.id ?
+            ['./send/choose-origin'] :
+            ['./send/find-client', { deliveryOrigin: 'client'}]">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+</ion-content>

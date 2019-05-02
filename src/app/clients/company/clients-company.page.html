@@ -10,7 +10,7 @@
         <div style="max-width: 400px; margin: 0 auto">
             <ion-text style="display: block;" class="ion-text-center">
                 Como cliente puedes señalar que tienes una empresa para que a las personas que reciben tus paquetes
-                puedan reconocer tus entregas.
+                les sean familiares y tengan una mayor categoría de reconocimiento.
             </ion-text>
         </div>
         <ion-fab style="margin-bottom: 60px" vertical="bottom" horizontal="end" edge slot="fixed">
@@ -45,14 +45,9 @@
                 <ion-label style="font-weight: bold">Descripción</ion-label>
                 <ion-text>{{ user.company?.description }}</ion-text>
             </ion-item>
-            <ion-item>
-                <ion-label style="font-weight: bold">Estado</ion-label>
-                <ion-text>{{ user.company?.city?.state?.state }}</ion-text>
-            </ion-item>
-            <ion-item>
-                <ion-label style="font-weight: bold">Ciudad</ion-label>
-                <ion-text>{{ user.company?.city?.city }}</ion-text>
-            </ion-item>
+            <app-map [lat]="user?.company?.location.lat"
+                     [lng]="user?.company?.location.lng"
+                     [search]="false"></app-map>
         </ion-list>
 
         <ion-button style="margin-top: 45px" expand="full" (click)="sheetActions()">

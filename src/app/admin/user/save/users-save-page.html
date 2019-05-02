@@ -52,7 +52,9 @@
                    inputmode="tel"></ion-input>
     </ion-item>
 
-    <app-map [search]="true"></app-map>
+    <app-map [lat]="user?.location.lat"
+             [lng]="user?.location.lng"
+             [search]="true"></app-map>
 
     <ion-item>
         <ion-label position="floating">Contraseña</ion-label>

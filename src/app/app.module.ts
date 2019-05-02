@@ -16,6 +16,7 @@ import {IonicStorageModule} from "@ionic/storage";
 import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
 import {MapModule} from "./map/map.module";
+import {ImagePicker} from '@ionic-native/image-picker/ngx';
 
 @NgModule({
     declarations: [
@@ -33,12 +34,13 @@ import {MapModule} from "./map/map.module";
         FormsModule,
         HttpClientModule,
         IonicSelectableModule,
-        MapModule
+        MapModule,
     ],
     providers: [
         StatusBar,
         SplashScreen,
         AuthService,
+        ImagePicker
     ],
     bootstrap: [AppComponent]
 })

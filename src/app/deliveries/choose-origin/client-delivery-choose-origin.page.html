@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Origen de mi entrega</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div style="max-width: 600px; margin: 0 auto" padding>
+        <ion-text style="display: block;" class="ion-text-center, ion-margin-top">
+            Escoge si nuestro repartidor tendrá que ir a tu localización personal para recoger el paquete o si
+            tendrá que ir a tu localización empresarial.
+        </ion-text>
+    </div>
+    <ion-segment [disabled]="deliveryService.clientCanNotUpdate()"
+                 (ionChange)="originChanged($event.detail.value)"
+                 [value]="origin">
+        <ion-segment-button value="client">
+            <ion-icon name="person"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="company">
+            <ion-icon name="business"></ion-icon>
+        </ion-segment-button>
+    </ion-segment>
+
+    <app-map [search]="false"
+             [lat]="origin === 'client' ? senderClient?.location?.lat : senderClient?.company?.location?.lat"
+             [lng]="origin === 'client' ? senderClient?.location?.lng : senderClient?.company?.location?.lng"></app-map>
+
+</ion-content>
+
+<ion-footer>
+    <ion-button [disabled]="!origin" expand="full" size="large"
+                (click)="updateNavigate()">
+        {{ isEditMode ? 'Guardar' : 'Siguiente paso' }}
+    </ion-button>
+</ion-footer>

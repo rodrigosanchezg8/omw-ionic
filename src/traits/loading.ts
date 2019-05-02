@@ -22,13 +22,11 @@ export class Loading {
         await loader.present();
         if (!this.isLoading) {
             await loader.dismiss();
-            console.log('abort presenting');
         }
     }
 
     async dismiss() {
         this.isLoading = false;
-        console.log('dismissed');
         return await this.loadingController.dismiss();
     }
 

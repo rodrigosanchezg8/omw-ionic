@@ -1,0 +1,36 @@
+.statuses {
+  padding: 0 3px 0 3px;
+  margin-top: 3px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  text-align: center;
+  background: #97c8a5;
+
+  .status-button {
+    display: inline-block;
+  }
+
+}
+
+.person-image {
+  display: block;
+  min-width: 180px;
+  max-width: 200px;
+  min-height: 160px;
+  max-height: 160px;
+  border-radius: 5px;
+}
+
+.delivery-card {
+
+  ion-item {
+
+    width: max-content;
+
+    ion-label {
+      overflow: visible;
+    }
+  }
+
+
+}
