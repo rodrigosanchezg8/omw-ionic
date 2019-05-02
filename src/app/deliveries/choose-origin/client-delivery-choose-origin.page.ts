@@ -81,17 +81,30 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
             });
         }
 
+        let opts: any;
         if (this.isEditMode && this.deliveryService && this.deliveryService.delivery
             && this.deliveryService.delivery.id) {
-            return this.router.navigate(['/clients/tabs/deliveries/send/find-client', {
+            opts = {
                 deliveryOrigin: origin,
                 deliveryId: this.deliveryService.delivery.id
-            }])
+            };
         } else {
-            return this.router.navigate(['/clients/tabs/deliveries/send/find-client', {
+            opts = {
                 deliveryOrigin: origin,
-                deliveryId: undefined
-            }]);
+            };
+        }
+        return this.navigateByRole('deliveries/send/find-client', opts);
+    }
+
+    navigateByRole(path: string, opts: any) {
+        if (path && this.currentUser && this.currentUser.role && this.deliveryService.delivery) {
+            if (this.currentUser.role.name === 'client') {
+                this.router.navigate(['/clients/tabs/' + path, opts]);
+            } else if (this.currentUser.role.name === 'admin') {
+                this.router.navigate(['/admin/tabs/' + path, opts]);
+            } else {
+                this.response.presentResponse({message: 'Tú rol no permite acceder.'});
+            }
         }
     }
 

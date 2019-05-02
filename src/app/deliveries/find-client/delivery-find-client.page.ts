@@ -46,7 +46,7 @@ export class DeliveryFindClientPage implements OnInit {
         this.currentUser = await this.storage.get('user') as User;
 
         this.activatedRoute.params.subscribe(async ps => {
-            if (ps.deliveryId && ps.deliveryId !== "undefined") {
+            if (ps.deliveryId) {
 
                 this.deliveryService.delivery = await this.deliveryService.fetchOne(ps.deliveryId) as Delivery;
 
@@ -92,9 +92,8 @@ export class DeliveryFindClientPage implements OnInit {
         this.loading.dismiss();
 
         if (this.deliveryService.delivery && this.deliveryService.delivery.id)
-            return this.router.navigate(['/clients/tabs/deliveries/send/products', {
-                deliveryId: this.deliveryService.delivery.id
-            }]);
+            return this.navigateByRole('deliveries/send/products');
+
         return this.responses.presentGenericalErrorResponse();
     }
 
@@ -116,6 +115,20 @@ export class DeliveryFindClientPage implements OnInit {
             receiver_id: this.fetchedClient.id
         });
         this.deliveryService.delivery = deliveryRes.delivery as Delivery;
+    }
+
+    navigateByRole(path: string) {
+        if (path && this.currentUser && this.currentUser.role && this.deliveryService.delivery) {
+            if (this.currentUser.role.name === 'client') {
+                this.router.navigate(['/clients/tabs/' + path,
+                    {deliveryId: this.deliveryService.delivery.id}]);
+            } else if (this.currentUser.role.name === 'admin') {
+                this.router.navigate(['/admin/tabs/' + path,
+                    {deliveryId: this.deliveryService.delivery.id}]);
+            } else {
+                this.responses.presentResponse({message: 'Tú rol no permite acceder.'});
+            }
+        }
     }
 
 }

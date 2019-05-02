@@ -24,8 +24,8 @@ export class MapComponent implements OnInit {
     @Input() senderClientLocation: Location;
     @Input() lat: number;
     @Input() lng: number;
-    @Input() mapLat: number;
-    @Input() mapLng: number;
+    @Input() mapLat = 20.6739383;
+    @Input() mapLng = -103.4054539;
 
     @ViewChild('search') public searchElementRef: ElementRef;
 

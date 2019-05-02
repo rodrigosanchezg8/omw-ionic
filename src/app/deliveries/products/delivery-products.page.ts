@@ -154,4 +154,18 @@ export class DeliveryProductsPage implements OnInit {
         }
     }
 
+    navigateByRole(path: string) {
+        if (path && this.currentUser && this.currentUser.role && this.deliveryService.delivery) {
+            if (this.currentUser.role.name === 'client') {
+                this.router.navigate(['/clients/tabs/' + path,
+                    {deliveryId: this.deliveryService.delivery.id}]);
+            } else if (this.currentUser.role.name === 'admin') {
+                this.router.navigate(['/admin/tabs/' + path,
+                    {deliveryId: this.deliveryService.delivery.id}]);
+            } else {
+                this.responses.presentResponse({message: 'Tú rol no permite acceder.'});
+            }
+        }
+    }
+
 }

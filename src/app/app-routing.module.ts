@@ -103,6 +103,7 @@ const routes: Routes = [
                 path: 'delivery-men-options',
                 loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'
             },
+            ...deliveriesRoutes,
             {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
         ]
     },

@@ -19,11 +19,13 @@
 <ion-content>
 
     <div class="statuses">
-        <ion-button [color]="status === 'Creando' ? 'medium': 'light'" (click)="fetchByOriginStatus('Creando')">
+        <ion-button *ngIf="currentUser?.role?.name === 'client' || currentUser?.role?.name === 'admin'"
+                    [color]="status === 'Creando' ? 'medium': 'light'" (click)="fetchByOriginStatus('Creando')">
             <ion-icon name="create"></ion-icon>
             <ion-label>Creando</ion-label>
         </ion-button>
-        <ion-button [color]="status === 'No asignado' ? 'medium': 'light'"
+        <ion-button *ngIf="currentUser?.role?.name === 'client' || currentUser?.role?.name === 'admin'"
+                    [color]="status === 'No asignado' ? 'medium': 'light'"
                     (click)="fetchByOriginStatus('No asignado')">
             <ion-icon name="hand"></ion-icon>
             <ion-label>No asignadas</ion-label>
@@ -49,7 +51,8 @@
         </ion-button>
     </div>
 
-    <ion-list *ngFor="let delivery of deliveries">
+    <ion-list *ngFor="let delivery of deliveries"
+              *ngIf="currentUser.role.name !== 'delivery_man' && !singlePendingDelivery">
         <ion-card class="delivery-card">
             <ion-grid>
                 <ion-row>
@@ -108,7 +111,7 @@
                             <ion-icon name="create"></ion-icon>
                         </ion-button>
                         <ion-button
-                                *ngIf="delivery.sender.id === currentUser.id"
+                                *ngIf="delivery.sender.id === currentUser.id || currentUser.role.name === 'admin'"
                                 fill="outline"
                                 (click)="remove(delivery.id)">
                             <ion-icon name="close"></ion-icon>
@@ -120,6 +123,10 @@
         </ion-card>
     </ion-list>
 
+    <ng-container *ngIf="currentUser.role.name === 'delivery_man' && singlePendingDelivery">
+
+
+    </ng-container>
 
     <ion-fab *ngIf="currentUser?.role?.name === 'client'"
              style="margin-bottom: 60px" vertical="bottom" horizontal="end"

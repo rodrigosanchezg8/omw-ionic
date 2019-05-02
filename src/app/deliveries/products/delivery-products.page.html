@@ -76,18 +76,16 @@
         </ion-card>
     </ion-list>
 
-    <ion-fab *ngIf="canAddOrUpdate() || currentUser.role.name === 'admin'"
+    <ion-fab *ngIf="canAddOrUpdate() || (currentUser && currentUser.role && currentUser.role.name === 'admin')"
              style="margin-bottom: 60px" vertical="bottom" horizontal="start" edge slot="fixed">
         <ion-fab-button>
             <ion-icon name="undo"></ion-icon>
         </ion-fab-button>
         <ion-fab-list side="top">
-            <ion-fab-button [routerLink]="['/clients/tabs/deliveries/send/find-client',
-                            { deliveryId: deliveryService?.delivery?.id}]">
+            <ion-fab-button (click)="navigateByRole('deliveries/send/find-client')">
                 <ion-icon name="person"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button [routerLink]="['/clients/tabs/deliveries/send/choose-origin',
-                            { deliveryId: deliveryService?.delivery?.id}]">
+            <ion-fab-button (click)="navigateByRole('deliveries/send/choose-origin')">
                 <ion-icon name="pin"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>

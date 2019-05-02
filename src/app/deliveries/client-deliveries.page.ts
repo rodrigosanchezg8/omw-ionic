@@ -19,6 +19,7 @@ export class ClientDeliveriesPage implements OnInit {
     private origin: string;
     private status: string;
     private deliveries: Delivery[];
+    private singlePendingDelivery: Delivery;
     private currentUser: User;
 
     private storageUrl = environment.storageUrl;
@@ -72,10 +73,14 @@ export class ClientDeliveriesPage implements OnInit {
         } else if (this.currentUser.role.name === 'admin') {
             this.deliveries = await this.deliveryService.fetchAllByStatus(this.status);
             this.loading.dismiss();
-        } else
+        } else if (this.currentUser.role.name === 'delivery_man') {
+            this.singlePendingDelivery = new Delivery();
+            this.loading.dismiss();
+        } else {
             this.responses.presentResponse({
-                message: 'Esta acción solo está disponible para administradores y clientes'
+                message: 'El rol del usuario no es correcto'
             });
+        }
     }
 
     async remove(deliveryId: number) {
