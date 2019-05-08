@@ -9,6 +9,7 @@ import {UserService} from "../../../../services/user.service";
 import {environment} from "../../../../environments/environment.prod";
 import {Loading} from "../../../../traits/loading";
 import {MapService} from "../../../../services/map.service";
+import {Storage} from "@ionic/storage";
 
 @Component({
     selector: 'app-users-save',
@@ -17,9 +18,9 @@ import {MapService} from "../../../../services/map.service";
 })
 export class UsersSavePage implements OnInit {
 
+    currentUser: User;
     user: User;
     isEditMode: boolean;
-    hasCompany: boolean;
     passwordConfirmation: string;
 
     constructor(private router: Router,
@@ -30,11 +31,13 @@ export class UsersSavePage implements OnInit {
                 private route: ActivatedRoute,
                 private loading: Loading,
                 private mapService: MapService,
-                private imagePicker: ImagePicker) {
+                private imagePicker: ImagePicker,
+                private storage: Storage) {
     }
 
     async ngOnInit() {
         try {
+            this.currentUser = await this.storage.get('user') as User;
             this.route.params.subscribe(async ps => {
                 if (ps.user) {
                     this.isEditMode = true;
@@ -42,7 +45,6 @@ export class UsersSavePage implements OnInit {
                     if (this.user.profile_photo !== null) {
                         this.user.profile_photo = environment.storageUrl + this.user.profile_photo;
                     }
-                    this.hasCompany = !!this.user.company;
                 } else if (ps.role) {
                     this.user = new User();
                     this.user.role.name = ps.role;
@@ -92,20 +94,14 @@ export class UsersSavePage implements OnInit {
         this.responses.presentResponse(userRes);
 
         if (userRes.status === 200) {
-            if (this.user.role.name === 'client' && this.hasCompany) {
-                if (this.user.company && this.user.company.id) {
-                    this.router.navigate(['admin/tabs/clients/save-company',
-                        {
-                            userId: userRes.user.id,
-                            companyId: this.user.company.id
-                        }]);
-                } else {
-                    this.router.navigate(['admin/tabs/clients/save-company', {userId: userRes.user.id}]);
-                }
-            } else if (this.user.role.name === 'delivery_man') {
-                this.router.navigateByUrl('admin/tabs/delivery-men');
-            } else
-                this.router.navigateByUrl('admin/tabs');
+            if (this.currentUser && this.currentUser.role.name === 'admin') {
+                if (this.user.role.name === 'delivery_man') {
+                    this.router.navigateByUrl('admin/tabs/delivery-men');
+                } else
+                    this.router.navigateByUrl('admin/tabs/clients');
+            } else {
+                this.router.navigateByUrl('home');
+            }
         }
     }
 

@@ -77,7 +77,6 @@
                                         <img *ngIf="currentUser?.role?.name === 'admin' && delivery?.sender?.profile_photo"
                                              class="person-image"
                                              src="{{ storageUrl + delivery.sender.profile_photo }}">
-
                                         <img *ngIf="currentUser?.role?.name === 'client' &&
                                               (currentUser?.role?.name === 'client' && origin === 'receiver' &&
                                               delivery?.sender?.profile_photo) ||

@@ -67,11 +67,6 @@
         <ion-input [(ngModel)]="passwordConfirmation" name="password_confirmation" type="password"></ion-input>
     </ion-item>
 
-    <ion-item *ngIf="this.user?.role?.name === 'client'">
-        <ion-label>El cliente tiene una empresa</ion-label>
-        <ion-checkbox slot="start" name="company" [(ngModel)]="hasCompany" color="light"></ion-checkbox>
-    </ion-item>
-
 </ion-content>
 
 <ion-footer>
