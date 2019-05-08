@@ -44,8 +44,15 @@ const deliveriesRoutes = [{
 
 const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: 'home', loadChildren: './home/home.module#HomePageModule'},
-    {path: 'reset-password', loadChildren: './reset-password/reset-password.module#ResetPasswordPageModule'},
+    {
+        path: 'home', children: [
+            {path: '', loadChildren: './home/home.module#HomePageModule'},
+            {
+                path: 'sign-up',
+                loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
+            },
+        ]
+    },
     {path: 'admin', redirectTo: 'admin/tabs/clients', pathMatch: 'full'},
     {
         path: 'admin/tabs', component: TabsPage,
@@ -98,7 +105,7 @@ const routes: Routes = [
     {
         path: 'delivery-men/tabs', component: DeliveryMenTabsPage,
         children: [
-            {path: '', redirectTo: 'delivery-men-options', pathMatch: 'full'},
+            {path: '', redirectTo: 'deliveries', pathMatch: 'full'},
             {
                 path: 'delivery-men-options',
                 loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'

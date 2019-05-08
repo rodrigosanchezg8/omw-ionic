@@ -5,6 +5,37 @@
 </ion-header>
 
 <ion-content padding>
+
+    <div *ngIf="!user?.profile_photo">
+        <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+    </div>
+    <ion-avatar
+            style="margin: 0 auto;
+                    width:100% !important;
+                    height : 100% !important;
+                    max-width: 100px !important;
+                    max-height: 100px !important;" *ngIf="user?.profile_photo">
+        <img src="{{ storageUrl + user?.profile_photo }}">
+    </ion-avatar>
+    <ion-list>
+        <ion-item class="ion-margin-top">
+            <ion-label style="font-weight: bold">Nombre</ion-label>
+            <ion-text>{{ user?.full_name }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Teléfono</ion-label>
+            <ion-text>{{ user?.phone }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Fecha de nacimiento</ion-label>
+            <ion-text>{{ user?.birth_date }}</ion-text>
+        </ion-item>
+        <app-map *ngIf="user?.location?.lat && user?.location?.lng"
+                 [lat]="user?.location.lat"
+                 [lng]="user?.location.lng"
+                 [search]="false"></app-map>
+    </ion-list>
+
     <ion-list>
         <ion-item (click)="logout()">
             <ion-icon class="ion-margin-end" name="power"></ion-icon>

@@ -33,8 +33,8 @@
             <ion-label style="font-weight: bold">Fecha de nacimiento</ion-label>
             <ion-text>{{ user?.birth_date }}</ion-text>
         </ion-item>
-        <app-map [lat]="user?.company?.location.lat"
-                 [lng]="user?.company?.location.lng"
+        <app-map [lat]="user?.location.lat"
+                 [lng]="user?.location.lng"
                  [search]="false"></app-map>
     </ion-list>
 
