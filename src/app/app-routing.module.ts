@@ -38,7 +38,11 @@ const deliveriesRoutes = [{
                     loadChildren: './deliveries/assign/delivery-assign.module#DeliveryAssignPageModule'
                 },
             ]
-        }
+        },
+        {
+            path: 'delivery-man-tracker',
+            loadChildren: './deliveries/delivery-man-tracker/delivery-man-tracker.module#DeliveryManTrackerPageModule'
+        },
     ]
 }];
 
@@ -125,6 +129,7 @@ const routes: Routes = [
             {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
         ]
     },
+
 ];
 
 @NgModule({

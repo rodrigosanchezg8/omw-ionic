@@ -14,16 +14,21 @@
     <ion-label>Dirección completa</ion-label>
     <ion-text>{{ fullAddress }}</ion-text>
 </ion-item>
+<ion-item *ngIf="senderClientLocation?.lat && senderClientLocation?.lng">
+    <ion-label>Dirección de envio</ion-label>
+    <ion-text>{{ senderClientAddress }}</ion-text>
+</ion-item>
+<ion-item *ngIf="deliveryManLocation?.lat && deliveryManLocation?.lng">
+    <ion-label>Dirección principal de repartidor</ion-label>
+    <ion-text>{{ deliveryManAddress }}</ion-text>
+</ion-item>
+<ion-item *ngIf="receiverClientLocation?.lat && receiverClientLocation?.lng">
+    <ion-label>Dirección de entrega</ion-label>
+    <ion-text>{{ receiverClientAddress }}</ion-text>
+</ion-item>
 
 <agm-map [latitude]="mapLat" [longitude]="mapLng" [zoom]="zoom">
     <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-    <agm-marker [label]="{
-            color: 'black',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            text: 'Repartidor'
-        }" [latitude]="deliveryManLocation?.lat"
-                [longitude]="deliveryManLocation?.lng"></agm-marker>
     <agm-marker [label]="{
             color: 'black',
             fontSize: '14px',
@@ -38,5 +43,19 @@
             text: 'Entrega'
             }" [latitude]="receiverClientLocation?.lat"
                 [longitude]="receiverClientLocation?.lng"></agm-marker>
+    <agm-marker [label]="{
+            color: 'black',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            text: 'Repartidor'
+        }" [latitude]="deliveryManLocation?.lat"
+                [longitude]="deliveryManLocation?.lng"></agm-marker>
+    <agm-marker *ngFor="let deliveryTrack of deliveryManLocationTracks" [label]="{
+            color: 'black',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            text: '' + deliveryTrack.step
+        }" [latitude]="deliveryTrack?.location?.lat"
+                [longitude]="deliveryTrack?.location?.lng"></agm-marker>
 </agm-map>
 

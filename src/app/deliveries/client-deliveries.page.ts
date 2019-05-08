@@ -15,12 +15,12 @@ import {Storage} from "@ionic/storage";
 })
 export class ClientDeliveriesPage implements OnInit {
 
-    private deliverySubtitle: string;
     private origin: string;
     private status: string;
-    private deliveries: Delivery[];
     private singlePendingDelivery: Delivery;
-    private currentUser: User;
+    public deliverySubtitle: string;
+    public deliveries: Delivery[];
+    public currentUser: User;
 
     private storageUrl = environment.storageUrl;
 
@@ -33,19 +33,19 @@ export class ClientDeliveriesPage implements OnInit {
 
     async ngOnInit() {
         this.origin = 'receiver';
-        this.status = 'Creando';
     }
 
     async ionViewWillEnter() {
         this.currentUser = await this.storage.get('user') as User;
+        this.status = 'Creando';
 
-        if (this.currentUser.role.name === 'admin') {
-            this.deliverySubtitle = 'Entrega'
+        if (this.currentUser.role.name === 'delivery_man') {
+            this.deliverySubtitle = 'Por iniciar';
+            this.status = 'En progreso';
             this.origin = undefined;
-        } else if (this.origin === 'receiver') {
-            this.deliverySubtitle = 'Recibo de';
-        } else if (this.origin === 'sender') {
-            this.deliverySubtitle = 'Envio a';
+        } else if (this.currentUser.role.name === 'admin') {
+            this.deliverySubtitle = 'Entrega';
+            this.origin = undefined;
         }
 
         await this.getDeliveries();
@@ -56,6 +56,11 @@ export class ClientDeliveriesPage implements OnInit {
             return this.responses.presentResponse({message: 'Esta acción solo está disponible para clientes'});
 
         this.origin = event.detail.value;
+        if (this.origin === 'receiver') {
+            this.deliverySubtitle = 'Recibo de';
+        } else if (this.origin === 'sender') {
+            this.deliverySubtitle = 'Envio a';
+        }
         await this.getDeliveries();
     }
 
@@ -74,8 +79,17 @@ export class ClientDeliveriesPage implements OnInit {
             this.deliveries = await this.deliveryService.fetchAllByStatus(this.status);
             this.loading.dismiss();
         } else if (this.currentUser.role.name === 'delivery_man') {
-            this.singlePendingDelivery = new Delivery();
+            const deliveries = await this.deliveryService.fetchAllByStatus(this.status) as Delivery[];
+
             this.loading.dismiss();
+            if (deliveries.length > 1) {
+                this.responses.presentResponse({
+                    message: 'Un repartidor no puede tener más de dos entregas no iniciadas' +
+                        'o en progreso.'
+                })
+            }
+            this.singlePendingDelivery = deliveries[0];
+
         } else {
             this.responses.presentResponse({
                 message: 'El rol del usuario no es correcto'

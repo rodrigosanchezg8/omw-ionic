@@ -14,7 +14,8 @@
             [search]="false"
             [senderClientLocation]="deliveryService?.delivery?.company_is_sending ?
             deliveryService?.delivery?.sender?.company?.location : deliveryService?.delivery?.sender?.location"
-            [receiverClientLocation]="deliveryService?.delivery?.receiver?.location"></app-map>
+            [receiverClientLocation]="deliveryService?.delivery?.receiver?.location"
+            [deliveryManLocationTracks]="deliveryService?.delivery?.location_tracks"></app-map>
 
     <div *ngIf="deliveryProductsService?.deliveryProducts && !deliveryProductsService?.deliveryProducts?.length"
          style="width: max-content; margin: 0 auto">
