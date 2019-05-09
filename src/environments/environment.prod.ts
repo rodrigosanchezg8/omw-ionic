@@ -6,5 +6,6 @@ export const environment = {
     mapQuest: {
         key: 'HuPYaz9aMB61KvMvL6tw6FuTbKkYhZKM',
         reverseGeocodeURL: 'http://www.mapquestapi.com/geocoding/v1/reverse?',
-    }
+    },
+    socketIP: 'http://192.168.1.127:5000'
 };

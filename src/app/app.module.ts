@@ -18,6 +18,11 @@ import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
 import {MapModule} from "./map/map.module";
 import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {SocketIoConfig, SocketIoModule} from "ng-socket-io";
+import {environment} from "../environments/environment.prod";
+
+const config: SocketIoConfig = {url: environment.socketIP, options: {}};
+
 
 @NgModule({
     declarations: [
@@ -31,6 +36,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
         BrowserModule,
         IonicModule.forRoot(),
         IonicStorageModule.forRoot(),
+        SocketIoModule.forRoot(config),
         AppRoutingModule,
         FormsModule,
         HttpClientModule,
