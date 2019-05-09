@@ -31,12 +31,19 @@
             <ion-text>{{ user?.birth_date }}</ion-text>
         </ion-item>
         <app-map *ngIf="user?.location?.lat && user?.location?.lng"
-                 [lat]="user?.location.lat"
-                 [lng]="user?.location.lng"
+                 [lat]="user?.location?.lat"
+                 [lng]="user?.location?.lng"
                  [search]="false"></app-map>
     </ion-list>
 
     <ion-list>
+        <ion-item [routerLink]="['./save-user', {
+                            role: 'client',
+                            user: user?.id
+                            }]">
+            <ion-icon class="ion-margin-end" name="create"></ion-icon>
+            <ion-label>Editar información</ion-label>
+        </ion-item>
         <ion-item (click)="logout()">
             <ion-icon class="ion-margin-end" name="power"></ion-icon>
             <ion-label>Salir</ion-label>

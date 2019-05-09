@@ -60,6 +60,8 @@ export class ClientsSaveCompanyPage implements OnInit {
             quality: 70,
             outputType: 1,
             maximumImagesCount: 1,
+            width: 600,
+            height: 600,
         };
 
         try {

@@ -56,7 +56,9 @@ export class ProductSavePage implements OnInit {
         const options = {
             quality: 70,
             outputType: 1,
-            maximumImagesCount: 1
+            maximumImagesCount: 1,
+            width: 600,
+            height: 600,
         };
 
         try {

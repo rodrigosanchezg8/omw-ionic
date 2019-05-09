@@ -10,62 +10,62 @@
            class="form-control" #search [(ngModel)]="searchControl">
 </div>
 
-<ion-item *ngIf="lat && lng">
-    <ion-row>
+<ion-row *ngIf="lat && lng">
+    <ion-item style="width: 100%">
         <ion-col size="6">
-            <span style="font-weight: bold">Dirección completa: </span>
+            <ion-label style="font-weight: bold">Dirección:</ion-label>
         </ion-col>
         <ion-col size="6">
-            <div>{{ fullAddress }}</div>
+            <ion-text>{{ fullAddress }}</ion-text>
         </ion-col>
-    </ion-row>
-</ion-item>
+    </ion-item>
+</ion-row>
 
-<ion-item *ngIf="senderClientLocation?.lat && senderClientLocation?.lng">
-    <ion-row>
+<ion-row *ngIf="senderClientLocation?.lat && senderClientLocation?.lng">
+    <ion-item style="width: 100%">
         <ion-col size="6">
-            <span style="font-weight: bold">Dirección de envío: </span>
+            <ion-label style="font-weight: bold">Dirección de envío:</ion-label>
         </ion-col>
         <ion-col size="6">
-            <div>{{ senderClientAddress }}</div>
+            <ion-text>{{ senderClientAddress }}</ion-text>
         </ion-col>
-    </ion-row>
-</ion-item>
+    </ion-item>
+</ion-row>
 
-<ion-item *ngIf="deliveryManLocation?.lat && deliveryManLocation?.lng">
-    <ion-row>
+<ion-row *ngIf="deliveryManLocation?.lat && deliveryManLocation?.lng">
+    <ion-item style="width: 100%">
         <ion-col size="6">
-            <span style="font-weight: bold">Dirección principal de repartidor:</span>
+            <ion-label style="font-weight: bold">Dirección de repartidor:</ion-label>
         </ion-col>
         <ion-col size="6">
-            <div>{{ deliveryManAddress }}</div>
+            <ion-text>{{ deliveryManAddress }}</ion-text>
         </ion-col>
-    </ion-row>
-</ion-item>
+    </ion-item>
+</ion-row>
 
-<ion-item *ngIf="receiverClientLocation?.lat && receiverClientLocation?.lng">
-    <ion-row>
+<ion-row *ngIf="receiverClientLocation?.lat && receiverClientLocation?.lng">
+    <ion-item style="width: 100%">
         <ion-col size="6">
-            <span style="font-weight: bold">Dirección de entrega</span>
+            <ion-label style="font-weight: bold">Dirección de entrega:</ion-label>
         </ion-col>
         <ion-col size="6">
-            <div>{{ receiverClientAddress }}</div>
+            <ion-text>{{ receiverClientAddress }}</ion-text>
         </ion-col>
-    </ion-row>
-</ion-item>
+    </ion-item>
+</ion-row>
 
 <div class="ion-margin-top">
     <ng-container *ngIf="deliveryManLocationTracks?.length && deliveryManAddresses?.length">
-        <ion-item *ngFor="let address of deliveryManAddresses">
-            <ion-row>
+        <ion-row *ngFor="let address of deliveryManAddresses">
+            <ion-item style="width: 100%">
                 <ion-col size="6">
-                    <span style="font-weight: bold">Dirección de seguimiento</span>
+                    <ion-label style="font-weight: bold">Dirección de seguimiento</ion-label>
                 </ion-col>
                 <ion-col size="6">
-                    <div>{{ address }}</div>
+                    <ion-text>{{ address }}</ion-text>
                 </ion-col>
-            </ion-row>
-        </ion-item>
+            </ion-item>
+        </ion-row>
     </ng-container>
 </div>
 
