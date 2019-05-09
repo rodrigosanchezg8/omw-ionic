@@ -6,6 +6,7 @@ import {Location} from "../../models/location";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {MapQuestService} from "../../services/map-quest.service";
+import {DeliveryLocationTrack} from "../../models/delivery-location-track";
 
 declare const google;
 
@@ -28,7 +29,7 @@ export class MapComponent implements OnInit, OnChanges {
 
     @Input() search: any;
     @Input() deliveryManLocation: Location;
-    @Input() deliveryManLocationTracks: Location;
+    @Input() deliveryManLocationTracks: DeliveryLocationTrack[];
     @Input() receiverClientLocation: Location;
     @Input() senderClientLocation: Location;
     @Input() lat: number;
@@ -118,6 +119,14 @@ export class MapComponent implements OnInit, OnChanges {
                 this.deliveryManLocation.lng) as any;
             this.deliveryManAddress = geocodeResult ? geocodeResult : '';
         }
-        console.log(this.deliveryManLocationTracks)
+        if (this.deliveryManLocationTracks && !this.deliveryManAddresses) {
+            this.deliveryManAddresses = [];
+            for (let locationTrack of this.deliveryManLocationTracks) {
+                const locationTrackAddress = await this.mapQuestService.reverseGeocode(locationTrack.location.lat,
+                    locationTrack.location.lng) as any;
+                if (locationTrackAddress)
+                    this.deliveryManAddresses.push(locationTrackAddress);
+            }
+        }
     }
 }

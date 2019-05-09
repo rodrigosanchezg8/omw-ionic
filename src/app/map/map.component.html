@@ -11,21 +11,63 @@
 </div>
 
 <ion-item *ngIf="lat && lng">
-    <ion-label>Dirección completa</ion-label>
-    <ion-text>{{ fullAddress }}</ion-text>
+    <ion-row>
+        <ion-col size="6">
+            <span style="font-weight: bold">Dirección completa: </span>
+        </ion-col>
+        <ion-col size="6">
+            <div>{{ fullAddress }}</div>
+        </ion-col>
+    </ion-row>
 </ion-item>
+
 <ion-item *ngIf="senderClientLocation?.lat && senderClientLocation?.lng">
-    <ion-label>Dirección de envio</ion-label>
-    <ion-text>{{ senderClientAddress }}</ion-text>
+    <ion-row>
+        <ion-col size="6">
+            <span style="font-weight: bold">Dirección de envío: </span>
+        </ion-col>
+        <ion-col size="6">
+            <div>{{ senderClientAddress }}</div>
+        </ion-col>
+    </ion-row>
 </ion-item>
+
 <ion-item *ngIf="deliveryManLocation?.lat && deliveryManLocation?.lng">
-    <ion-label>Dirección principal de repartidor</ion-label>
-    <ion-text>{{ deliveryManAddress }}</ion-text>
+    <ion-row>
+        <ion-col size="6">
+            <span style="font-weight: bold">Dirección principal de repartidor:</span>
+        </ion-col>
+        <ion-col size="6">
+            <div>{{ deliveryManAddress }}</div>
+        </ion-col>
+    </ion-row>
 </ion-item>
+
 <ion-item *ngIf="receiverClientLocation?.lat && receiverClientLocation?.lng">
-    <ion-label>Dirección de entrega</ion-label>
-    <ion-text>{{ receiverClientAddress }}</ion-text>
+    <ion-row>
+        <ion-col size="6">
+            <span style="font-weight: bold">Dirección de entrega</span>
+        </ion-col>
+        <ion-col size="6">
+            <div>{{ receiverClientAddress }}</div>
+        </ion-col>
+    </ion-row>
 </ion-item>
+
+<div class="ion-margin-top">
+    <ng-container *ngIf="deliveryManLocationTracks?.length && deliveryManAddresses?.length">
+        <ion-item *ngFor="let address of deliveryManAddresses">
+            <ion-row>
+                <ion-col size="6">
+                    <span style="font-weight: bold">Dirección de seguimiento</span>
+                </ion-col>
+                <ion-col size="6">
+                    <div>{{ address }}</div>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+    </ng-container>
+</div>
 
 <agm-map [latitude]="mapLat" [longitude]="mapLng" [zoom]="zoom">
     <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>

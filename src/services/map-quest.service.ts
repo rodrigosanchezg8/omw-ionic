@@ -12,10 +12,12 @@ export class MapQuestService {
     constructor(private httpClient: HttpClient) {
     }
 
-    async reverseGeocode(lat, lng): Promise<any> {
+    async reverseGeocode(lat: number, lng: number): Promise<any> {
         const geocodeResult = await this.httpClient.get(this.reverseGeocodingURL + `${lat},${lng}`).toPromise() as any;
         let firstLocation, fullAddress;
-        if (geocodeResult && geocodeResult.results[0] && geocodeResult.results[0].locations) {
+        console.log(geocodeResult)
+        if (geocodeResult && geocodeResult.results[0] && geocodeResult.results[0].locations &&
+            geocodeResult.results[0].locations.length) {
             firstLocation = geocodeResult.results[0].locations[0];
             fullAddress = firstLocation.street;
             fullAddress += firstLocation.adminArea6 ? ', ' + firstLocation.adminArea6 : '';
