@@ -25,16 +25,10 @@
                         <ion-icon name="contact"
                                   style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
                     </div>
-                    <ion-item class="ion-margin-end">
-                        <ion-row style="width: 100%">
-                            <ion-col size="7">
-                                <span style="font-weight: bold">Teléfono: </span>
-                            </ion-col>
-                            <ion-col size="5">
-                                <div> {{ deliveryService?.delivery?.sender?.phone }}</div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-item>
+                    <div style="text-align: center">
+                        <span style="font-weight: bold; display: block">Teléfono: </span>
+                        <div> {{ deliveryService?.delivery?.sender?.phone }}</div>
+                    </div>
                 </ion-col>
                 <ion-col size="6">
                     <ion-label>Para: {{ deliveryService.delivery?.receiver?.full_name }}</ion-label>
@@ -45,41 +39,35 @@
                         <ion-icon name="contact"
                                   style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
                     </div>
-                    <ion-item class="ion-margin-end">
-                        <ion-row style="width: 100%">
-                            <ion-col size="7">
-                                <span style="font-weight: bold">Teléfono: </span>
-                            </ion-col>
-                            <ion-col size="5">
-                                <div>{{ deliveryService?.delivery?.receiver?.phone }}</div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-item>
+                    <div style="text-align: center">
+                        <span style="font-weight: bold; display: block">Teléfono: </span>
+                        <div> {{ deliveryService?.delivery?.receiver?.phone }}</div>
+                    </div>
                 </ion-col>
             </ion-row>
             <ion-row>
-                <ion-item class="ion-margin-end">
-                    <ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
                         <ion-col size="5">
                             <span style="font-weight: bold">Planeado a empezar: </span>
                         </ion-col>
                         <ion-col size="7">
                             <div> {{ deliveryService?.delivery?.planned_start_date }}</div>
                         </ion-col>
-                    </ion-row>
-                </ion-item>
-                <ion-item class="ion-margin-end">
-                    <ion-row>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
                         <ion-col size="5">
                             <span style="font-weight: bold">Planeado a terminar: </span>
                         </ion-col>
                         <ion-col size="7">
                             <div> {{ deliveryService?.delivery?.planned_end_date }}</div>
                         </ion-col>
-                    </ion-row>
-                </ion-item>
-                <ion-item class="ion-margin-end">
-                    <ion-row>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
                         <ion-col size="5">
                             <span style="font-weight: bold">Se empezó recorrido: </span>
                         </ion-col>
@@ -88,19 +76,19 @@
                                 deliveryService?.delivery?.departure_date : 'Sin empezar'
                                 }}</div>
                         </ion-col>
-                    </ion-row>
-                </ion-item>
-                <ion-item class="ion-margin-end">
-                    <ion-row>
-                        <ion-col size="5">
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
+                        <ion-col>
                             <span style="font-weight: bold">Se entregó: </span>
                         </ion-col>
-                        <ion-col size="7">
-                            <ion-text  align-self-start>{{  deliveryService?.delivery?.arrival_date ?
+                        <ion-col>
+                            <ion-text align-self-start>{{  deliveryService?.delivery?.arrival_date ?
                                 deliveryService?.delivery?.arrival_date : 'Sin entregar' }}</ion-text>
                         </ion-col>
-                    </ion-row>
-                </ion-item>
+                    </ion-item>
+                </ion-row>
             </ion-row>
         </ion-grid>
     </ion-card-content>
@@ -111,13 +99,17 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-                <ion-button
-                        size="large"
-                        expand="full"
-                        (click)="updateLocation()">
+                <ion-button *ngIf="deliveryService?.delivery?.delivery_status.status !== 'Entregado'"
+                            size="large"
+                            expand="full"
+                            (click)="updateLocation()">
                     {{ deliveryService?.delivery?.location_tracks?.length ?
                     'Actualizar localización' : 'Empezar entrega' }}
                 </ion-button>
+                <ion-text *ngIf="deliveryService?.delivery?.delivery_status?.status === 'Entregado'"
+                          style="text-align: center">
+                    <h1>ENTREGA FINALIZADA</h1>
+                </ion-text>
             </ion-col>
         </ion-row>
     </ion-grid>

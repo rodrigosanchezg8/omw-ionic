@@ -11,6 +11,7 @@ import {Location} from "../../../models/location";
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {Delivery} from "../../../models/delivery";
 import {Loading} from "../../../traits/loading";
+import {DeliveryStatus} from "../../../models/delivery-status";
 
 @Component({
     selector: 'app-delivery-man-tracker',
@@ -73,6 +74,7 @@ export class DeliveryManTrackerPage implements OnInit {
                 location.lng = pos.coords.longitude;
 
                 const result = await this.deliveryLocationTracksService.store(deliveryLocationTrack, location) as any;
+                this.deliveryService.delivery.delivery_status = result.delivery_location_track.delivery.delivery_status as DeliveryStatus;
                 this.deliveryService.delivery.location_tracks.push(result.delivery_location_track as DeliveryLocationTrack);
 
                 this.loading.dismiss();
@@ -85,6 +87,7 @@ export class DeliveryManTrackerPage implements OnInit {
                     {message: 'No se pudo actualizar la localización por que esta no se pudo recuperar'});
             });
         } catch (e) {
+            console.log(e);
             this.responsesService.presentResponse(
                 {message: 'Ocurrió un error tratando de actualizar la entrega de la localización'});
         }
