@@ -1,9 +1,12 @@
-import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, NgZone, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {MapsAPILoader} from "@agm/core";
 import {MapService} from "../../services/map.service";
 import {ResponseService} from "../../services/response.service";
 import {Location} from "../../models/location";
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {MapQuestService} from "../../services/map-quest.service";
+import {DeliveryLocationTrack} from "../../models/delivery-location-track";
 
 declare const google;
 
@@ -12,14 +15,21 @@ declare const google;
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
 
     zoom: number;
     searchControl: string;
     fullAddress: string;
 
+    senderClientAddress: string;
+    receiverClientAddress: string;
+    deliveryManAddress: string;
+
+    deliveryManAddresses: string[];
+
     @Input() search: any;
     @Input() deliveryManLocation: Location;
+    @Input() deliveryManLocationTracks: DeliveryLocationTrack[];
     @Input() receiverClientLocation: Location;
     @Input() senderClientLocation: Location;
     @Input() lat: number;
@@ -33,7 +43,9 @@ export class MapComponent implements OnInit {
                 private ngZone: NgZone,
                 private mapService: MapService,
                 private responses: ResponseService,
-                private router: Router) {
+                private router: Router,
+                private httpClient: HttpClient,
+                private mapQuestService: MapQuestService) {
         this.zoom = 10;
     }
 
@@ -41,6 +53,10 @@ export class MapComponent implements OnInit {
         await this.mapsApiLoader.load();
         await this.initAutocomplete();
         await this.subscribeChange();
+    }
+
+    async ngOnChanges() {
+        await this.setAddresses();
     }
 
     async initAutocomplete() {
@@ -68,38 +84,49 @@ export class MapComponent implements OnInit {
     }
 
     async subscribeChange() {
-        this.mapService.locationChange.subscribe(location => {
+        this.mapService.locationChange.subscribe(async location => {
             try {
                 this.lat = Number(location.lat);
                 this.lng = Number(location.lng);
 
-                this.mapLng = Number(this.lng);
-                this.mapLat = Number(this.lat);
+                this.mapLng = this.lng;
+                this.mapLat = this.lat;
 
                 this.zoom = 10;
 
-                let geocoder = new google.maps.Geocoder();
-                let latLng = new google.maps.LatLng(this.lat, this.lng);
-                geocoder.geocode({latLng: latLng}, (results, status) => {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        this.ngZone.run(async () => {
-                            this.fullAddress = results[0].formatted_address;
-                        });
-                    } else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                        this.responses.presentResponse({
-                            message: `El domicilio  no se mostrará por que 
-                            Google está indicando que estás solicitando información muy rápido, espera unos segundos y
-                            vuelve a intentar`
-                        });
-                        this.fullAddress = '';
-                    } else {
-                        this.responses.presentResponse({message: 'No una hay dirección disponible'});
-                        this.fullAddress = '';
-                    }
-                });
+                const geocodeResult = await this.mapQuestService.reverseGeocode(this.lat, this.lng) as any;
+                this.fullAddress = geocodeResult ? geocodeResult : '';
+
             } catch (e) {
                 this.responses.presentResponse({message: 'No una hay dirección disponible'});
             }
         });
+    }
+
+    async setAddresses() {
+        if (this.senderClientLocation) {
+            const geocodeResult = await this.mapQuestService.reverseGeocode(this.senderClientLocation.lat,
+                this.senderClientLocation.lng) as any;
+            this.senderClientAddress = geocodeResult ? geocodeResult : '';
+        }
+        if (this.receiverClientLocation) {
+            const geocodeResult = await this.mapQuestService.reverseGeocode(this.receiverClientLocation.lat,
+                this.receiverClientLocation.lng) as any;
+            this.receiverClientAddress = geocodeResult ? geocodeResult : '';
+        }
+        if (this.deliveryManLocation) {
+            const geocodeResult = await this.mapQuestService.reverseGeocode(this.deliveryManLocation.lat,
+                this.deliveryManLocation.lng) as any;
+            this.deliveryManAddress = geocodeResult ? geocodeResult : '';
+        }
+        if (this.deliveryManLocationTracks && !this.deliveryManAddresses) {
+            this.deliveryManAddresses = [];
+            for (let locationTrack of this.deliveryManLocationTracks) {
+                const locationTrackAddress = await this.mapQuestService.reverseGeocode(locationTrack.location.lat,
+                    locationTrack.location.lng) as any;
+                if (locationTrackAddress)
+                    this.deliveryManAddresses.push(locationTrackAddress);
+            }
+        }
     }
 }

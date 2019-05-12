@@ -17,6 +17,7 @@ import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
 import {MapModule} from "./map/map.module";
 import {ImagePicker} from '@ionic-native/image-picker/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import {ImagePicker} from '@ionic-native/image-picker/ngx';
         StatusBar,
         SplashScreen,
         AuthService,
-        ImagePicker
+        ImagePicker,
+        Geolocation
     ],
     bootstrap: [AppComponent]
 })

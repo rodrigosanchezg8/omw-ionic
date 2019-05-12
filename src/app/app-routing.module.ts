@@ -38,7 +38,11 @@ const deliveriesRoutes = [{
                     loadChildren: './deliveries/assign/delivery-assign.module#DeliveryAssignPageModule'
                 },
             ]
-        }
+        },
+        {
+            path: 'delivery-man-tracker',
+            loadChildren: './deliveries/delivery-man-tracker/delivery-man-tracker.module#DeliveryManTrackerPageModule'
+        },
     ]
 }];
 
@@ -98,7 +102,15 @@ const routes: Routes = [
                 ]
             },
             ...deliveriesRoutes,
-            {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
+            {
+                path: 'setup', children: [
+                    {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
+                    {
+                        path: 'save-user',
+                        loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
+                    },
+                ]
+            }
         ]
     },
     {path: 'delivery-men', redirectTo: 'delivery-men/tabs/delivery-men-options', pathMatch: 'full'},
@@ -111,7 +123,15 @@ const routes: Routes = [
                 loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'
             },
             ...deliveriesRoutes,
-            {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
+            {
+                path: 'setup', children: [
+                    {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
+                    {
+                        path: 'save-user',
+                        loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
+                    },
+                ]
+            }
         ]
     },
     {path: 'clients', redirectTo: 'clients/tabs/company', pathMatch: 'full'},
@@ -129,9 +149,18 @@ const routes: Routes = [
                 ]
             },
             ...deliveriesRoutes,
-            {path: 'setup', loadChildren: './setup/setup.module#SetupPageModule'},
+            {
+                path: 'setup', children: [
+                    {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
+                    {
+                        path: 'save-user',
+                        loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
+                    },
+                ]
+            }
         ]
     },
+
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {User} from "../../models/user";
 import {environment} from "../../environments/environment.prod";
 import {AlertController} from "@ionic/angular";
+import {MapService} from "../../services/map.service";
 
 @Component({
     selector: 'app-setup',
@@ -12,12 +13,13 @@ import {AlertController} from "@ionic/angular";
 })
 export class SetupPage implements OnInit {
 
-    private storageUrl = environment.storageUrl;
-    private user: User;
+    public storageUrl = environment.storageUrl;
+    public user: User;
 
     constructor(private storage: Storage,
                 private alertController: AlertController,
-                private router: Router) {
+                private router: Router,
+                private mapService: MapService) {
     }
 
     ngOnInit() {
@@ -25,6 +27,8 @@ export class SetupPage implements OnInit {
 
     async ionViewWillEnter() {
         this.user = await this.storage.get('user') as User;
+        if (this.user && this.user.location)
+            this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
     }
 
     async logout() {

@@ -56,7 +56,9 @@ export class ProductSavePage implements OnInit {
         const options = {
             quality: 70,
             outputType: 1,
-            maximumImagesCount: 1
+            maximumImagesCount: 1,
+            width: 600,
+            height: 600,
         };
 
         try {
@@ -72,9 +74,14 @@ export class ProductSavePage implements OnInit {
     }
 
     async save() {
+
+        this.loading.present();
+
         const productsRes = this.isEditMode ?
             await this.deliveryProductService.update(this.deliveryProduct) :
             await this.deliveryProductService.create(this.deliveryProduct);
+
+        this.loading.dismiss();
 
         this.responses.presentResponse(productsRes);
         if (productsRes.status === 'success') {

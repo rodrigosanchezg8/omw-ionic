@@ -49,11 +49,14 @@ export class DeliveryProductsPage implements OnInit {
                 this.isEditMode = ps.isEditMode;
             }
 
-            if (ps.deliveryId)
+            if (ps.deliveryId) {
                 this.deliveryService.delivery = await this.deliveryService.fetchOne(ps.deliveryId)
+            }
 
-            this.deliveryProductsService.deliveryProducts =
-                await this.deliveryProductsService.fetchAllByDelivery(this.deliveryService.delivery.id)
+            if (this.currentUser.role.name !== 'delivery_man') {
+                this.deliveryProductsService.deliveryProducts =
+                    await this.deliveryProductsService.fetchAllByDelivery(this.deliveryService.delivery.id)
+            }
 
         });
     }

@@ -1,0 +1,116 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: white"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Transporte de entrega</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card-content>
+        <app-map [search]="false"
+                 [senderClientLocation]="deliveryService?.delivery?.company_is_sending ?
+            deliveryService?.delivery?.sender?.company?.location : deliveryService?.delivery?.sender?.location"
+                 [receiverClientLocation]="deliveryService?.delivery?.receiver?.location"
+                 [deliveryManLocationTracks]="deliveryService?.delivery?.location_tracks"></app-map>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="6">
+                    <ion-label style="display: block">De: {{ deliveryService.delivery?.sender?.full_name }}</ion-label>
+                    <img class="person-image"
+                         *ngIf="deliveryService.delivery?.sender?.profile_photo"
+                         src="{{ storageUrl + deliveryService?.delivery?.sender?.profile_photo }}">
+                    <div *ngIf="!deliveryService.delivery?.sender?.profile_photo">
+                        <ion-icon name="contact"
+                                  style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+                    </div>
+                    <div style="text-align: center">
+                        <span style="font-weight: bold; display: block">Teléfono: </span>
+                        <div> {{ deliveryService?.delivery?.sender?.phone }}</div>
+                    </div>
+                </ion-col>
+                <ion-col size="6">
+                    <ion-label>Para: {{ deliveryService.delivery?.receiver?.full_name }}</ion-label>
+                    <img class="person-image"
+                         *ngIf="deliveryService.delivery?.receiver?.profile_photo"
+                         src="{{ storageUrl + deliveryService?.delivery?.receiver?.profile_photo }}">
+                    <div *ngIf="!deliveryService.delivery?.receiver?.profile_photo">
+                        <ion-icon name="contact"
+                                  style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
+                    </div>
+                    <div style="text-align: center">
+                        <span style="font-weight: bold; display: block">Teléfono: </span>
+                        <div> {{ deliveryService?.delivery?.receiver?.phone }}</div>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
+                        <ion-col size="5">
+                            <span style="font-weight: bold">Planeado a empezar: </span>
+                        </ion-col>
+                        <ion-col size="7">
+                            <div> {{ deliveryService?.delivery?.planned_start_date }}</div>
+                        </ion-col>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
+                        <ion-col size="5">
+                            <span style="font-weight: bold">Planeado a terminar: </span>
+                        </ion-col>
+                        <ion-col size="7">
+                            <div> {{ deliveryService?.delivery?.planned_end_date }}</div>
+                        </ion-col>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
+                        <ion-col size="5">
+                            <span style="font-weight: bold">Se empezó recorrido: </span>
+                        </ion-col>
+                        <ion-col size="7">
+                            <div>{{  deliveryService?.delivery?.departure_date ?
+                                deliveryService?.delivery?.departure_date : 'Sin empezar'
+                                }}</div>
+                        </ion-col>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item style="width: 100%">
+                        <ion-col>
+                            <span style="font-weight: bold">Se entregó: </span>
+                        </ion-col>
+                        <ion-col>
+                            <ion-text align-self-start>{{  deliveryService?.delivery?.arrival_date ?
+                                deliveryService?.delivery?.arrival_date : 'Sin entregar' }}</ion-text>
+                        </ion-col>
+                    </ion-item>
+                </ion-row>
+            </ion-row>
+        </ion-grid>
+    </ion-card-content>
+</ion-content>
+
+
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-button *ngIf="deliveryService?.delivery?.delivery_status.status !== 'Entregado'"
+                            size="large"
+                            expand="full"
+                            (click)="updateLocation()">
+                    {{ deliveryService?.delivery?.location_tracks?.length ?
+                    'Actualizar localización' : 'Empezar entrega' }}
+                </ion-button>
+                <ion-text *ngIf="deliveryService?.delivery?.delivery_status?.status === 'Entregado'"
+                          style="text-align: center">
+                    <h1>ENTREGA FINALIZADA</h1>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

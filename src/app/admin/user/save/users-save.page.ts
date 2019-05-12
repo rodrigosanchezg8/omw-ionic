@@ -36,6 +36,9 @@ export class UsersSavePage implements OnInit {
     }
 
     async ngOnInit() {
+    }
+
+    async ionViewWillEnter() {
         try {
             this.currentUser = await this.storage.get('user') as User;
             this.route.params.subscribe(async ps => {
@@ -56,6 +59,10 @@ export class UsersSavePage implements OnInit {
                     this.user.location.lat = location.lat;
                     this.user.location.lng = location.lng;
                 });
+
+                if (this.isEditMode)
+                    this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+
             });
 
         } catch (e) {
@@ -67,7 +74,9 @@ export class UsersSavePage implements OnInit {
         const options = {
             quality: 70,
             outputType: 1,
-            maximumImagesCount: 1
+            maximumImagesCount: 1,
+            width: 600,
+            height: 600,
         };
 
         try {
@@ -85,20 +94,32 @@ export class UsersSavePage implements OnInit {
     async save() {
         this.user.birth_date = this.user.birth_date ? this.user.birth_date.substr(0, 10) : undefined;
 
+        this.loading.present();
+
         let userRes = this.isEditMode ?
             await this.userService.update(this.user,
                 {password_confirmation: this.passwordConfirmation}) :
             await this.userService.signUp(this.user,
                 {password_confirmation: this.passwordConfirmation});
 
+        this.loading.dismiss();
+
         this.responses.presentResponse(userRes);
 
         if (userRes.status === 200) {
-            if (this.currentUser && this.currentUser.role.name === 'admin') {
-                if (this.user.role.name === 'delivery_man') {
-                    this.router.navigateByUrl('admin/tabs/delivery-men');
-                } else
-                    this.router.navigateByUrl('admin/tabs/clients');
+            if (this.currentUser) {
+                if (this.currentUser.role.name === 'admin') {
+                    if (this.user.role.name === 'delivery_man') {
+                        this.router.navigateByUrl('admin/tabs/delivery-men');
+                    } else
+                        this.router.navigateByUrl('admin/tabs/clients');
+                } else if (this.currentUser.role.name === 'delivery_man') {
+                    await this.storage.set('user', userRes.user);
+                    this.router.navigateByUrl('delivery-men/tabs/setup');
+                } else if (this.currentUser.role.name === 'client') {
+                    await this.storage.set('user', userRes.user);
+                    this.router.navigateByUrl('clients/tabs/setup');
+                }
             } else {
                 this.router.navigateByUrl('home');
             }
