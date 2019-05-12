@@ -12,12 +12,8 @@
 
 <ion-row *ngIf="lat && lng">
     <ion-item style="width: 100%">
-        <ion-col size="6">
-            <ion-label style="font-weight: bold">Dirección:</ion-label>
-        </ion-col>
-        <ion-col size="6">
-            <ion-text>{{ fullAddress }}</ion-text>
-        </ion-col>
+        <ion-label style="font-weight: bold">Dirección:</ion-label>
+        <ion-text>{{ fullAddress }}</ion-text>
     </ion-item>
 </ion-row>
 
@@ -59,7 +55,7 @@
         <ion-row *ngFor="let address of deliveryManAddresses">
             <ion-item style="width: 100%">
                 <ion-col size="6">
-                    <ion-label style="font-weight: bold">Dirección de seguimiento</ion-label>
+                    <ion-label style="font-weight: bold">Dirección de seguimiento:</ion-label>
                 </ion-col>
                 <ion-col size="6">
                     <ion-text>{{ address }}</ion-text>

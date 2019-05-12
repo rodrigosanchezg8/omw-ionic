@@ -74,9 +74,14 @@ export class ProductSavePage implements OnInit {
     }
 
     async save() {
+
+        this.loading.present();
+
         const productsRes = this.isEditMode ?
             await this.deliveryProductService.update(this.deliveryProduct) :
             await this.deliveryProductService.create(this.deliveryProduct);
+
+        this.loading.dismiss();
 
         this.responses.presentResponse(productsRes);
         if (productsRes.status === 'success') {

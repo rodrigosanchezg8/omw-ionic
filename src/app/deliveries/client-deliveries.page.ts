@@ -17,8 +17,8 @@ export class ClientDeliveriesPage implements OnInit {
 
     private origin: string;
     private status: string;
+    public deliverySubtitle = '';
     private singlePendingDelivery: Delivery;
-    public deliverySubtitle: string;
     public deliveries: Delivery[];
     public currentUser: User;
 
@@ -32,22 +32,24 @@ export class ClientDeliveriesPage implements OnInit {
     }
 
     async ngOnInit() {
-        this.origin = 'receiver';
+        this.currentUser = await this.storage.get('user') as User;
+        if (!this.currentUser.role)
+            this.responses.presentResponse({message: 'El usuario no tiene un rol'});
+        else {
+            if (this.currentUser.role.name === 'admin') {
+                this.status = 'Creando';
+                this.origin = undefined;
+            } else if (this.currentUser.role.name === 'delivery_man') {
+                this.status = 'En progreso';
+                this.origin = undefined;
+            } else {
+                this.origin = 'receiver';
+                this.status = 'Creando';
+            }
+        }
     }
 
     async ionViewWillEnter() {
-        this.currentUser = await this.storage.get('user') as User;
-        this.status = 'Creando';
-
-        if (this.currentUser.role.name === 'delivery_man') {
-            this.deliverySubtitle = 'Por iniciar';
-            this.status = 'En progreso';
-            this.origin = undefined;
-        } else if (this.currentUser.role.name === 'admin') {
-            this.deliverySubtitle = 'Entrega';
-            this.origin = undefined;
-        }
-
         await this.getDeliveries();
     }
 
