@@ -23,7 +23,6 @@ import {environment} from "../environments/environment.prod";
 
 const config: SocketIoConfig = {url: environment.socketIP, options: {}};
 
-
 @NgModule({
     declarations: [
         AppComponent,

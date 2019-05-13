@@ -15,7 +15,6 @@ export class MapQuestService {
     async reverseGeocode(lat: number, lng: number): Promise<any> {
         const geocodeResult = await this.httpClient.get(this.reverseGeocodingURL + `${lat},${lng}`).toPromise() as any;
         let firstLocation, fullAddress;
-        console.log(geocodeResult)
         if (geocodeResult && geocodeResult.results[0] && geocodeResult.results[0].locations &&
             geocodeResult.results[0].locations.length) {
             firstLocation = geocodeResult.results[0].locations[0];

@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button style="color: white"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Mensajes de la entrega</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content #content>
+    <ion-list>
+        <ion-row *ngFor="let message of deliveryMessagesService?.messages">
+            <ion-card [ngClass]="message?.class">
+                <ion-card-content>
+                    <ion-row>
+                        <ion-col size="8">
+                            <ion-label>{{ message?.created_at }}</ion-label>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-label>{{ message?.replier?.full_name }}</ion-label>
+                        </ion-col>
+                    </ion-row>
+                    {{ message?.body }}
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-grid>
+        <ion-row *ngIf="message?.base64_file && message?.file_name" justify-content-center align-items-center>
+            <ion-col>
+                <ion-label *ngIf="message?.file_name">{{ message?.file_name }}</ion-label>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center align-items-center>
+            <ion-col style="text-align: center" size="1">
+                <ion-icon name="attach" class="large-icon" (click)="attachMessageFile()"></ion-icon>
+            </ion-col>
+            <ion-col size="9">
+                <ion-item style="width: 100%">
+                    <ion-textarea maxlength="200" (ngModelChange)="message.body = $event" [ngModel]="message?.body"
+                                  [ngModelOptions]="{standalone: true}"
+                                  placeholder="Escribe un mensaje"></ion-textarea>
+                </ion-item>
+            </ion-col>
+            <ion-col size="1" style="text-align: center">
+                <ion-button ion-button color="secondary"
+                            [disabled]="!message || !message?.body || message?.body?.length === 0"
+                            (click)="sendMessage()">
+                    <ion-icon name="send"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

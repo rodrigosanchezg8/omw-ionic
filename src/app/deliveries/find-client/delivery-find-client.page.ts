@@ -32,7 +32,7 @@ export class DeliveryFindClientPage implements OnInit {
                 private storage: Storage,
                 private activatedRoute: ActivatedRoute) {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    }
+    }1
 
     ngOnInit() {
 

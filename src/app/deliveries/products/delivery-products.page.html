@@ -3,7 +3,7 @@
         <ion-buttons slot="start" *ngIf="isEditMode">
             <ion-back-button style="color: white"></ion-back-button>
         </ion-buttons>
-        <ion-title>Productos de la entrega</ion-title>
+        <ion-title>Entrega</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -90,6 +90,13 @@
                 <ion-icon name="pin"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>
+    </ion-fab>
+
+    <ion-fab style="margin-bottom: 60px" vertical="bottom"
+             [horizontal]="canAddOrUpdate() ? 'center' : 'end'" edge slot="fixed">
+        <ion-fab-button [routerLink]="['./../../messages']">
+            <ion-icon name="mail"></ion-icon>
+        </ion-fab-button>
     </ion-fab>
 
     <ion-fab *ngIf="canAddOrUpdate()"
