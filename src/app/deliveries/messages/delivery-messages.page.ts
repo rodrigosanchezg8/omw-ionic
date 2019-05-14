@@ -65,6 +65,9 @@ export class DeliveryMessagesPage implements OnInit {
     }
 
     async requestHistoryEvent() {
+        if (!this.deliveryService.delivery)
+            return;
+
         await this.loading.present("Cargando mensajes...");
         return await this.deliveryMessagesService.requestByDelivery(this.deliveryService.delivery.id)
             .then(async (observable: any) => {
@@ -106,11 +109,6 @@ export class DeliveryMessagesPage implements OnInit {
             () => {
                 this.responses.presentResponse({message: 'Error al obtener los mensajes.'});
             });
-    }
-
-
-    private attachMessageFile() {
-
     }
 
     async sendMessage() {

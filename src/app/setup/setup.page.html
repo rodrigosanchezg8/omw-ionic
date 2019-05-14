@@ -9,13 +9,9 @@
     <div *ngIf="!user?.profile_photo">
         <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
     </div>
-    <ion-avatar
-            style="margin: 0 auto;
-                    width:100% !important;
-                    height : 100% !important;
-                    max-width: 100px !important;
-                    max-height: 100px !important;" *ngIf="user?.profile_photo">
-        <img src="{{ storageUrl + user?.profile_photo }}">
+    <ion-avatar *ngIf="user?.profile_photo"
+                class="person-image">
+        <img src="{{storageUrl + user?.profile_photo }}">
     </ion-avatar>
     <ion-list>
         <ion-item class="ion-margin-top">

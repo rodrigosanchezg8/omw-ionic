@@ -32,7 +32,9 @@ export class DeliveryFindClientPage implements OnInit {
                 private storage: Storage,
                 private activatedRoute: ActivatedRoute) {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    }1
+    }
+
+    1
 
     ngOnInit() {
 
@@ -54,6 +56,9 @@ export class DeliveryFindClientPage implements OnInit {
                 await this.fetchClient();
                 this.isEditMode = true;
 
+            } else {
+                this.deliveryService.delivery = new Delivery();
+                this.deliveryService.delivery.sender_id = this.currentUser.id;
             }
 
             if (this.deliveryService.delivery && ps.deliveryOrigin) {
@@ -126,7 +131,7 @@ export class DeliveryFindClientPage implements OnInit {
                 this.router.navigate(['/admin/tabs/' + path,
                     {deliveryId: this.deliveryService.delivery.id}]);
             } else {
-                this.responses.presentResponse({message: 'Tú rol no permite acceder.'});
+                this.responses.presentResponse({message: 'Tu rol no permite acceder.'});
             }
         }
     }

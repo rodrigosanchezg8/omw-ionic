@@ -13,7 +13,8 @@
     <ion-list *ngFor="let company of companies">
         <ion-item-sliding>
             <ion-item>
-                <ion-avatar style="margin-right: 5px" *ngIf="company.profile_photo">
+                <ion-avatar *ngIf="company.profile_photo"
+                            class="list-person-image">
                     <img src="{{ storageUrl + company.profile_photo }}">
                 </ion-avatar>
                 <ion-label [routerLink]="['./detail/', {companyId: company.id}]">

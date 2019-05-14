@@ -35,9 +35,6 @@
             </ion-col>
         </ion-row>
         <ion-row justify-content-center align-items-center>
-            <ion-col style="text-align: center" size="1">
-                <ion-icon name="attach" class="large-icon" (click)="attachMessageFile()"></ion-icon>
-            </ion-col>
             <ion-col size="9">
                 <ion-item style="width: 100%">
                     <ion-textarea maxlength="200" (ngModelChange)="message.body = $event" [ngModel]="message?.body"
@@ -45,7 +42,7 @@
                                   placeholder="Escribe un mensaje"></ion-textarea>
                 </ion-item>
             </ion-col>
-            <ion-col size="1" style="text-align: center">
+            <ion-col size="3" style="text-align: center">
                 <ion-button ion-button color="secondary"
                             [disabled]="!message || !message?.body || message?.body?.length === 0"
                             (click)="sendMessage()">

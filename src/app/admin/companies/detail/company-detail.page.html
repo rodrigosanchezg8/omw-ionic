@@ -13,11 +13,7 @@
         <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
     </div>
     <ion-avatar
-            style="margin: 0 auto;
-                    width:100% !important;
-                    height : 100% !important;
-                    max-width: 100px !important;
-                    max-height: 100px !important;" *ngIf="company?.profile_photo">
+            class="person-image" *ngIf="company?.profile_photo">
         <img src="{{ storageUrl + company?.profile_photo }}">
     </ion-avatar>
     <ion-list>

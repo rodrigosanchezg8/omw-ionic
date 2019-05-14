@@ -64,7 +64,6 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
 
     originChanged(origin) {
         this.origin = origin;
-        console.log({origin: this.origin, sender: this.senderClient});
         if (this.origin === 'client' && this.senderClient.location) {
             this.mapService.locationChanged(this.senderClient.location.lat, this.senderClient.location.lng);
         } else if (this.origin === 'company' && this.senderClient.company && this.senderClient.company.location) {

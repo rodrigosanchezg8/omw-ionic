@@ -92,7 +92,10 @@
         </ion-fab-list>
     </ion-fab>
 
-    <ion-fab style="margin-bottom: 60px" vertical="bottom"
+    <ion-fab *ngIf="(deliveryService.delivery?.receiver_id === currentUser?.id || currentUser?.role?.name === 'admin') &&
+                !(deliveryService.delivery?.delivery_status?.status === deliveryService.statuses?.making ||
+                deliveryService.delivery?.delivery_status?.status === deliveryService.statuses?.cancelled)"
+             style="margin-bottom: 60px" vertical="bottom"
              [horizontal]="canAddOrUpdate() ? 'center' : 'end'" edge slot="fixed">
         <ion-fab-button [routerLink]="['./../../messages']">
             <ion-icon name="mail"></ion-icon>

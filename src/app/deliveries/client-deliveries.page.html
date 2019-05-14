@@ -40,12 +40,13 @@
             <ion-icon name="time"></ion-icon>
             <ion-label>En progreso</ion-label>
         </ion-button>
-        <ion-button [color]="status === 'Entregado' ? 'medium': 'light'" (click)="fetchByOriginStatus('Entregado')">
+        <ion-button [color]="status === 'Entregado' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('Entregado')">
             <ion-icon name="checkmark"></ion-icon>
             <ion-label>Entregadas</ion-label>
         </ion-button>
-        <ion-button [color]="status === 'Canceladas' ? 'medium': 'light'"
-                    (click)="fetchByOriginStatus('Canceladas')">
+        <ion-button [color]="status === 'Cancelado' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('Cancelado')">
             <ion-icon name="close"></ion-icon>
             <ion-label>Canceladas</ion-label>
         </ion-button>
@@ -73,18 +74,21 @@
                             <ion-card-content>
                                 <ion-grid>
                                     <ion-row>
+                                        <ion-avatar
+                                                *ngIf="currentUser?.role?.name === 'admin' && delivery?.sender?.profile_photo"
+                                                class="person-image">
+                                            <img src="{{ storageUrl + delivery.sender.profile_photo }}">
+                                        </ion-avatar>
 
-                                        <img *ngIf="currentUser?.role?.name === 'admin' && delivery?.sender?.profile_photo"
-                                             class="person-image"
-                                             src="{{ storageUrl + delivery.sender.profile_photo }}">
-                                        <img *ngIf="currentUser?.role?.name === 'client' &&
+                                        <ion-avatar *ngIf="currentUser?.role?.name === 'client' &&
                                               (currentUser?.role?.name === 'client' && origin === 'receiver' &&
                                               delivery?.sender?.profile_photo) ||
                                               (currentUser?.role?.name === 'client' && origin === 'sender' &&
                                               delivery?.receiver?.profile_photo)"
-                                             class="person-image"
-                                             src="{{ storageUrl + (origin === 'receiver' ? delivery?.sender?.profile_photo :
+                                                    class="person-image">
+                                            <img src="{{ storageUrl + (origin === 'receiver' ? delivery?.sender?.profile_photo :
                      delivery?.receiver?.profile_photo) }}">
+                                        </ion-avatar>
 
                                         <div *ngIf="(currentUser?.role?.name === 'admin' &&
                                               !delivery?.sender?.profile_photo) ||
@@ -115,7 +119,8 @@
                             </ion-card-content>
                         </ion-col>
                         <ion-col size="4"
-                                 style="vertical-align: top; text-align: right">
+                                 style="vertical-align: top; text-align: right"
+                                 *ngIf="delivery.delivery_status.status !== deliveryService.statuses.cancelled">
                             <ion-button fill="outline"
                                         [routerLink]="['./send/products', {deliveryId: delivery.id, isEditMode: true}]">
                                 <ion-icon name="create"></ion-icon>
@@ -151,10 +156,10 @@
                     <ion-card-content>
                         <ion-grid>
                             <ion-row>
-
-                                <img class="person-image"
-                                     *ngIf="singlePendingDelivery?.sender?.profile_photo"
-                                     src="{{ storageUrl + singlePendingDelivery?.sender?.profile_photo }}">
+                                <ion-avatar *ngIf="singlePendingDelivery?.sender?.profile_photo"
+                                            class="person-image">
+                                    <img src="{{ storageUrl + singlePendingDelivery?.sender?.profile_photo }}">
+                                </ion-avatar>
                                 <div *ngIf="!singlePendingDelivery?.sender?.profile_photo">
                                     <ion-icon name="contact"
                                               style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>

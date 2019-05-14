@@ -14,7 +14,8 @@
     <ion-list *ngFor="let client of clients">
         <ion-item-sliding>
             <ion-item>
-                <ion-avatar style="margin-right: 5px" *ngIf="client.profile_photo">
+                <ion-avatar *ngIf="client.profile_photo"
+                            class="list-person-image">
                     <img src="{{ storageUrl + client.profile_photo }}">
                 </ion-avatar>
                 <ion-label [routerLink]="['./detail/', {userId: client.id}]">
