@@ -1,0 +1,23 @@
+
+textarea {
+  resize: none;
+}
+
+.message {
+  border-radius: 5px;
+  width: 100%;
+
+  &.sent {
+    background-color: #bdf2d0;
+  }
+
+  &.received {
+    background-color: #FFF;
+  }
+
+}
+
+.large-icon {
+  font-size: 25px;
+}
+

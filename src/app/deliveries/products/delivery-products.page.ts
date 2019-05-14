@@ -133,8 +133,8 @@ export class DeliveryProductsPage implements OnInit {
     }
 
     canAddOrUpdate() {
-        return !this.deliveryService.delivery || !this.deliveryService.delivery.sender ||
-            !this.currentUser || this.deliveryService.delivery.sender.id === this.currentUser.id;
+        return this.deliveryService.delivery && this.deliveryService.delivery.sender && this.currentUser &&
+            (this.deliveryService.delivery.sender.id === this.currentUser.id || this.currentUser.role.name === 'admin');
     }
 
     async assignDelivery() {

@@ -28,6 +28,10 @@ const deliveriesRoutes = [{
                             loadChildren: './deliveries/products/delivery-products.module#DeliveryProductsPageModule'
                         },
                         {
+                            path: 'messages',
+                            loadChildren: './deliveries/messages/delivery-messages.module#DeliveryMessagesPageModule'
+                        },
+                        {
                             path: 'save',
                             loadChildren: './deliveries/products/save/product-save.module#ProductSavePageModule'
                         },
@@ -41,7 +45,16 @@ const deliveriesRoutes = [{
         },
         {
             path: 'delivery-man-tracker',
-            loadChildren: './deliveries/delivery-man-tracker/delivery-man-tracker.module#DeliveryManTrackerPageModule'
+            children: [
+                {
+                    path: '',
+                    loadChildren: './deliveries/delivery-man-tracker/delivery-man-tracker.module#DeliveryManTrackerPageModule'
+                },
+                {
+                    path: 'messages',
+                    loadChildren: './deliveries/messages/delivery-messages.module#DeliveryMessagesPageModule'
+                },
+            ]
         },
     ]
 }];
@@ -160,6 +173,7 @@ const routes: Routes = [
             }
         ]
     },
+
 
 ];
 

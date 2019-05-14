@@ -50,6 +50,7 @@ export class ClientDeliveriesPage implements OnInit {
     }
 
     async ionViewWillEnter() {
+        this.currentUser = await this.storage.get('user') as User;
         await this.getDeliveries();
     }
 
@@ -74,7 +75,7 @@ export class ClientDeliveriesPage implements OnInit {
     async getDeliveries() {
         this.loading.present();
 
-        if (this.currentUser.role.name === 'client') {
+        if (this.currentUser && this.currentUser.role && this.currentUser.role.name === 'client') {
             this.deliveries = await this.deliveryService.fetchAllByOriginStatus(this.origin, this.status);
             this.loading.dismiss();
         } else if (this.currentUser.role.name === 'admin') {
@@ -84,7 +85,8 @@ export class ClientDeliveriesPage implements OnInit {
             const deliveries = await this.deliveryService.fetchAllByStatus(this.status) as Delivery[];
 
             this.loading.dismiss();
-            if (deliveries.length > 1) {
+            if (deliveries.length > 1 && (this.status === this.deliveryService.statuses.notStarted ||
+                this.status === this.deliveryService.statuses.inProgress)) {
                 this.responses.presentResponse({
                     message: 'Un repartidor no puede tener más de dos entregas no iniciadas' +
                         'o en progreso.'

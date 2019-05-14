@@ -22,3 +22,16 @@ agm-map {
   height: 300px;
 }
 
+.person-image {
+  margin: 0 auto;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100px !important;
+  max-height: 100px !important;
+}
+
+.list-person-image {
+  margin: 0 5px 0 auto;
+  max-width: 100px !important;
+  max-height: 100px !important;
+}

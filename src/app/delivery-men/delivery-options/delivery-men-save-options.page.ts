@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 import {User} from "../../../models/user";
 import {DeliveryMan} from "../../../models/delivery-man";
+import {Loading} from "../../../traits/loading";
 
 @Component({
     selector: 'app-delivery-mans-save-options',
@@ -23,16 +24,21 @@ export class DeliveryMenSaveOptionsPage implements OnInit {
     constructor(private responses: ResponseService,
                 private router: Router,
                 private deliveryManService: DeliveryManService,
-                private storage: Storage) {
+                private storage: Storage,
+                private loading: Loading) {
     }
 
     async ngOnInit() {
+        this.loading.present();
+
         const storageUser = await this.storage.get('user') as User;
         this.userId = storageUser.id;
         this.serviceRanges = await this.deliveryManService.getServiceRanges() as ServiceRange[];
 
         const deliveryManServiceRes = await this.deliveryManService.get(this.userId) as any;
         this.deliveryMan = deliveryManServiceRes.delivery_man as DeliveryMan;
+
+        this.loading.dismiss();
 
         if (this.deliveryMan) {
             this.selectedServiceRange = this.deliveryMan.service_range_id;
@@ -48,12 +54,12 @@ export class DeliveryMenSaveOptionsPage implements OnInit {
         };
 
         try {
+            this.loading.present();
             const deliveryRes = await this.deliveryManService.post(data);
-            this.responses.presentResponse(deliveryRes, () => {
-                if (deliveryRes.status === 200) {
-                    this.router.navigateByUrl('delivery-mens/tabs');
-                }
-            });
+            this.loading.dismiss();
+
+            this.responses.presentResponse(deliveryRes);
+
         } catch (e) {
             this.responses.presentGenericalErrorResponse();
         }

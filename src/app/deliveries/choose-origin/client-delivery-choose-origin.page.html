@@ -6,9 +6,15 @@
 
 <ion-content>
     <div style="max-width: 600px; margin: 0 auto" padding>
-        <ion-text style="display: block;" class="ion-text-center, ion-margin-top">
+        <ion-text *ngIf="senderClient?.company"
+                  style="display: block;" class="ion-text-center, ion-margin-top">
             Escoge si nuestro repartidor tendrá que ir a tu localización personal para recoger el paquete o si
             tendrá que ir a tu localización empresarial.
+        </ion-text>
+        <ion-text *ngIf="!senderClient?.company"
+                  style="display: block;" class="ion-text-center, ion-margin-top">
+            La ubicación a donde pasará el repartidor por tu/s producto/s es tu ubicación personal. Cuando registres una
+            compañia podras escoger entre la ubicación persona o la de la compañia
         </ion-text>
     </div>
     <ion-segment [disabled]="deliveryService.clientCanNotUpdate()"
@@ -17,7 +23,7 @@
         <ion-segment-button value="client">
             <ion-icon name="person"></ion-icon>
         </ion-segment-button>
-        <ion-segment-button value="company">
+        <ion-segment-button value="company" *ngIf="senderClient?.company">
             <ion-icon name="business"></ion-icon>
         </ion-segment-button>
     </ion-segment>

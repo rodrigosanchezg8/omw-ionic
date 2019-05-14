@@ -56,13 +56,13 @@
              [lng]="user?.location.lng"
              [search]="true"></app-map>
 
-    <ion-item>
+    <ion-item *ngIf="!isEditMode">
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input (ngModelChange)="user.password=$event" [ngModel]="user?.password" name="password"
                    type="password"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="!isEditMode">
         <ion-label position="floating">Confirmar contraseña</ion-label>
         <ion-input [(ngModel)]="passwordConfirmation" name="password_confirmation" type="password"></ion-input>
     </ion-item>

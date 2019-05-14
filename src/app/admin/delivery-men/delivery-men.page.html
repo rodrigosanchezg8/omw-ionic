@@ -13,8 +13,8 @@
     <ion-list *ngFor="let deliveryMan of deliveryMen">
         <ion-item-sliding>
             <ion-item>
-                <ion-avatar style="margin-right: 5px" *ngIf="deliveryMan.profile_photo">
-                    <img src="{{ storageUrl + deliveryMan.profile_photo }}">
+                <ion-avatar *ngIf="deliveryMan.profile_photo"
+                            class="list-person-image">
                 </ion-avatar>
                 <ion-label [routerLink]="['/admin/tabs/delivery-men/detail/', {userId: deliveryMan.id}]">
                     {{ deliveryMan.full_name }}

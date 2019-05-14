@@ -25,7 +25,7 @@ export class MapComponent implements OnInit, OnChanges {
     receiverClientAddress: string;
     deliveryManAddress: string;
 
-    deliveryManAddresses: string[];
+    deliveryManAddresses: any[] = [];
 
     @Input() search: any;
     @Input() deliveryManLocation: Location;
@@ -119,13 +119,21 @@ export class MapComponent implements OnInit, OnChanges {
                 this.deliveryManLocation.lng) as any;
             this.deliveryManAddress = geocodeResult ? geocodeResult : '';
         }
-        if (this.deliveryManLocationTracks && !this.deliveryManAddresses) {
-            this.deliveryManAddresses = [];
+        if (this.deliveryManLocationTracks) {
             for (let locationTrack of this.deliveryManLocationTracks) {
-                const locationTrackAddress = await this.mapQuestService.reverseGeocode(locationTrack.location.lat,
-                    locationTrack.location.lng) as any;
-                if (locationTrackAddress)
-                    this.deliveryManAddresses.push(locationTrackAddress);
+                if (!this.deliveryManAddresses.find(address =>
+                    address.lat === locationTrack.location.lat &&
+                    address.lng === locationTrack.location.lng
+                )) {
+                    const locationTrackAddress = await this.mapQuestService.reverseGeocode(locationTrack.location.lat,
+                        locationTrack.location.lng) as any;
+                    if (locationTrackAddress)
+                        this.deliveryManAddresses.push({
+                            lat: locationTrack.location.lat,
+                            lng: locationTrack.location.lng,
+                            address: locationTrackAddress
+                        });
+                }
             }
         }
     }

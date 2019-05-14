@@ -18,9 +18,11 @@
             <ion-row>
                 <ion-col size="6">
                     <ion-label style="display: block">De: {{ deliveryService.delivery?.sender?.full_name }}</ion-label>
-                    <img class="person-image"
-                         *ngIf="deliveryService.delivery?.sender?.profile_photo"
-                         src="{{ storageUrl + deliveryService?.delivery?.sender?.profile_photo }}">
+                    <ion-avatar *ngIf="deliveryService.delivery?.sender?.profile_photo"
+                                class="person-image">
+                        <img src="{{ storageUrl + deliveryService?.delivery?.sender?.profile_photo }}">
+                    </ion-avatar>
+
                     <div *ngIf="!deliveryService.delivery?.sender?.profile_photo">
                         <ion-icon name="contact"
                                   style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
@@ -32,9 +34,10 @@
                 </ion-col>
                 <ion-col size="6">
                     <ion-label>Para: {{ deliveryService.delivery?.receiver?.full_name }}</ion-label>
-                    <img class="person-image"
-                         *ngIf="deliveryService.delivery?.receiver?.profile_photo"
-                         src="{{ storageUrl + deliveryService?.delivery?.receiver?.profile_photo }}">
+                    <ion-avatar *ngIf="deliveryService.delivery?.receiver?.profile_photo"
+                                class="person-image">
+                        <img src="{{storageUrl + deliveryService?.delivery?.receiver?.profile_photo }}">
+                    </ion-avatar>
                     <div *ngIf="!deliveryService.delivery?.receiver?.profile_photo">
                         <ion-icon name="contact"
                                   style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
