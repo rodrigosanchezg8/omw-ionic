@@ -20,7 +20,7 @@ import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {SocketIoConfig, SocketIoModule} from "ng-socket-io";
 import {environment} from "../environments/environment.prod";
-
+import {ChartsModule} from "ng2-charts";
 const config: SocketIoConfig = {url: environment.socketIP, options: {}};
 
 @NgModule({
@@ -40,7 +40,6 @@ const config: SocketIoConfig = {url: environment.socketIP, options: {}};
         FormsModule,
         HttpClientModule,
         IonicSelectableModule,
-        MapModule,
     ],
     providers: [
         StatusBar,

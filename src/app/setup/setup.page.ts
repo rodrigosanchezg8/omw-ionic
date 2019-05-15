@@ -29,6 +29,8 @@ export class SetupPage implements OnInit {
         this.user = await this.storage.get('user') as User;
         if (this.user && this.user.location)
             this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+
+        console.log(this.user)
     }
 
     async logout() {

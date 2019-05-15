@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Retroalimentación</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div>
+        <div>
+            <div style="display: block">
+                <canvas baseChart
+                        [datasets]="scatterChartData"
+                        [options]="scatterChartOptions"
+                        [labels]="scatterChartLabels"
+                        [chartType]="scatterChartType">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <plotly-plot [data]="graph?.data" [layout]="graph?.layout" [config]="{responsive: true}"></plotly-plot>
+</ion-content>
