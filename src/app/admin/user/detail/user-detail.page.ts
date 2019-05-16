@@ -32,8 +32,12 @@ export class UserDetailPage implements OnInit {
             if (!this.user)
                 this.responses.presentResponse({message: 'El usuario no existe.'});
 
-            if (this.user.location)
-                this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+            if (this.user && this.user.location) {
+                this.mapService.confirmMapLoad.subscribe(loaded => {
+                    if (loaded)
+                        this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+                });
+            }
 
         });
     }

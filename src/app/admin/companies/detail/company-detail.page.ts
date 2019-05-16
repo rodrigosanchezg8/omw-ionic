@@ -33,8 +33,12 @@ export class CompanyDetailPage implements OnInit {
             if (!this.company)
                 this.responsesService.presentResponse({message: 'La compañia no existe.'});
 
-            if (this.company.location)
-                this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
+            if (this.company.location) {
+                this.mapService.confirmMapLoad.subscribe(loaded => {
+                    if (loaded)
+                        this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
+                });
+            }
 
         });
     }

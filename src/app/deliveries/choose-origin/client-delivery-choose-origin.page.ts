@@ -41,7 +41,6 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
                 if (ps.deliveryId) {
 
                     this.deliveryService.delivery = await this.deliveryService.fetchOne(ps.deliveryId) as Delivery;
-
                     if (this.deliveryService.delivery.company_is_sending) {
                         this.origin = 'company';
                     } else {
@@ -57,6 +56,7 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
                 }
 
                 this.deliveryService.delivery.sender_id = this.senderClient.id;
+
                 this.originChanged(this.origin);
             }
         );

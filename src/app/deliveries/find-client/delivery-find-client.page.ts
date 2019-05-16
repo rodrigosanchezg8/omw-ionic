@@ -34,8 +34,6 @@ export class DeliveryFindClientPage implements OnInit {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
 
-    1
-
     ngOnInit() {
 
     }
@@ -75,11 +73,14 @@ export class DeliveryFindClientPage implements OnInit {
         this.loading.present();
         const clientRes = await this.clientService.fetchByEmail(this.receiverClientEmail) as any;
         this.loading.dismiss();
+
         if (clientRes.status === 'success') {
             this.fetchedClient = clientRes.client as User;
 
             if (this.fetchedClient.location) {
+
                 this.mapService.locationChanged(this.fetchedClient.location.lat, this.fetchedClient.location.lng)
+
             } else {
                 this.responses.presentResponse({message: 'Éste cliente no tiene una localización registrada'});
                 this.deliveryService.delivery.receiver_id = undefined;

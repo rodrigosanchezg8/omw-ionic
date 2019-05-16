@@ -28,17 +28,6 @@
     </ion-item>
 </ion-row>
 
-<ion-row *ngIf="deliveryManLocation?.lat && deliveryManLocation?.lng">
-    <ion-item style="width: 100%">
-        <ion-col size="6">
-            <ion-label style="font-weight: bold">Dirección de repartidor:</ion-label>
-        </ion-col>
-        <ion-col size="6">
-            <ion-text>{{ deliveryManAddress }}</ion-text>
-        </ion-col>
-    </ion-item>
-</ion-row>
-
 <ion-row *ngIf="receiverClientLocation?.lat && receiverClientLocation?.lng">
     <ion-item style="width: 100%">
         <ion-col size="6">

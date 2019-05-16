@@ -17,6 +17,7 @@ export class ClientsCompanyPage implements OnInit {
 
     storageUrl = environment.storageUrl;
     user: User;
+    public confirmMapLoad: Function;
 
     constructor(private companiesService: CompaniesService,
                 private router: Router,
@@ -32,8 +33,12 @@ export class ClientsCompanyPage implements OnInit {
     async ionViewWillEnter() {
         const storageUser = await this.storage.get('user') as User;
         this.user = await this.usersService.get(storageUser.id) as User;
-        if (this.user && this.user.company && this.user.company.location)
-            this.mapService.locationChanged(this.user.company.location.lat, this.user.company.location.lng);
+        if (this.user && this.user.company && this.user.company.location) {
+            this.mapService.confirmMapLoad.subscribe(loaded => {
+                if (loaded)
+                    this.mapService.locationChanged(this.user.company.location.lat, this.user.company.location.lng);
+            })
+        }
     }
 
     async sheetActions() {

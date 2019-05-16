@@ -19,7 +19,7 @@
                 <ion-col size="6">
                     <ion-label style="display: block">De: {{ deliveryService.delivery?.sender?.full_name }}</ion-label>
                     <ion-avatar *ngIf="deliveryService.delivery?.sender?.profile_photo"
-                                class="person-image">
+                                class="person-image" style="margin: 3px">
                         <img src="{{ storageUrl + deliveryService?.delivery?.sender?.profile_photo }}">
                     </ion-avatar>
 
@@ -35,7 +35,7 @@
                 <ion-col size="6">
                     <ion-label>Para: {{ deliveryService.delivery?.receiver?.full_name }}</ion-label>
                     <ion-avatar *ngIf="deliveryService.delivery?.receiver?.profile_photo"
-                                class="person-image">
+                                class="person-image" style="margin: 3px">
                         <img src="{{storageUrl + deliveryService?.delivery?.receiver?.profile_photo }}">
                     </ion-avatar>
                     <div *ngIf="!deliveryService.delivery?.receiver?.profile_photo">
@@ -50,46 +50,30 @@
             </ion-row>
             <ion-row>
                 <ion-row style="width: 100%">
-                    <ion-item style="width: 100%">
-                        <ion-col size="5">
-                            <span style="font-weight: bold">Planeado a empezar: </span>
-                        </ion-col>
-                        <ion-col size="7">
-                            <div> {{ deliveryService?.delivery?.planned_start_date }}</div>
-                        </ion-col>
+                    <ion-item>
+                        <ion-label style="font-weight: bold" class="ion-margin-end">Planeado empezar:</ion-label>
+                        <ion-text> {{ deliveryService?.delivery?.planned_start_date }}</ion-text>
                     </ion-item>
                 </ion-row>
                 <ion-row style="width: 100%">
-                    <ion-item style="width: 100%">
-                        <ion-col size="5">
-                            <span style="font-weight: bold">Planeado a terminar: </span>
-                        </ion-col>
-                        <ion-col size="7">
-                            <div> {{ deliveryService?.delivery?.planned_end_date }}</div>
-                        </ion-col>
+                    <ion-item>
+                        <ion-label style="font-weight: bold" class="ion-margin-end">Planeado terminar:</ion-label>
+                        <ion-text> {{ deliveryService?.delivery?.planned_end_date }}</ion-text>
                     </ion-item>
                 </ion-row>
                 <ion-row style="width: 100%">
-                    <ion-item style="width: 100%">
-                        <ion-col size="5">
-                            <span style="font-weight: bold">Se empezó recorrido: </span>
-                        </ion-col>
-                        <ion-col size="7">
-                            <div>{{  deliveryService?.delivery?.departure_date ?
-                                deliveryService?.delivery?.departure_date : 'Sin empezar'
-                                }}</div>
-                        </ion-col>
+                    <ion-item>
+                        <ion-label style="font-weight: bold" class="ion-margin-end">Se empezó recorrido:</ion-label>
+                        <ion-text>{{  deliveryService?.delivery?.departure_date ?
+                            deliveryService?.delivery?.departure_date : 'Sin empezar'
+                            }}</ion-text>
                     </ion-item>
                 </ion-row>
                 <ion-row style="width: 100%">
-                    <ion-item style="width: 100%">
-                        <ion-col>
-                            <span style="font-weight: bold">Se entregó: </span>
-                        </ion-col>
-                        <ion-col>
-                            <ion-text align-self-start>{{  deliveryService?.delivery?.arrival_date ?
-                                deliveryService?.delivery?.arrival_date : 'Sin entregar' }}</ion-text>
-                        </ion-col>
+                    <ion-item>
+                        <ion-label style="font-weight: bold" class="ion-margin-end">Se entregó:</ion-label>
+                        <ion-text>{{  deliveryService?.delivery?.arrival_date ?
+                            deliveryService?.delivery?.arrival_date : 'Sin entregar' }}</ion-text>
                     </ion-item>
                 </ion-row>
             </ion-row>

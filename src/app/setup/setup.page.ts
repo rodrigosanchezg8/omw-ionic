@@ -27,10 +27,12 @@ export class SetupPage implements OnInit {
 
     async ionViewWillEnter() {
         this.user = await this.storage.get('user') as User;
-        if (this.user && this.user.location)
-            this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
-
-        console.log(this.user)
+        if (this.user && this.user.location) {
+            this.mapService.confirmMapLoad.subscribe(loaded => {
+                if (loaded)
+                    this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+            });
+        }
     }
 
     async logout() {

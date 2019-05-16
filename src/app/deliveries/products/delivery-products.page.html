@@ -26,77 +26,59 @@
 
     <ion-list *ngFor="let product of deliveryProductsService?.deliveryProducts">
         <ion-card class="product-card">
-            <ion-grid>
-                <ion-row>
-                    <ion-col size="9">
-                        <ion-card-header>
-                            <ion-card-subtitle>Producto</ion-card-subtitle>
-                            <ion-card-title>
-                                <ion-label>{{ product?.name }}</ion-label>
-                            </ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>
-                            <ion-grid>
-                                <ion-row>
-                                    <img class="product-image" *ngIf="product?.product_image"
-                                         src="{{ storageUrl + product.product_image }}">
-                                    <ion-col>
-                                        <ion-item>
-                                            <ion-label class="ion-margin-end">Costo:
-                                                {{ product?.cost }}</ion-label>
-                                        </ion-item>
-                                        <ion-item>
-                                            <ion-label class="ion-margin-end">
-                                                Cantidad: {{ product?.amount }}</ion-label>
-                                        </ion-item>
-                                        <ion-item>
-                                            <ion-label class="ion-margin-end">Creado
-                                                el: {{ product?.created_at }}</ion-label>
-                                        </ion-item>
-                                        <ion-item>
-                                            <ion-label class="ion-margin-end">Actualizado
-                                                el: {{ product?.updated_at }}</ion-label>
-                                        </ion-item>
-                                    </ion-col>
-                                </ion-row>
-                            </ion-grid>
-                        </ion-card-content>
-                    </ion-col>
-                    <ion-col *ngIf="canAddOrUpdate()"
-                             size="3" style="text-align: right">
-                        <ion-button fill="outline"
-                                    [routerLink]="['./save', {deliveryProductId: product?.id}]">
-                            <ion-icon name="create"></ion-icon>
-                        </ion-button>
-                        <ion-button fill="outline" (click)="remove(product.id)">
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
+            <ion-card-header>
+                <ion-card-subtitle>Producto</ion-card-subtitle>
+                <ion-card-title>
+                    <ion-label style="font-weight: bold">{{ product?.name }}</ion-label>
+                </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-grid>
+
+                    <ion-row style="margin: 0 auto">
+                        <img class="product-image" *ngIf="product?.product_image"
+                             src="{{ storageUrl + product.product_image }}">
+                    </ion-row>
+
+                    <ion-row style="width: 100%">
+                        <ion-item style="width: 100%">
+                            <ion-label style="font-weight: bold" class="ion-margin-end">Costo:
+                            </ion-label>
+                            <ion-text>{{ product?.cost }}</ion-text>
+                        </ion-item>
+                        <ion-item style="width: 100%">
+                            <ion-label style="font-weight: bold" class="ion-margin-end">Cantidad:
+                            </ion-label>
+                            <ion-text>{{ product?.amount }}</ion-text>
+                        </ion-item>
+                        <ion-item style="width: 100%">
+                            <ion-label style="font-weight: bold" class="ion-margin-end">Creado el:
+                            </ion-label>
+                            <ion-text>{{ product?.created_at }}</ion-text>
+                        </ion-item>
+                        <ion-item style="width: 100%">
+                            <ion-label style="font-weight: bold" class="ion-margin-end">Actualizado
+                                el:
+                            </ion-label>
+                            <ion-text>{{ product?.updated_at }}</ion-text>
+                        </ion-item>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+            <div *ngIf="canAddOrUpdate()" style="position: absolute; top: 10px; right: 10px">
+                <ion-button fill="outline"
+                            [routerLink]="['./save', {deliveryProductId: product?.id}]">
+                    <ion-icon name="create"></ion-icon>
+                </ion-button>
+                <ion-button fill="outline" (click)="remove(product.id)">
+                    <ion-icon name="close"></ion-icon>
+                </ion-button>
+            </div>
         </ion-card>
     </ion-list>
 
-    <ion-fab *ngIf="canAddOrUpdate() || (currentUser && currentUser.role && currentUser.role.name === 'admin')"
-             style="margin-bottom: 60px" vertical="bottom" horizontal="start" edge slot="fixed">
-        <ion-fab-button>
-            <ion-icon name="undo"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-list side="top">
-            <ion-fab-button (click)="navigateByRole('deliveries/send/find-client')">
-                <ion-icon name="person"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button (click)="navigateByRole('deliveries/send/choose-origin')">
-                <ion-icon name="pin"></ion-icon>
-            </ion-fab-button>
-        </ion-fab-list>
-    </ion-fab>
-
-    <ion-fab *ngIf="(deliveryService.delivery?.receiver_id === currentUser?.id || currentUser?.role?.name === 'admin') &&
-                !(deliveryService.delivery?.delivery_status?.status === deliveryService.statuses?.making ||
-                deliveryService.delivery?.delivery_status?.status === deliveryService.statuses?.cancelled)"
-             style="margin-bottom: 60px" vertical="bottom"
-             [horizontal]="canAddOrUpdate() ? 'center' : 'end'" edge slot="fixed">
+    <ion-fab *ngIf="canAccessMessages()" style="margin-bottom: 60px" vertical="bottom" horizontal="start" edge
+             slot="fixed">
         <ion-fab-button [routerLink]="['./../../messages']">
             <ion-icon name="mail"></ion-icon>
         </ion-fab-button>
@@ -113,44 +95,14 @@
 </ion-content>
 
 <ion-footer>
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <ion-button
-                        size="large"
-                        expand="full"
-                        (click)="seeLocations = !seeLocations">
-                    Localizaciones
-                </ion-button>
-            </ion-col>
-            <ion-col *ngIf="deliveryService.clientCanConfirm() &&
-                    deliveryService?.delivery?.sender?.id === currentUser?.id">
-                <ion-button
-                        size="large"
-                        expand="full"
-                        [disabled]="deliveryProductsService?.deliveryProducts && !deliveryProductsService?.deliveryProducts.length"
-                        (click)="confirmDelivery()">
-                    Confirmar
-                </ion-button>
-            </ion-col>
-            <ion-col *ngIf="currentUser?.role?.name === 'admin' &&
-             deliveryService?.delivery?.delivery_status?.status === deliveryService?.statuses?.notAssigned &&
-deliveryProductsService?.deliveryProducts?.length > 0">
-                <ion-button
-                        size="large"
-                        expand="full"
-                        (click)="assignDelivery()">
-                    Asignar
-                </ion-button>
-            </ion-col>
-            <ion-col *ngIf="currentUser?.role?.name === 'admin' && deliveryService?.delivery?.delivery_man">
-                <ion-button
-                        size="large"
-                        expand="full"
-                        routerLink="/admin/tabs/deliveries/send/assign">
-                    Asignado
-                </ion-button>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ng-container *ngIf="currentUser && currentUser.role">
+        <ion-button expand="full" *ngIf="currentUser.role.name === 'admin'" (click)="presentAdminActionSheet()">Acciones
+        </ion-button>
+        <ion-button expand="full" *ngIf="currentUser.role.name === 'client'" (click)="presentClientActionSheet()">
+            Acciones
+        </ion-button>
+        <ion-button expand="full" *ngIf="currentUser.role.name === 'delivery_man'"
+                    (click)="presentDeliveryManActionSheet()">Acciones
+        </ion-button>
+    </ng-container>
 </ion-footer>

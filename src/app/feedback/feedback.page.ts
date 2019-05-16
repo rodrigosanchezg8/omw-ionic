@@ -4,6 +4,9 @@ import {Label} from "ng2-charts";
 import {Plotly} from "angular-plotly.js/src/app/shared/plotly.interface";
 import {PlotlyService} from "angular-plotly.js";
 import {Platform} from "@ionic/angular";
+import {FeedbackService} from "../../services/feedback.service";
+import {Storage} from "@ionic/storage";
+import {User} from "../../models/user";
 
 @Component({
     selector: 'app-feedback',
@@ -16,7 +19,6 @@ export class FeedbackPage implements OnInit {
         responsive: true,
     };
     public scatterChartLabels: Label[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
-
     public scatterChartData: ChartDataSets[] = [
         {
             data: [
@@ -31,14 +33,23 @@ export class FeedbackPage implements OnInit {
         },
     ];
     public scatterChartType: ChartType = 'scatter';
-
     public graph: any;
 
-    constructor(private platform: Platform) {
+    public currentUser: User;
+    public segmentValues = {
+        FOR_USER: 0,
+        FOR_COMPANY: 1
+    };
+    public segmentValue = this.segmentValues.FOR_USER;
+
+    constructor(private platform: Platform, private feedbackService: FeedbackService, private storage: Storage) {
     }
 
     async ngOnInit() {
         await this.platform.ready();
+
+        this.currentUser = await this.storage.get('user') as User;
+
         this.graph = {
             data: [
                 {
@@ -76,14 +87,23 @@ export class FeedbackPage implements OnInit {
             ],
             layout: {
                 margin: {
-                    l: 0,
+                    l: 30,
                     r: 0,
                     b: 0,
                     t: 0
                 },
-                width: this.platform.width()
+                width: this.platform.width() + 50
             }
         };
+
+        const serviceRes = await this.feedbackService.getClientLinearRegression(this.currentUser.id, 1, this.segmentValue)
+        console.log(serviceRes);
+    }
+
+    async segmentChanged(value) {
+        this.segmentValue = value;
+        const serviceRes = await this.feedbackService.getClientLinearRegression(this.currentUser.id, 1, this.segmentValue)
+        console.log(serviceRes);
     }
 
     public chartClicked({event, active}: { event: MouseEvent, active: {}[] }): void {

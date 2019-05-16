@@ -21,6 +21,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {SocketIoConfig, SocketIoModule} from "ng-socket-io";
 import {environment} from "../environments/environment.prod";
 import {ChartsModule} from "ng2-charts";
+
 const config: SocketIoConfig = {url: environment.socketIP, options: {}};
 
 @NgModule({
@@ -28,7 +29,7 @@ const config: SocketIoConfig = {url: environment.socketIP, options: {}};
         AppComponent,
         TabsPage,
         DeliveryMenTabsPage,
-        ClientsTabsPage
+        ClientsTabsPage,
     ],
     entryComponents: [],
     imports: [
@@ -39,7 +40,7 @@ const config: SocketIoConfig = {url: environment.socketIP, options: {}};
         AppRoutingModule,
         FormsModule,
         HttpClientModule,
-        IonicSelectableModule,
+        IonicSelectableModule
     ],
     providers: [
         StatusBar,

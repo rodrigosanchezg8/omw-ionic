@@ -60,8 +60,12 @@ export class UsersSavePage implements OnInit {
                     this.user.location.lng = location.lng;
                 });
 
-                if (this.isEditMode)
-                    this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+                if (this.isEditMode && this.user && this.user.location) {
+                    this.mapService.confirmMapLoad.subscribe(loaded => {
+                        if (loaded)
+                            this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+                    });
+                }
 
             });
 
