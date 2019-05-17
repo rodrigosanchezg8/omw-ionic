@@ -55,7 +55,7 @@ export class MapComponent implements OnInit, OnChanges {
         await this.mapsApiLoader.load();
         await this.initAutocomplete();
         await this.subscribeChange();
-        await this.mapService.mapLoaded();
+        this.mapService.mapInitialized = true;
     }
 
     async ngOnChanges() {

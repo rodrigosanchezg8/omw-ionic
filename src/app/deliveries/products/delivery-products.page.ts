@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 import {User} from "../../../models/user";
 import {Delivery} from "../../../models/delivery";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-delivery-products',
@@ -18,11 +19,13 @@ import {Delivery} from "../../../models/delivery";
 export class DeliveryProductsPage implements OnInit {
 
     currentUser: User;
-
     storageUrl: string = environment.storageUrl;
 
+    active: boolean;
     seeLocations = false;
     isEditMode = false;
+
+    paramsSubscription: Subscription;
 
     constructor(private deliveryService: DeliveryService,
                 private deliveryProductsService: DeliveryProductsService,
@@ -41,10 +44,10 @@ export class DeliveryProductsPage implements OnInit {
     }
 
     async ionViewWillEnter() {
-
+        this.active = true;
         this.currentUser = await this.storage.get('user') as User;
 
-        this.activatedRoute.params.subscribe(async ps => {
+        this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
 
             if (ps.isEditMode) {
                 this.isEditMode = ps.isEditMode;
@@ -60,6 +63,11 @@ export class DeliveryProductsPage implements OnInit {
             }
 
         });
+    }
+
+    ionViewWillLeave() {
+        this.active = false;
+        this.paramsSubscription.unsubscribe();
     }
 
     async remove(productId: number) {
@@ -188,7 +196,6 @@ export class DeliveryProductsPage implements OnInit {
             buttons: [
                 this.ASButtonShowLocations,
                 this.ASButtonConfirm,
-                this.ASButtonAssignedDeliveryMan,
                 this.ASButtonClientToSend,
                 this.ASButtonLocationOrigin
             ]

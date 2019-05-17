@@ -6,6 +6,7 @@ import {DeliveryService} from "../../../services/delivery.service";
 import {Delivery} from "../../../models/delivery";
 import {MapService} from "../../../services/map.service";
 import {ResponseService} from "../../../services/response.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-client-delivery-choose-origin',
@@ -18,6 +19,8 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
     private origin = 'client';
     private currentUser: User;
     private senderClient: User;
+
+    paramsSubscription: Subscription;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private storage: Storage,
@@ -34,9 +37,13 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
         await this.instantiateDelivery();
     }
 
+    ionViewWillLeave() {
+        this.paramsSubscription.unsubscribe();
+    }
+
     async instantiateDelivery() {
         this.currentUser = await this.storage.get('user') as User;
-        this.activatedRoute.params.subscribe(async ps => {
+        this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
 
                 if (ps.deliveryId) {
 
@@ -58,17 +65,29 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
                 this.deliveryService.delivery.sender_id = this.senderClient.id;
 
                 this.originChanged(this.origin);
+
             }
         );
     }
 
     originChanged(origin) {
         this.origin = origin;
-        if (this.origin === 'client' && this.senderClient.location) {
-            this.mapService.locationChanged(this.senderClient.location.lat, this.senderClient.location.lng);
-        } else if (this.origin === 'company' && this.senderClient.company && this.senderClient.company.location) {
-            this.mapService.locationChanged(this.senderClient.company.location.lat, this.senderClient.company.location.lng);
-        }
+        this.refreshMap();
+    }
+
+    refreshMap() {
+        const timer = setInterval(() => {
+            if (this.mapService.mapInitialized) {
+
+                if (this.origin === 'client' && this.senderClient.location) {
+                    this.mapService.locationChanged(this.senderClient.location.lat, this.senderClient.location.lng);
+                } else if (this.origin === 'company' && this.senderClient.company && this.senderClient.company.location) {
+                    this.mapService.locationChanged(this.senderClient.company.location.lat, this.senderClient.company.location.lng);
+                }
+
+                clearInterval(timer);
+            }
+        }, 1000);
     }
 
     async updateNavigate() {

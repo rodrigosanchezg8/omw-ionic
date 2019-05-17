@@ -10,6 +10,7 @@
 <ion-content>
 
     <app-map
+            *ngIf="active"
             [ngStyle]="{ 'display': seeLocations ? 'block' : 'none' }"
             [search]="false"
             [senderClientLocation]="deliveryService?.delivery?.company_is_sending ?

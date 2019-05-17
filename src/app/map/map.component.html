@@ -13,7 +13,7 @@
 <ion-row *ngIf="lat && lng">
     <ion-item style="width: 100%">
         <ion-label style="font-weight: bold">Dirección:</ion-label>
-        <ion-text>{{ fullAddress }}</ion-text>
+        <ion-text>{{ fullAddress ? fullAddress : 'Cargando...' }}</ion-text>
     </ion-item>
 </ion-row>
 

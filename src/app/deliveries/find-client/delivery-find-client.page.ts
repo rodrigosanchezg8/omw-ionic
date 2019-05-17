@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Delivery} from "../../../models/delivery";
 import {Loading} from "../../../traits/loading";
 import {Storage} from "@ionic/storage";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-delivery-find-client',
@@ -22,6 +23,8 @@ export class DeliveryFindClientPage implements OnInit {
     fetchedClient: User;
 
     currentUser: User;
+
+    private activatedRouteSubscription: Subscription;
 
     constructor(private clientService: ClientService,
                 private responses: ResponseService,
@@ -42,10 +45,14 @@ export class DeliveryFindClientPage implements OnInit {
         await this.instantiateDelivery();
     }
 
+    ionViewWillLeave() {
+        this.activatedRouteSubscription.unsubscribe();
+    }
+
     async instantiateDelivery() {
         this.currentUser = await this.storage.get('user') as User;
 
-        this.activatedRoute.params.subscribe(async ps => {
+        this.activatedRouteSubscription = this.activatedRoute.params.subscribe(async ps => {
             if (ps.deliveryId) {
 
                 this.deliveryService.delivery = await this.deliveryService.fetchOne(ps.deliveryId) as Delivery;
@@ -79,7 +86,7 @@ export class DeliveryFindClientPage implements OnInit {
 
             if (this.fetchedClient.location) {
 
-                this.mapService.locationChanged(this.fetchedClient.location.lat, this.fetchedClient.location.lng)
+                this.refreshMap();
 
             } else {
                 this.responses.presentResponse({message: 'Éste cliente no tiene una localización registrada'});
@@ -90,6 +97,15 @@ export class DeliveryFindClientPage implements OnInit {
             this.responses.presentResponse(clientRes);
             return;
         }
+    }
+
+    refreshMap() {
+        const timer = setInterval(() => {
+            if (this.mapService.mapInitialized) {
+                this.mapService.locationChanged(this.fetchedClient.location.lat, this.fetchedClient.location.lng)
+                clearInterval(timer);
+            }
+        }, 1000);
     }
 
     async saveNavigate() {

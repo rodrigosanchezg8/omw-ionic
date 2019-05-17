@@ -6,6 +6,7 @@ import {ResponseService} from "../../../../services/response.service";
 import {environment} from "../../../../environments/environment.prod";
 import {ActionSheetController, AlertController} from "@ionic/angular";
 import {MapService} from "../../../../services/map.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-user-detail',
@@ -17,6 +18,8 @@ export class UserDetailPage implements OnInit {
     storageUrl: string = environment.storageUrl;
     user: User;
 
+    private paramsSubscription: Subscription;
+
     constructor(private userService: UserService,
                 private activatedRoute: ActivatedRoute,
                 private responses: ResponseService,
@@ -26,20 +29,33 @@ export class UserDetailPage implements OnInit {
                 private mapService: MapService) {
     }
 
-    async ngOnInit() {
-        this.activatedRoute.params.subscribe(async ps => {
+    ngOnInit() {
+    }
+
+    ionViewWillEnter() {
+        this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
             this.user = await this.userService.get(ps.userId) as User;
             if (!this.user)
                 this.responses.presentResponse({message: 'El usuario no existe.'});
 
             if (this.user && this.user.location) {
-                this.mapService.confirmMapLoad.subscribe(loaded => {
-                    if (loaded)
-                        this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
-                });
+                this.refreshMap()
             }
 
         });
+    }
+
+    refreshMap() {
+        const timer = setInterval(() => {
+            if (this.mapService.mapInitialized) {
+                this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+                clearInterval(timer);
+            }
+        }, 1000);
+    }
+
+    ionViewWillLeave() {
+        this.paramsSubscription.unsubscribe();
     }
 
     async deleteAction() {

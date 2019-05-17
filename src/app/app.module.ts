@@ -15,12 +15,10 @@ import {TabsPage} from "./admin/tabs/tabs.page";
 import {IonicStorageModule} from "@ionic/storage";
 import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
-import {MapModule} from "./map/map.module";
 import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {SocketIoConfig, SocketIoModule} from "ng-socket-io";
 import {environment} from "../environments/environment.prod";
-import {ChartsModule} from "ng2-charts";
 
 const config: SocketIoConfig = {url: environment.socketIP, options: {}};
 
