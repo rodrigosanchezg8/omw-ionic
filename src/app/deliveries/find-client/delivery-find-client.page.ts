@@ -105,7 +105,7 @@ export class DeliveryFindClientPage implements OnInit {
                 this.mapService.locationChanged(this.fetchedClient.location.lat, this.fetchedClient.location.lng)
                 clearInterval(timer);
             }
-        }, 1000);
+        }, 500);
     }
 
     async saveNavigate() {

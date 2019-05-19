@@ -87,7 +87,7 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
 
                 clearInterval(timer);
             }
-        }, 1000);
+        }, 500);
     }
 
     async updateNavigate() {

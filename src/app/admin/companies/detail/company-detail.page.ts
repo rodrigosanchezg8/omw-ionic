@@ -53,7 +53,7 @@ export class CompanyDetailPage implements OnInit {
                 this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
                 clearInterval(timer);
             }
-        }, 1000);
+        }, 500);
     }
 
     ionViewWilLeave() {

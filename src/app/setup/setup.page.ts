@@ -42,7 +42,7 @@ export class SetupPage implements OnInit {
                 this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
                 clearInterval(timer);
             }
-        }, 1000);
+        }, 500);
     }
 
     async logout() {

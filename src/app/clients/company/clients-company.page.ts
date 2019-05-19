@@ -45,7 +45,7 @@ export class ClientsCompanyPage implements OnInit {
                 this.mapService.locationChanged(this.user.company.location.lat, this.user.company.location.lng);
                 clearInterval(timer);
             }
-        }, 1000);
+        }, 500);
     }
 
     ionViewWillLeave() {

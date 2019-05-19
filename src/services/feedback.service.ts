@@ -11,7 +11,7 @@ export class FeedbackService {
     }
 
     async getClientLinearRegression(userId: number, monthOffset: number, forCompany: number) {
-        return await this.api.get(`statistics/${userId}/client_linear_regression?month_offset=${monthOffset}&for_company=${forCompany}`)
+        return await this.api.get(`statistics/${userId}/client_linear_regression?month_offset=${monthOffset}&statistics_for=${forCompany}`)
     }
 
 }
