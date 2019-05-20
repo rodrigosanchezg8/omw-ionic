@@ -31,6 +31,14 @@
     <app-map [search]="false"
              [lat]="origin === 'client' ? senderClient?.location?.lat : senderClient?.company?.location?.lat"
              [lng]="origin === 'client' ? senderClient?.location?.lng : senderClient?.company?.location?.lng"></app-map>
+    <ion-item>
+        <ion-label style="font-weight: bold">Número interior</ion-label>
+        <ion-text>{{ origin === 'client' ? senderClient?.location.int_no : senderClient?.company?.location?.int_no }}</ion-text>
+    </ion-item>
+    <ion-item>
+        <ion-label style="font-weight: bold">Número exterior</ion-label>
+        <ion-text>{{ origin === 'client' ? senderClient?.location.ext_no : senderClient?.company?.location?.ext_no }}</ion-text>
+    </ion-item>
 
 </ion-content>
 

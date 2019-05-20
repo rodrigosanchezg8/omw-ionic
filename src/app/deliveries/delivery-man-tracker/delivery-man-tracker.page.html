@@ -63,6 +63,18 @@
                 </ion-row>
                 <ion-row style="width: 100%">
                     <ion-item>
+                        <ion-label style="font-weight: bold">Número interior</ion-label>
+                        <ion-text>{{ deliveryService?.delivery?.receiver?.location?.int_no }}</ion-text>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item>
+                        <ion-label style="font-weight: bold">Número exterior</ion-label>
+                        <ion-text>{{ deliveryService?.delivery?.receiver?.location?.ext_no }}</ion-text>
+                    </ion-item>
+                </ion-row>
+                <ion-row style="width: 100%">
+                    <ion-item>
                         <ion-label style="font-weight: bold" class="ion-margin-end">Se empezó recorrido:</ion-label>
                         <ion-text>{{  deliveryService?.delivery?.departure_date ?
                             deliveryService?.delivery?.departure_date : 'Sin empezar'
