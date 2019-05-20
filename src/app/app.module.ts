@@ -15,7 +15,6 @@ import {TabsPage} from "./admin/tabs/tabs.page";
 import {IonicStorageModule} from "@ionic/storage";
 import {DeliveryMenTabsPage} from "./delivery-men/tabs/delivery-men-tabs.page";
 import {ClientsTabsPage} from "./clients/tabs/clients-tabs.page";
-import {MapModule} from "./map/map.module";
 import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {SocketIoConfig, SocketIoModule} from "ng-socket-io";
@@ -28,7 +27,7 @@ const config: SocketIoConfig = {url: environment.socketIP, options: {}};
         AppComponent,
         TabsPage,
         DeliveryMenTabsPage,
-        ClientsTabsPage
+        ClientsTabsPage,
     ],
     entryComponents: [],
     imports: [
@@ -39,8 +38,7 @@ const config: SocketIoConfig = {url: environment.socketIP, options: {}};
         AppRoutingModule,
         FormsModule,
         HttpClientModule,
-        IonicSelectableModule,
-        MapModule,
+        IonicSelectableModule
     ],
     providers: [
         StatusBar,

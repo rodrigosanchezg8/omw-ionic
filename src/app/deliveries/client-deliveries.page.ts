@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DeliveryService} from "../../services/delivery.service";
 import {Delivery} from "../../models/delivery";
 import {environment} from "../../environments/environment.prod";
-import {AlertController} from "@ionic/angular";
+import {AlertController, Platform} from "@ionic/angular";
 import {Loading} from "../../traits/loading";
 import {ResponseService} from "../../services/response.service";
 import {User} from "../../models/user";

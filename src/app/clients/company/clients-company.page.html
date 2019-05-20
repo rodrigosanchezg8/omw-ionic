@@ -25,25 +25,25 @@
         </ion-fab>
     </ng-container>
     <ng-container *ngIf="user?.company">
-        <div *ngIf="!user?.company?.profile_photo">
+        <div *ngIf="!user.company.profile_photo">
             <ion-icon name="contact" style="display: block; margin: 0 auto; font-size: 100px"></ion-icon>
         </div>
         <ion-avatar
                 class="person-image" *ngIf="user.company?.profile_photo">
-            <img src="{{ storageUrl + user?.company?.profile_photo }}">
+            <img src="{{ storageUrl + user.company.profile_photo }}">
         </ion-avatar>
         <ion-list>
             <ion-item class="ion-margin-top">
                 <ion-label style="font-weight: bold">Nombre</ion-label>
-                <ion-text>{{ user.company?.name }}</ion-text>
+                <ion-text>{{ user.company.name }}</ion-text>
             </ion-item>
             <ion-item>
                 <ion-label style="font-weight: bold">Descripción</ion-label>
-                <ion-text>{{ user.company?.description }}</ion-text>
+                <ion-text>{{ user.company.description }}</ion-text>
             </ion-item>
-            <app-map [lat]="user?.company?.location.lat"
-                     [lng]="user?.company?.location.lng"
-                     [search]="false"></app-map>
+            <app-map [lat]="user.company.location?.lat"
+                    [lng]="user.company.location?.lng"
+                    [search]="false"></app-map>
         </ion-list>
 
         <ion-button style="margin-top: 45px" expand="full" (click)="sheetActions()">

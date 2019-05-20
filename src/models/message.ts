@@ -23,7 +23,6 @@ export class Message {
     }
 
     public setClass(id) {
-        console.log({current: id, replier: this.user_id_replier})
         this.class = this.user_id_replier === id ? 'message sent' : 'message received';
         return this;
     }

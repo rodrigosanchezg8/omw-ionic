@@ -6,14 +6,18 @@ import {EventEmitter, Injectable, Output} from '@angular/core';
 export class MapService {
 
     @Output() locationChange: EventEmitter<any> = new EventEmitter();
+    @Output() confirmMapLoad: EventEmitter<any> = new EventEmitter();
+
+    public mapInitialized: boolean = false;
 
     constructor() {
     }
 
-    public locationChanged(lat: number, lng: number) {
+    public async locationChanged(lat: number, lng: number) {
         this.locationChange.emit({
             lat: lat,
             lng: lng,
         })
     };
+
 }

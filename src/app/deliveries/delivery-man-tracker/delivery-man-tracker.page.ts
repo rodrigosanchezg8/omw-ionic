@@ -12,6 +12,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {Delivery} from "../../../models/delivery";
 import {Loading} from "../../../traits/loading";
 import {DeliveryStatus} from "../../../models/delivery-status";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-delivery-man-tracker',
@@ -22,6 +23,7 @@ export class DeliveryManTrackerPage implements OnInit {
 
     private currentUser: User;
     private storageUrl = environment.storageUrl;
+    private paramsSubscription: Subscription;
 
     constructor(private geolocation: Geolocation,
                 private deliveryService: DeliveryService,
@@ -44,7 +46,7 @@ export class DeliveryManTrackerPage implements OnInit {
                 {message: 'El seguidor de entrega solo debe ser usado por repartidores'});
         }
 
-        this.activatedRoute.params.subscribe(async ps => {
+        this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
             if (ps.deliveryId) {
                 this.loading.present();
                 this.deliveryService.delivery = await this.deliveryService.fetchOne(ps.deliveryId) as Delivery;
@@ -53,6 +55,10 @@ export class DeliveryManTrackerPage implements OnInit {
                 this.responsesService.presentResponse({message: 'La entrega no se pudo encontrar'});
             }
         });
+    }
+
+    ionViewWillLeave() {
+        this.paramsSubscription.unsubscribe();
     }
 
     async updateLocation() {

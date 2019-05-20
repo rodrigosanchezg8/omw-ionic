@@ -10,6 +10,7 @@ import {environment} from "../../../../environments/environment.prod";
 import {Loading} from "../../../../traits/loading";
 import {MapService} from "../../../../services/map.service";
 import {Storage} from "@ionic/storage";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-users-save',
@@ -22,6 +23,7 @@ export class UsersSavePage implements OnInit {
     user: User;
     isEditMode: boolean;
     passwordConfirmation: string;
+    private paramsSubscription: Subscription;
 
     constructor(private router: Router,
                 private api: ApiService,
@@ -38,10 +40,14 @@ export class UsersSavePage implements OnInit {
     async ngOnInit() {
     }
 
+    ionViewWillLeave() {
+        this.paramsSubscription.unsubscribe();
+    }
+
     async ionViewWillEnter() {
         try {
             this.currentUser = await this.storage.get('user') as User;
-            this.route.params.subscribe(async ps => {
+            this.paramsSubscription = this.route.params.subscribe(async ps => {
                 if (ps.user) {
                     this.isEditMode = true;
                     this.user = await this.userService.get(ps.user) as User;
@@ -60,14 +66,24 @@ export class UsersSavePage implements OnInit {
                     this.user.location.lng = location.lng;
                 });
 
-                if (this.isEditMode)
-                    this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+                if (this.isEditMode && this.user && this.user.location) {
+                    this.refreshMap();
+                }
 
             });
 
         } catch (e) {
             this.responses.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});
         }
+    }
+
+    refreshMap() {
+        const timer = setInterval(() => {
+            if (this.mapService.mapInitialized) {
+                this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
+                clearInterval(timer);
+            }
+        }, 500);
     }
 
     async pickImage() {

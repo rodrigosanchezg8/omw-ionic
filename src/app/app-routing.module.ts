@@ -93,15 +93,6 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'companies', children: [
-                    {path: '', loadChildren: './admin/companies/companies.module#CompaniesPageModule'},
-                    {
-                        path: 'detail',
-                        loadChildren: './admin/companies/detail/company-detail.module#CompanyDetailPageModule'
-                    },
-                ]
-            },
-            {
                 path: 'delivery-men', children: [
                     {path: '', loadChildren: './admin/delivery-men/delivery-men.module#DeliveryMenPageModule'},
                     {
@@ -126,55 +117,75 @@ const routes: Routes = [
             }
         ]
     },
-    {path: 'delivery-men', redirectTo: 'delivery-men/tabs/delivery-men-options', pathMatch: 'full'},
     {
-        path: 'delivery-men/tabs', component: DeliveryMenTabsPage,
-        children: [
-            {path: '', redirectTo: 'deliveries', pathMatch: 'full'},
+        path: 'admin/companies', children: [
+            {path: '', loadChildren: './admin/companies/companies.module#CompaniesPageModule'},
             {
-                path: 'delivery-men-options',
-                loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'
+                path: 'detail',
+                loadChildren: './admin/companies/detail/company-detail.module#CompanyDetailPageModule'
             },
-            ...deliveriesRoutes,
-            {
-                path: 'setup', children: [
-                    {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
-                    {
-                        path: 'save-user',
-                        loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
-                    },
-                ]
-            }
         ]
     },
-    {path: 'clients', redirectTo: 'clients/tabs/company', pathMatch: 'full'},
     {
-        path: 'clients/tabs', component: ClientsTabsPage,
-        children: [
-            {path: '', redirectTo: 'company', pathMatch: 'full'},
-            {
-                path: 'company', children: [
-                    {path: '', loadChildren: './clients/company/clients-company.module#ClientsCompanyPageModule'},
-                    {
-                        path: 'save',
-                        loadChildren: './clients/company/save/client-side-save-company.module#ClientSideSaveCompanyPageModule'
-                    }
-                ]
-            },
-            ...deliveriesRoutes,
-            {
-                path: 'setup', children: [
-                    {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
-                    {
-                        path: 'save-user',
-                        loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
-                    },
-                ]
-            }
-        ]
+        path: 'admin/feedback', loadChildren: './feedback/feedback.module#FeedbackPageModule'
     },
-
-
+    {
+        path: 'delivery-men', redirectTo: 'delivery-men/tabs/delivery-men-options', pathMatch: 'full'
+    },
+    {
+        path: 'delivery-men/tabs', component:
+        DeliveryMenTabsPage,
+        children:
+            [
+                {path: '', redirectTo: 'deliveries', pathMatch: 'full'},
+                {
+                    path: 'delivery-men-options',
+                    loadChildren: './delivery-men/delivery-options/delivery-men-save-options.module#DeliveryMenSaveOptionsPageModule'
+                },
+                ...deliveriesRoutes,
+                {
+                    path: 'setup', children: [
+                        {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
+                        {
+                            path: 'save-user',
+                            loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
+                        },
+                    ]
+                }
+            ]
+    },
+    {
+        path: 'clients', redirectTo:
+            'clients/tabs/company', pathMatch:
+            'full'
+    },
+    {
+        path: 'clients/tabs', component:
+        ClientsTabsPage,
+        children:
+            [
+                {path: '', redirectTo: 'company', pathMatch: 'full'},
+                {
+                    path: 'company', children: [
+                        {path: '', loadChildren: './clients/company/clients-company.module#ClientsCompanyPageModule'},
+                        {
+                            path: 'save',
+                            loadChildren: './clients/company/save/client-side-save-company.module#ClientSideSaveCompanyPageModule'
+                        }
+                    ]
+                },
+                ...deliveriesRoutes,
+                {
+                    path: 'setup', children: [
+                        {path: '', loadChildren: './setup/setup.module#SetupPageModule'},
+                        {
+                            path: 'save-user',
+                            loadChildren: './admin/clients/save-user/clients-save.module#ClientsSavePageModule'
+                        },
+                    ]
+                }
+            ]
+    },
 ];
 
 @NgModule({

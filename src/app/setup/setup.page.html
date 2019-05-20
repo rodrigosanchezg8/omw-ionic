@@ -33,6 +33,11 @@
     </ion-list>
 
     <ion-list>
+        <ion-item-divider>
+            <ion-label>
+                Mi cuenta
+            </ion-label>
+        </ion-item-divider>
         <ion-item [routerLink]="['./save-user', {
                             role: 'client',
                             user: user?.id
@@ -40,6 +45,24 @@
             <ion-icon class="ion-margin-end" name="create"></ion-icon>
             <ion-label>Editar información</ion-label>
         </ion-item>
+        <ion-item-divider *ngIf="user?.role?.name === 'admin' || user?.role?.name === 'client'">
+            <ion-label>
+                Otros módulos
+            </ion-label>
+        </ion-item-divider>
+        <ion-item routerLink="/admin/companies" *ngIf="user?.role?.name === 'admin'">
+            <ion-icon class="ion-margin-end" name="business"></ion-icon>
+            <ion-label>Compañías</ion-label>
+        </ion-item>
+        <ion-item routerLink="/admin/feedback" *ngIf="user?.role?.name === 'admin' || user?.role?.name === 'client'">
+            <ion-icon class="ion-margin-end" name="stats"></ion-icon>
+            <ion-label>Retroalimentación</ion-label>
+        </ion-item>
+        <ion-item-divider>
+            <ion-label>
+                Sesión
+            </ion-label>
+        </ion-item-divider>
         <ion-item (click)="logout()">
             <ion-icon class="ion-margin-end" name="power"></ion-icon>
             <ion-label>Salir</ion-label>

@@ -7,6 +7,7 @@ import {ActionSheetController, AlertController} from "@ionic/angular";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../../models/user";
 import {MapService} from "../../../../services/map.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-company-detail',
@@ -18,6 +19,9 @@ export class CompanyDetailPage implements OnInit {
     storageUrl: string = environment.storageUrl;
     company: Company;
 
+    private confirmMapLoadSubscription: Subscription;
+    paramsSubscription: Subscription;
+
     constructor(private companiesService: CompaniesService,
                 private responsesService: ResponseService,
                 private activatedRoute: ActivatedRoute,
@@ -27,16 +31,34 @@ export class CompanyDetailPage implements OnInit {
                 private mapService: MapService) {
     }
 
-    async ngOnInit() {
-        this.activatedRoute.params.subscribe(async ps => {
+    ngOnInit() {
+    }
+
+    ionViewWillEnter() {
+        this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
             this.company = await this.companiesService.get(ps.companyId) as Company;
             if (!this.company)
                 this.responsesService.presentResponse({message: 'La compañia no existe.'});
 
-            if (this.company.location)
-                this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
+            if (this.company.location) {
+                this.refreshMap();
+            }
 
         });
+    }
+
+    refreshMap() {
+        const timer = setInterval(() => {
+            if (this.mapService.mapInitialized) {
+                this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
+                clearInterval(timer);
+            }
+        }, 500);
+    }
+
+    ionViewWilLeave() {
+        //this.confirmMapLoadSubscription.unsubscribe();
+        this.paramsSubscription.unsubscribe();
     }
 
     async sheetActions() {

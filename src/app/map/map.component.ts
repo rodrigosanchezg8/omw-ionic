@@ -28,12 +28,14 @@ export class MapComponent implements OnInit, OnChanges {
     deliveryManAddresses: any[] = [];
 
     @Input() search: any;
+    @Input() lat: number;
+    @Input() lng: number;
+
     @Input() deliveryManLocation: Location;
     @Input() deliveryManLocationTracks: DeliveryLocationTrack[];
     @Input() receiverClientLocation: Location;
     @Input() senderClientLocation: Location;
-    @Input() lat: number;
-    @Input() lng: number;
+
     @Input() mapLat = 20.6739383;
     @Input() mapLng = -103.4054539;
 
@@ -53,6 +55,7 @@ export class MapComponent implements OnInit, OnChanges {
         await this.mapsApiLoader.load();
         await this.initAutocomplete();
         await this.subscribeChange();
+        this.mapService.mapInitialized = true;
     }
 
     async ngOnChanges() {

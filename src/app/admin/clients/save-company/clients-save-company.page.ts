@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CompaniesService} from "../../../../services/companies.service";
 import {environment} from "../../../../environments/environment.prod";
 import {MapService} from "../../../../services/map.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-clients-save-company',
@@ -19,6 +20,8 @@ export class ClientsSaveCompanyPage implements OnInit {
 
     isEditMode: boolean;
 
+    paramsSubscription: Subscription;
+
     constructor(private responsesService: ResponseService,
                 private loading: Loading,
                 private activatedRoute: ActivatedRoute,
@@ -29,7 +32,7 @@ export class ClientsSaveCompanyPage implements OnInit {
 
     async ngOnInit() {
         try {
-            this.activatedRoute.params.subscribe(async ps => {
+            this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
                 if (ps.companyId) {
                     this.isEditMode = true;
                     this.company = await this.companiesService.get(ps.companyId) as Company;
@@ -53,6 +56,10 @@ export class ClientsSaveCompanyPage implements OnInit {
         } catch (e) {
             this.responsesService.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});
         }
+    }
+
+    ionViewWillLeave(){
+        this.paramsSubscription.unsubscribe();
     }
 
     async pickImage() {
