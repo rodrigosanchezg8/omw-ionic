@@ -53,20 +53,21 @@
     </ion-item>
     <ion-item>
         <ion-label position="floating">Número interior</ion-label>
-        <ion-input (ngModelChange)="user.location.int_no=$event" [ngModel]="user?.location.int_no" name="int_no"
+        <ion-input (ngModelChange)="user.location.int_no=$event" [ngModel]="user?.location?.int_no" name="int_no"
                    type="number"
                    inputmode="number"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Número exterior</ion-label>
-        <ion-input (ngModelChange)="user.location.ext_no=$event" [ngModel]="user?.location.ext_no" name="int_no"
+        <ion-input (ngModelChange)="user.location.ext_no=$event" [ngModel]="user?.location?.ext_no" name="int_no"
                    type="number"
                    inputmode="number"></ion-input>
     </ion-item>
 
-    <app-map [lat]="user?.location.lat"
-             [lng]="user?.location.lng"
-             [search]="true"></app-map>
+    <app-map
+            [lat]="user?.location?.lat"
+            [lng]="user?.location?.lng"
+            [search]="true"></app-map>
 
     <ion-item *ngIf="!isEditMode">
         <ion-label position="floating">Contraseña</ion-label>

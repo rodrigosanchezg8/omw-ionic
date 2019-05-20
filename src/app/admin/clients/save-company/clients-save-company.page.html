@@ -39,13 +39,13 @@
     </ion-item>
     <ion-item>
         <ion-label position="floating">Número interior</ion-label>
-        <ion-input (ngModelChange)="company.location.int_no=$event" [ngModel]="company?.location.int_no" name="int_no"
+        <ion-input (ngModelChange)="company.location.int_no=$event" [ngModel]="company?.location?.int_no" name="int_no"
                    type="number"
                    inputmode="number"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label position="floating">Número exterior</ion-label>
-        <ion-input (ngModelChange)="company.location.ext_no=$event" [ngModel]="company?.location.ext_no" name="int_no"
+        <ion-input (ngModelChange)="company.location.ext_no=$event" [ngModel]="company?.location?.ext_no" name="int_no"
                    type="number"
                    inputmode="number"></ion-input>
     </ion-item>
