@@ -21,6 +21,10 @@
             <ion-label style="font-weight: bold">Nombre</ion-label>
             <ion-text>{{ user?.full_name }}</ion-text>
         </ion-item>
+        <ion-item class="ion-margin-top">
+            <ion-label style="font-weight: bold">Correo</ion-label>
+            <ion-text>{{ user?.email }}</ion-text>
+        </ion-item>
         <ion-item>
             <ion-label style="font-weight: bold">Teléfono</ion-label>
             <ion-text>{{ user?.phone }}</ion-text>
@@ -28,6 +32,14 @@
         <ion-item>
             <ion-label style="font-weight: bold">Fecha de nacimiento</ion-label>
             <ion-text>{{ user?.birth_date }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Número interior</ion-label>
+            <ion-text>{{ user?.location.int_no }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Número exterior</ion-label>
+            <ion-text>{{ user?.location.ext_no }}</ion-text>
         </ion-item>
         <app-map *ngIf="user?.location"
                  [lat]="user?.location.lat"

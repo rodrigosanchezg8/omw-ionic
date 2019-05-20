@@ -26,6 +26,15 @@
     <app-map [ngStyle]="{ 'display': fetchedClient?.id ? 'block' : 'none' }"
              [search]="false"></app-map>
 
+    <ion-item *ngIf="fetchedClient?.location?.int_no">
+        <ion-label style="font-weight: bold">Número interior</ion-label>
+        <ion-text>{{ fetchedClient.location.int_no }}</ion-text>
+    </ion-item>
+    <ion-item *ngIf="fetchedClient?.location?.ext_no">
+        <ion-label style="font-weight: bold">Número exterior</ion-label>
+        <ion-text>{{ fetchedClient.location.ext_no }}</ion-text>
+    </ion-item>
+
 </ion-content>
 
 <ion-footer>

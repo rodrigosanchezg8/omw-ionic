@@ -8,6 +8,9 @@ import {CompaniesService} from "../../../../services/companies.service";
 import {environment} from "../../../../environments/environment.prod";
 import {MapService} from "../../../../services/map.service";
 import {Subscription} from "rxjs";
+import {UserService} from "../../../../services/user.service";
+import {Storage} from "@ionic/storage";
+import {User} from "../../../../models/user";
 
 @Component({
     selector: 'app-clients-save-company',
@@ -16,6 +19,7 @@ import {Subscription} from "rxjs";
 })
 export class ClientsSaveCompanyPage implements OnInit {
 
+    currentUser: User;
     company: Company;
 
     isEditMode: boolean;
@@ -27,11 +31,14 @@ export class ClientsSaveCompanyPage implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 private companiesService: CompaniesService,
-                private mapService: MapService) {
+                private mapService: MapService,
+                private userService: UserService,
+                private storage: Storage) {
     }
 
     async ngOnInit() {
         try {
+            this.currentUser = await this.storage.get('user') as User;
             this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
                 if (ps.companyId) {
                     this.isEditMode = true;
@@ -58,7 +65,7 @@ export class ClientsSaveCompanyPage implements OnInit {
         }
     }
 
-    ionViewWillLeave(){
+    ionViewWillLeave() {
         this.paramsSubscription.unsubscribe();
     }
 
@@ -87,17 +94,20 @@ export class ClientsSaveCompanyPage implements OnInit {
     async save() {
         const companyRes = this.isEditMode ? await this.companiesService.update(this.company) :
             await this.companiesService.create(this.company);
-        this.responsesService.presentResponse(companyRes, async () => {
-            if (companyRes.status === 200) {
-                if (this.router.url.includes('admin/tabs')) {
-                    this.router.navigateByUrl('admin/tabs/clients')
-                } else if (this.router.url.includes('clients/tabs')) {
-                    this.router.navigateByUrl('clients/tabs/company')
-                }
-            } else {
-                this.responsesService.presentGenericalErrorResponse();
+        this.responsesService.presentResponse(companyRes);
+        if (companyRes.status === 200) {
+
+            const updatedUser = await this.userService.get(this.currentUser.id) as User;
+            this.storage.set('user', updatedUser);
+
+            if (this.router.url.includes('admin/tabs')) {
+                this.router.navigateByUrl('admin/tabs/clients')
+            } else if (this.router.url.includes('clients/tabs')) {
+                this.router.navigateByUrl('clients/tabs/company')
             }
-        });
+        } else {
+            this.responsesService.presentGenericalErrorResponse();
+        }
     }
 
 }

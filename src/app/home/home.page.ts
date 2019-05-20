@@ -27,7 +27,6 @@ export class HomePage {
         this.loading.present();
         const userRes = await this.userProvider.validateUser(this.email, this.password) as any;
         this.loading.dismiss();
-        console.log({userRes: userRes})
         if (!userRes.status || userRes.status !== 200)
             this.responses.presentResponse(userRes);
         else if (userRes.user && userRes.user.role) {

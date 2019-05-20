@@ -25,6 +25,14 @@
             <ion-label style="font-weight: bold">Descripción</ion-label>
             <ion-text>{{ company?.description }}</ion-text>
         </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Número interior</ion-label>
+            <ion-text>{{ company?.location.int_no }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label style="font-weight: bold">Número exterior</ion-label>
+            <ion-text>{{ company?.location.ext_no }}</ion-text>
+        </ion-item>
         <app-map [lat]="company?.location.lat"
                  [lng]="company?.location.lng"
                  [search]="false"></app-map>
