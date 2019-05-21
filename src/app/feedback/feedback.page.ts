@@ -4,6 +4,7 @@ import {FeedbackService} from "../../services/feedback.service";
 import {Storage} from "@ionic/storage";
 import {User} from "../../models/user";
 import {ResponseService} from "../../services/response.service";
+import {LocationsService} from "../../services/locations.service";
 
 @Component({
     selector: 'app-feedback',
@@ -13,19 +14,28 @@ import {ResponseService} from "../../services/response.service";
 export class FeedbackPage implements OnInit {
 
     public currentUser: User;
-    public segmentValues = {
-        FOR_USER: 0,
-        FOR_COMPANY: 1
+
+    public entityValues = {
+        FOR_USER: '0',
+        FOR_COMPANY: '1'
     };
+    public entityValue = this.entityValues.FOR_USER;
+
+    public fromValues = {
+        RECEIVER: '0',
+        SENDER: '1',
+        ALL: null
+    };
+    public fromValue = this.fromValues.ALL;
+
+    public months: any[];
     public monthPerformance = {
         text: '',
         color: '',
         prediction: 0
     };
-    public segmentValue = this.segmentValues.FOR_USER;
     public currentMonth = new Date().getMonth();
     public selectedMonth = {value: this.currentMonth + 1, offset: 0};
-    public months: any[];
 
     public scatterChartOptions: ChartOptions = {
         responsive: true,
@@ -37,15 +47,22 @@ export class FeedbackPage implements OnInit {
     };
     public scatterChartDataSets: ChartDataSets[];
     public scatterChartType: ChartType = 'line';
-    public scatterChartColors = [{backgroundColor: ["#e84351", "#434a54", "#3ebf9b", "#4d86dc", "#f3af37"]}]
+    public scatterChartColors = [{backgroundColor: ["#e84351", "#434a54", "#3ebf9b", "#4d86dc", "#f3af37"]}];
+
+    public cities: string[] = [];
+    public selectedCity: number;
 
     constructor(private feedbackService: FeedbackService,
+                private locationService: LocationsService,
                 private storage: Storage,
                 private responsesService: ResponseService) {
     }
 
     async ngOnInit() {
         this.currentUser = await this.storage.get('user') as User;
+        if (this.currentUser.role.name === 'admin') {
+            this.cities = await this.locationService.getCurrentRegisteredCities() as string[];
+        }
         await this.setupMonthsOffsets();
         await this.triggerLinearRegression();
     }
@@ -77,8 +94,18 @@ export class FeedbackPage implements OnInit {
         }
     }
 
-    async segmentChanged(value) {
-        this.segmentValue = value;
+    async entityChanged(value) {
+        this.entityValue = value;
+        await this.triggerLinearRegression();
+    }
+
+    async fromChanged(value) {
+        this.fromValue = value;
+        await this.triggerLinearRegression();
+    }
+
+    async cityChanged(value) {
+        this.selectedCity = value;
         await this.triggerLinearRegression();
     }
 
@@ -88,18 +115,28 @@ export class FeedbackPage implements OnInit {
     }
 
     async triggerLinearRegression() {
+        if (!this.selectedMonth || !this.entityValue)
+            return;
 
         this.monthPerformance.color = '';
         this.monthPerformance.text = '';
         this.monthPerformance.prediction = 0;
 
         let serviceRes;
-        if (this.currentUser.role.name === 'client')
-            serviceRes = await this.feedbackService.getClientLinearRegression(this.currentUser.id,
-                this.selectedMonth.offset, this.segmentValue);
-        else if (this.currentUser.role.name === 'admin') {
-            serviceRes = await this.feedbackService.getClientLinearRegression(this.currentUser.id,
-                this.selectedMonth.offset, this.segmentValue);
+        if (this.currentUser.role.name === 'client') {
+
+            serviceRes = await this.feedbackService.getDeliveriesMonthLinearRegression(this.currentUser.id,
+                this.selectedMonth.offset, this.entityValue);
+
+        } else if (this.currentUser.role.name === 'admin') {
+
+            if (this.selectedCity === undefined)
+                return;
+
+            const selectedCityName = this.cities.find((c, i) => i === this.selectedCity);
+            serviceRes = await this.feedbackService.getCitiesMonthLinearRegression(
+                this.selectedMonth.offset, selectedCityName, this.entityValue, this.fromValue);
+
         } else {
             this.responsesService.presentResponse({message: 'El rol no permite ver retroalimentación'})
             return;
@@ -111,22 +148,7 @@ export class FeedbackPage implements OnInit {
         }
 
         await this.gatherSeriesXY(serviceRes.regression_info);
-        if (serviceRes.regression_info.correlation_rate_x1 >= .90) {
-            this.monthPerformance.text = 'Muy alta correlación';
-            this.monthPerformance.color = 'green';
-        } else if (serviceRes.regression_info.monthPrediction >= .70) {
-            this.monthPerformance.text = 'Alta correlación';
-            this.monthPerformance.color = 'green';
-        } else if (serviceRes.regression_info.monthPrediction >= .50) {
-            this.monthPerformance.text = 'Correlación moderada';
-            this.monthPerformance.color = 'orange';
-        } else if (serviceRes.regression_info.monthPrediction >= .30) {
-            this.monthPerformance.text = 'Baja correlación';
-            this.monthPerformance.color = 'yellow';
-        } else {
-            this.monthPerformance.text = 'Muy baja correlación';
-            this.monthPerformance.color = 'red';
-        }
+        this.setPerformance(serviceRes.regression_info)
     }
 
     async gatherSeriesXY(regressionInfo) {
@@ -172,4 +194,30 @@ export class FeedbackPage implements OnInit {
             }
         ];
     }
+
+    setPerformance(regression_info) {
+        if (regression_info.correlation_rate_x1 >= .90) {
+            this.monthPerformance.text = 'Muy alta correlación';
+            this.monthPerformance.color = 'green';
+        } else if (regression_info.monthPrediction >= .70) {
+            this.monthPerformance.text = 'Alta correlación';
+            this.monthPerformance.color = 'green';
+        } else if (regression_info.monthPrediction >= .50) {
+            this.monthPerformance.text = 'Correlación moderada';
+            this.monthPerformance.color = 'orange';
+        } else if (regression_info.monthPrediction >= .30) {
+            this.monthPerformance.text = 'Baja correlación';
+            this.monthPerformance.color = 'yellow';
+        } else {
+            this.monthPerformance.text = 'Muy baja correlación';
+            this.monthPerformance.color = 'red';
+        }
+    }
+
+    canUseCompany() {
+        return this.currentUser && this.currentUser.role &&
+            ((this.currentUser.role.name === 'client' && this.currentUser.company) ||
+                (this.currentUser.role.name === 'admin'));
+    }
+
 }

@@ -3,23 +3,36 @@
         <ion-buttons slot="start">
             <ion-back-button style="color: white"></ion-back-button>
         </ion-buttons>
-        <ion-title>Retroalimentación</ion-title>
+        <ion-title class="ion-margin-top">Retroalimentación</ion-title>
+        <ion-segment
+                (ionChange)="entityChanged($event.detail.value)"
+                [value]="entityValue" color="light">
+            <ion-segment-button [value]="entityValues.FOR_USER">
+                <ion-icon name="person"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button [value]="entityValues.FOR_COMPANY" *ngIf="canUseCompany()">
+                <ion-icon name="business"></ion-icon>
+            </ion-segment-button>
+        </ion-segment>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-    <ion-segment *ngIf="currentUser?.company"
-                 (ionChange)="segmentChanged($event.detail.value)"
-                 [value]="segmentValue">
-        <ion-segment-button [value]="segmentValues.FOR_USER">
-            <ion-icon name="person"></ion-icon>
+    <ion-segment
+            *ngIf="currentUser?.role?.name === 'admin'"
+            (ionChange)="fromChanged($event.detail.value)"
+            [value]="fromValue">
+        <ion-segment-button [value]="fromValues.RECEIVER">
+            <ion-text>RECIBIDAS</ion-text>
         </ion-segment-button>
-        <ion-segment-button [value]="segmentValues.FOR_COMPANY">
-            <ion-icon name="business"></ion-icon>
+        <ion-segment-button [value]="fromValues.ALL">
+            <ion-text>TODAS</ion-text>
+        </ion-segment-button>
+        <ion-segment-button [value]="fromValues.SENDER">
+            <ion-text>ENVIADAS</ion-text>
         </ion-segment-button>
     </ion-segment>
-
 
     <ion-grid>
         <ion-row style="width: 100%">
@@ -28,6 +41,15 @@
                 <ion-select [ngModel]="selectedMonth.value" (ngModelChange)="monthChanged($event)">
                     <ion-select-option *ngFor="let month of months"
                                        [value]="month.value">{{month.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+        </ion-row>
+        <ion-row style="width: 100%" *ngIf="cities && cities.length">
+            <ion-item style="width: 100%">
+                <ion-label>Selecciona una ciudad</ion-label>
+                <ion-select placeholder="Seleccionar" [ngModel]="selectedCity" (ngModelChange)="cityChanged($event)">
+                    <ion-select-option *ngFor="let city of cities; let i = index"
+                                       [value]="i">{{city}}</ion-select-option>
                 </ion-select>
             </ion-item>
         </ion-row>

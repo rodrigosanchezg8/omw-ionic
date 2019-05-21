@@ -70,6 +70,7 @@ export class ClientDeliveriesPage implements OnInit {
     async fetchByOriginStatus(status: string) {
         this.status = status;
         await this.getDeliveries();
+        console.log(this.deliveries)
     }
 
     async getDeliveries() {
