@@ -3,7 +3,7 @@
         <ion-title class="ion-margin-top">Entregas</ion-title>
         <ion-segment
                 *ngIf="currentUser?.role?.name === 'client'"
-                (ionChange)="segmentChanged($event)" value="receiver" color="light ">
+                (ionChange)="segmentChanged($event)" value="receiver" color="light">
             <ion-segment-button value="receiver">
                 <ion-icon name="arrow-round-down"></ion-icon>
                 <ion-label>Recibidas</ion-label>
@@ -102,10 +102,10 @@
 
                             <ion-row style="width: 100%">
                                 <ion-item style="width: 100%">
-                                    <ion-label style="font-weight: bold" class="ion-margin-end">Se entregó:
+                                    <ion-label style="font-weight: bold" class="ion-margin-end">Se entregó el:
                                     </ion-label>
-                                    <ion-text>{{  deliveryService?.delivery?.arrival_date ?
-                                        deliveryService?.delivery?.arrival_date : 'Sin entregar' }}</ion-text>
+                                    <ion-text>{{  delivery?.arrival_date ?
+                                        delivery?.arrival_date : 'Sin entregar' }}</ion-text>
                                 </ion-item>
                             </ion-row>
 
