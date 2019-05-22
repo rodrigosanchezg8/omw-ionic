@@ -4,7 +4,7 @@ export const environment = {
     storageUrl: 'http://192.168.1.127:8000/storage/',
     mapsKey: 'AIzaSyASJrC_foKYvTcXKAE66oeuky526W-X3q4',
     mapQuest: {
-        key: 'HuPYaz9aMB61KvMvL6tw6FuTbKkYhZKM',
+        key: 'kCSLNfWQuQ51ofSwbNOnNOGG55v5uXsY',
         reverseGeocodeURL: 'http://www.mapquestapi.com/geocoding/v1/reverse?',
     },
     socketIP: 'http://192.168.1.127:5000'

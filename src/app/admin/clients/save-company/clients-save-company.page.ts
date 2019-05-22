@@ -42,7 +42,11 @@ export class ClientsSaveCompanyPage implements OnInit {
             this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
                 if (ps.companyId) {
                     this.isEditMode = true;
+
+                    this.loading.present();
                     this.company = await this.companiesService.get(ps.companyId) as Company;
+                    this.loading.dismiss();
+
                     if (this.company.profile_photo !== null) {
                         this.company.profile_photo = environment.storageUrl + this.company.profile_photo;
                     }
@@ -59,6 +63,10 @@ export class ClientsSaveCompanyPage implements OnInit {
                     this.company.location.lng = location.lng;
                 });
 
+                if (this.company && this.company.location) {
+                    this.refreshMap();
+                }
+
             });
         } catch (e) {
             this.responsesService.presentResponse({message: 'Error! no se pudieron obtener los parámetros.'});
@@ -68,6 +76,16 @@ export class ClientsSaveCompanyPage implements OnInit {
     ionViewWillLeave() {
         this.paramsSubscription.unsubscribe();
     }
+
+    refreshMap() {
+        const timer = setInterval(() => {
+            if (this.mapService.mapInitialized && this.company.location.lat) {
+                this.mapService.locationChanged(this.company.location.lat, this.company.location.lng);
+                clearInterval(timer);
+            }
+        }, 500);
+    }
+
 
     async pickImage() {
         const options = {

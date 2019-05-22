@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../../models/user";
 import {MapService} from "../../../../services/map.service";
 import {Subscription} from "rxjs";
+import {Loading} from "../../../../traits/loading";
 
 @Component({
     selector: 'app-company-detail',
@@ -19,13 +20,13 @@ export class CompanyDetailPage implements OnInit {
     storageUrl: string = environment.storageUrl;
     company: Company;
 
-    private confirmMapLoadSubscription: Subscription;
     paramsSubscription: Subscription;
 
     constructor(private companiesService: CompaniesService,
                 private responsesService: ResponseService,
                 private activatedRoute: ActivatedRoute,
                 private actionSheetController: ActionSheetController,
+                private loading: Loading,
                 private router: Router,
                 private alertController: AlertController,
                 private mapService: MapService) {
@@ -57,7 +58,6 @@ export class CompanyDetailPage implements OnInit {
     }
 
     ionViewWilLeave() {
-        //this.confirmMapLoadSubscription.unsubscribe();
         this.paramsSubscription.unsubscribe();
     }
 
@@ -89,8 +89,10 @@ export class CompanyDetailPage implements OnInit {
                             }, {
                                 text: 'Sí',
                                 handler: async () => {
+                                    this.loading.present();
                                     await this.companiesService.delete(this.company.id);
-                                    this.router.navigate(['admin/tabs/companies']);
+                                    this.loading.dismiss();
+                                    this.router.navigate(['admin/companies'])
                                 }
                             }
                         ]

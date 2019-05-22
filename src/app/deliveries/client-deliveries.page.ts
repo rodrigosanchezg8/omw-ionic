@@ -70,7 +70,6 @@ export class ClientDeliveriesPage implements OnInit {
     async fetchByOriginStatus(status: string) {
         this.status = status;
         await this.getDeliveries();
-        console.log(this.deliveries)
     }
 
     async getDeliveries() {
@@ -84,16 +83,19 @@ export class ClientDeliveriesPage implements OnInit {
             this.loading.dismiss();
         } else if (this.currentUser.role.name === 'delivery_man') {
             const deliveries = await this.deliveryService.fetchAllByStatus(this.status) as Delivery[];
-
             this.loading.dismiss();
-            if (deliveries.length > 1 && (this.status === this.deliveryService.statuses.notStarted ||
-                this.status === this.deliveryService.statuses.inProgress)) {
-                this.responses.presentResponse({
-                    message: 'Un repartidor no puede tener más de dos entregas no iniciadas' +
-                        'o en progreso.'
-                })
+
+            if (this.status === this.deliveryService.statuses.notStarted ||
+                this.status === this.deliveryService.statuses.inProgress) {
+                if (deliveries.length > 1) {
+                    this.responses.presentResponse({
+                        message: `Un repartidor no puede tener más de dos entregas no iniciadas o en progreso.`
+                    })
+                }
+                this.singlePendingDelivery = deliveries[0];
+            } else {
+                this.deliveries = deliveries;
             }
-            this.singlePendingDelivery = deliveries[0];
 
         } else {
             this.responses.presentResponse({

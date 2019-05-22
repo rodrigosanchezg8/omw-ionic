@@ -19,7 +19,7 @@
     </div>
     <ion-segment [disabled]="deliveryService.clientCanNotUpdate()"
                  (ionChange)="originChanged($event.detail.value)"
-                 [value]="origin">
+                 [value]="origin" *ngIf="senderClient">
         <ion-segment-button value="client">
             <ion-icon name="person"></ion-icon>
         </ion-segment-button>

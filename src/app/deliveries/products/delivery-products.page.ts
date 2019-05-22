@@ -100,8 +100,10 @@ export class DeliveryProductsPage implements OnInit {
     }
 
     async confirmDelivery() {
-        if (!this.deliveryProductsService.deliveryProducts.length)
+        if (!this.deliveryProductsService.deliveryProducts.length) {
             this.responses.presentResponse({message: 'Debes añadir productos. '});
+            return;
+        }
 
         const alert = await this.alertController.create({
             header: '¿Estás seguro de CONFIRMAR esta entrega?',
@@ -216,7 +218,8 @@ export class DeliveryProductsPage implements OnInit {
             text: 'Origen de localización',
             icon: 'pin',
             handler: async () => {
-                if (!this.currentUser || !this.currentUser.role) {
+                if (!this.currentUser || !this.currentUser.role || (this.currentUser.role.name !== 'admin' &&
+                    this.currentUser.id !== this.deliveryService.delivery.sender_id)) {
                     this.responses.presentResponse({message: 'No se puede acceder a esa información.'});
                     return;
                 }
@@ -231,7 +234,8 @@ export class DeliveryProductsPage implements OnInit {
             text: 'Cliente a enviar',
             icon: 'arrow-round-forward',
             handler: async () => {
-                if (!this.currentUser || !this.currentUser.role) {
+                if (!this.currentUser || !this.currentUser.role || (this.currentUser.role.name !== 'admin' &&
+                    this.currentUser.id !== this.deliveryService.delivery.sender_id)) {
                     this.responses.presentResponse({message: 'No se puede acceder a esa información.'});
                     return;
                 }

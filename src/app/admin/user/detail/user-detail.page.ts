@@ -7,6 +7,7 @@ import {environment} from "../../../../environments/environment.prod";
 import {ActionSheetController, AlertController} from "@ionic/angular";
 import {MapService} from "../../../../services/map.service";
 import {Subscription} from "rxjs";
+import {Loading} from "../../../../traits/loading";
 
 @Component({
     selector: 'app-user-detail',
@@ -26,7 +27,8 @@ export class UserDetailPage implements OnInit {
                 private actionSheetController: ActionSheetController,
                 private router: Router,
                 private alertController: AlertController,
-                private mapService: MapService) {
+                private mapService: MapService,
+                private loadingService: Loading) {
     }
 
     ngOnInit() {
@@ -34,7 +36,10 @@ export class UserDetailPage implements OnInit {
 
     ionViewWillEnter() {
         this.paramsSubscription = this.activatedRoute.params.subscribe(async ps => {
+            this.loadingService.present();
             this.user = await this.userService.get(ps.userId) as User;
+            this.loadingService.dismiss();
+
             if (!this.user)
                 this.responses.presentResponse({message: 'El usuario no existe.'});
 

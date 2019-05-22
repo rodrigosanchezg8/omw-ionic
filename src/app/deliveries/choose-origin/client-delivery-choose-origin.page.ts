@@ -64,7 +64,7 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
 
                 this.deliveryService.delivery.sender_id = this.senderClient.id;
 
-                this.originChanged(this.origin);
+                this.refreshMap();
 
             }
         );
@@ -79,9 +79,10 @@ export class ClientDeliveryChooseOriginPage implements OnInit {
         const timer = setInterval(() => {
             if (this.mapService.mapInitialized) {
 
-                if (this.origin === 'client' && this.senderClient.location) {
+                if (this.origin === 'client' && this.senderClient.location && this.senderClient.location.lat) {
                     this.mapService.locationChanged(this.senderClient.location.lat, this.senderClient.location.lng);
-                } else if (this.origin === 'company' && this.senderClient.company && this.senderClient.company.location) {
+                } else if (this.origin === 'company' && this.senderClient.company && this.senderClient.company.location &&
+                    this.senderClient.company.location.lat) {
                     this.mapService.locationChanged(this.senderClient.company.location.lat, this.senderClient.company.location.lng);
                 }
 

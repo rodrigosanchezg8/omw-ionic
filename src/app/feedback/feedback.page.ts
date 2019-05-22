@@ -154,7 +154,9 @@ export class FeedbackPage implements OnInit {
     async gatherSeriesXY(regressionInfo) {
         if (!regressionInfo || (regressionInfo.deliveries_monthly_count.length !== 12 &&
             regressionInfo.months_axis.length !== 12)) {
-            this.responsesService.presentResponse({message: 'Hubo un problema calculando la información.'});
+            this.responsesService.presentResponse({
+                message: 'Hubo un problema calculando la información, es probable que no existan suficientes ventas.'
+            });
             return;
         }
 

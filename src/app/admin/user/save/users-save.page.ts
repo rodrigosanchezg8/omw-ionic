@@ -50,7 +50,11 @@ export class UsersSavePage implements OnInit {
             this.paramsSubscription = this.route.params.subscribe(async ps => {
                 if (ps.user) {
                     this.isEditMode = true;
+
+                    this.loading.present();
                     this.user = await this.userService.get(ps.user) as User;
+                    this.loading.dismiss();
+
                     if (this.user.profile_photo !== null) {
                         this.user.profile_photo = environment.storageUrl + this.user.profile_photo;
                     }
@@ -79,7 +83,7 @@ export class UsersSavePage implements OnInit {
 
     refreshMap() {
         const timer = setInterval(() => {
-            if (this.mapService.mapInitialized) {
+            if (this.mapService.mapInitialized && this.user.location.lat) {
                 this.mapService.locationChanged(this.user.location.lat, this.user.location.lng);
                 clearInterval(timer);
             }
