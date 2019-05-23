@@ -82,7 +82,6 @@ export class DeliveryMessagesPage implements OnInit {
 
     subscribeSocketMessages() {
         this.messagesSubscription = this.getMessages().subscribe((socketMessagesData: any) => {
-                console.log(socketMessagesData);
                 switch (socketMessagesData.event) {
                     case 'App\\Events\\DeliveryMessagesHistoryRequested':
                         if (!this.deliveryMessagesService.messages.length &&
