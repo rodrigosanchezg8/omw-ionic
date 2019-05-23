@@ -15,8 +15,12 @@ export class FeedbackService {
     }
 
     async getCitiesMonthLinearRegression(monthOffset: number, city: string, statisticsFor: string, originType: string) {
-        return await this.api.get(`statistics/linear_regression_by_city?month_offset=${monthOffset}&city=${city}&
-        statistics_for=${statisticsFor}&origin_type=${originType}`)
+        let url = `statistics/linear_regression_by_city?month_offset=${monthOffset}&city=${city}&
+        statistics_for=${statisticsFor}`;
+        if (originType !== null)
+            url += `&origin_type=${originType}`;
+
+        return await this.api.get(url);
     }
 
 }

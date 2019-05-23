@@ -101,11 +101,13 @@ export class FeedbackPage implements OnInit {
 
     async fromChanged(value) {
         this.fromValue = value;
+        console.log(this.fromValue);
         await this.triggerLinearRegression();
     }
 
     async cityChanged(value) {
         this.selectedCity = value;
+        console.log(this.selectedCity);
         await this.triggerLinearRegression();
     }
 
