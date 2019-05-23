@@ -25,18 +25,18 @@
             <ion-label>Creando</ion-label>
         </ion-button>
         <ion-button *ngIf="currentUser?.role?.name === 'client' || currentUser?.role?.name === 'admin'"
-                    [color]="status === 'No asignado' ? 'medium': 'light'"
-                    (click)="fetchByOriginStatus('No asignado')">
+                    [color]="status === 'No Asignado' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('No Asignado')">
             <ion-icon name="hand"></ion-icon>
             <ion-label>No asignadas</ion-label>
         </ion-button>
-        <ion-button [color]="status === 'No iniciado' ? 'medium': 'light'"
-                    (click)="fetchByOriginStatus('No iniciado')">
+        <ion-button [color]="status === 'No Iniciado' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('No Iniciado')">
             <ion-icon name="car"></ion-icon>
             <ion-label>No iniciadas</ion-label>
         </ion-button>
-        <ion-button [color]="status === 'En progreso' ? 'medium': 'light'"
-                    (click)="fetchByOriginStatus('En progreso')">
+        <ion-button [color]="status === 'En Progreso' ? 'medium': 'light'"
+                    (click)="fetchByOriginStatus('En Progreso')">
             <ion-icon name="time"></ion-icon>
             <ion-label>En progreso</ion-label>
         </ion-button>
