@@ -22,8 +22,8 @@ export class FeedbackPage implements OnInit {
     public entityValue = this.entityValues.FOR_USER;
 
     public fromValues = {
-        RECEIVER: '0',
-        SENDER: '1',
+        RECEIVER: '1',
+        SENDER: '0',
         ALL: null
     };
     public fromValue = this.fromValues.ALL;
