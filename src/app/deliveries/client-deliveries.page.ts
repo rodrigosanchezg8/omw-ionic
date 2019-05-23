@@ -40,7 +40,7 @@ export class ClientDeliveriesPage implements OnInit {
                 this.status = 'Creando';
                 this.origin = undefined;
             } else if (this.currentUser.role.name === 'delivery_man') {
-                this.status = 'En progreso';
+                this.status = 'En Progreso';
                 this.origin = undefined;
             } else {
                 this.origin = 'receiver';

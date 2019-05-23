@@ -82,6 +82,7 @@ export class DeliveryMessagesPage implements OnInit {
 
     subscribeSocketMessages() {
         this.messagesSubscription = this.getMessages().subscribe((socketMessagesData: any) => {
+                console.log(socketMessagesData);
                 switch (socketMessagesData.event) {
                     case 'App\\Events\\DeliveryMessagesHistoryRequested':
                         if (!this.deliveryMessagesService.messages.length &&
@@ -95,15 +96,12 @@ export class DeliveryMessagesPage implements OnInit {
                         break;
                     case 'App\\Events\\NewMessage':
                         if (socketMessagesData.data.message &&
-                            (socketMessagesData.data.message.user_id_replier === this.currentUser.id ||
-                                socketMessagesData.data.message.user_id_receiver === this.currentUser.id)) {
+                            socketMessagesData.data.message.delivery.id === this.deliveryService.delivery.id) {
                             let newMessage = new Message().deserialize(socketMessagesData.data.message)
                                 .setClass(this.currentUser.id);
                             this.deliveryMessagesService.messages.push(newMessage);
                             setTimeout(() => this.content.scrollToBottom(), 300);
                         }
-                    case 'App\\Events\\NewFile':
-                        break;
                 }
             },
             () => {
